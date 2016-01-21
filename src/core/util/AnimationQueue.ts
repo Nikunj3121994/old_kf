@@ -1,0 +1,57 @@
+import QueueItem from "./QueueItem";
+import Queue from "./Queue";
+
+class AnimationQueue extends Queue
+{
+	protected frame:number = 0;
+
+	protected _time:number = 0;
+	protected _fpms:number = 0;
+
+	constructor(fps:number, unit:number = 1000)
+	{
+		super();
+		this._fpms = unit / fps;
+	}
+
+	public onTick(delta:number):void
+	{
+		var time = this._time += delta;
+
+		if(this.current != null || this.next() != null)
+		{
+			var current = this.current;
+			var from = current.from;
+			var duration = current.duration;
+			var times = current.times;
+			var frame = (duration * time / (duration * this._fpms));
+
+			if(times > -1 && times - (frame / duration) < 0) {
+				this.next();
+			} else {
+				this.frame = from + (frame % duration);
+			}
+		}
+	}
+
+	public next():QueueItem
+	{
+		var next = super.next();
+		if(next) {
+			this.reset();
+		}
+		return next;
+	}
+
+	public getFrame():number
+	{
+		return this.frame|0;
+	}
+
+	protected reset():void
+	{
+		this._time = this._time % this._fpms;
+	}
+}
+
+export default AnimationQueue;
