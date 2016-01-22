@@ -6,7 +6,7 @@ module.exports = function(grunt)
 			options: {
 				comments: false,
 				compile: true,
-				module: 'amd',
+				module: 'umd',
 				target: 'es5',
 				sourceMap: false
 
