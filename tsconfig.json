@@ -10,7 +10,6 @@
     "sourceMap": false
   },
   "exclude": [
-    "test",
     "node_modules",
     "tools",
     "tools/tasks",

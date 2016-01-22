@@ -24,6 +24,11 @@ export class Canvas
 		this.setSize(width, height);
 	}
 
+	public appendTo(element:Element):void
+	{
+		element.appendChild(this.domElement);
+	}
+
 	set width(value:number)
 	{
 		this.setWidth(value);
@@ -62,7 +67,7 @@ export class Canvas
 
 	public setWidth(value:number):void
 	{
-		this.domElement.height = this._width = value;
+		this.domElement.width = this._width = value;
 	}
 
 	public destruct():void
