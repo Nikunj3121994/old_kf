@@ -33,7 +33,7 @@ import TouchInjectProperties from "../ui/TouchInjectProperties";
 import DisplayObject from "./DisplayObject";
 import Container from "./Container";
 
-import * as Methods from "../../easelts/util/Methods";
+import * as Methods from "../../visual/util/Methods";
 
 // interfaces
 import IVector2 from "../../core/interface/IVector2";

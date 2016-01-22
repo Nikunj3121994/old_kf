@@ -100,7 +100,6 @@ class Rectangle
 		return this;
 	}
 
-	// public methods:
 	/**
 	 * Copies all properties from the specified rectangle to this rectangle.
 	 * @method copy
