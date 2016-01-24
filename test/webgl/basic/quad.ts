@@ -2,19 +2,13 @@ import Shader from "../../../src/core/webgl/Shader";
 import ShaderType from "../../../src/core/webgl/ShaderType";
 import ShaderProgram from "../../../src/core/webgl/ShaderProgram";
 import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
+import {Mesh} from "../../../src/core/webgl/Mesh";
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'))
 var gl = canvas.getContext();
 
-var vertices = [
-	-1.0, 1.0,  0.0,
-	-1.0, -1.0, 0.0,
-	1.0,  -1.0, 0.0,
-	1.0,  1.0,  0.0
-];
-
-var indices = [3, 2, 1, 3, 1, 0];
+var quad = Mesh.createQuad();
 
 
 // Create an empty buffer object to store vertex buffer
@@ -24,7 +18,7 @@ var vertex_buffer = gl.createBuffer();
 gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
 
 // Pass the vertex data to the buffer
-gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+gl.bufferData(gl.ARRAY_BUFFER, quad.vertex, gl.STATIC_DRAW);
 
 // Unbind the buffer
 gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -36,7 +30,7 @@ var Index_Buffer = gl.createBuffer();
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
 
 // Pass the vertex data to the buffer
-gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,  quad.index, gl.STATIC_DRAW);
 
 // Unbind the buffer
 gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
@@ -97,7 +91,7 @@ var render = () => {
 	gl.viewport(0,0,canvas.width,canvas.height);
 
 	// Draw the triangle
-	gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT,0);
+	gl.drawElements(gl.TRIANGLES, quad.index.length, gl.UNSIGNED_SHORT,0);
 }
 
 setInterval(render, 1000/60);
