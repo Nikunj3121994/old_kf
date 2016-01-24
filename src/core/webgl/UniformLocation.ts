@@ -24,13 +24,17 @@ class UniformLocation
 	public setValue(value):any
 	{
 		var gl = this._gl;
+
+		//console.log(this._location, value);
 		if( this._value != value )
 		{
 			this._value = value;
 
 			switch(this._type)
-			{
+			{ 
 				case gl.FLOAT:{
+					//console.log(this._location, value);
+					
 					gl.uniform1f(this._location, value);
 					break;
 				}
@@ -91,7 +95,7 @@ class UniformLocation
 
 	public set value(value:any)
 	{
-		this._value = value;
+		this.setValue(value);
 	}
 }
 

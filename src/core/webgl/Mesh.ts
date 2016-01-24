@@ -10,6 +10,7 @@ export class Mesh
         ];
 
         var indices = [3, 2, 1, 3, 1, 0];
+
         return new Mesh(vertices, indices);
     }
 
@@ -28,7 +29,8 @@ export class Mesh
         this.length = this.index.length;
     }
 
-    initBuffer(gl:WebGLRenderingContext){
+    initBuffer(gl:WebGLRenderingContext):Mesh
+    {
         if(!this.vertexBuffer)
         {
             // Create an empty buffer object to store vertex buffer
@@ -38,7 +40,7 @@ export class Mesh
             gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
 
             // Pass the vertex data to the buffer
-            gl.bufferData(gl.ARRAY_BUFFER, this.vertexBuffer, gl.STATIC_DRAW);
+            gl.bufferData(gl.ARRAY_BUFFER, this.vertex, gl.STATIC_DRAW);
 
             // Unbind the buffer
             gl.bindBuffer(gl.ARRAY_BUFFER, null);
@@ -59,6 +61,8 @@ export class Mesh
             // Unbind the buffer
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         }
+
+        return this;
     }
 
     bindBuffer(gl:WebGLRenderingContext){

@@ -11,6 +11,13 @@ export class CanvasWebGL extends Canvas
 {
 	protected _gl:WebGLRenderingContext;
 
+	protected updateViewport():void
+	{
+		var gl = this.getContext();
+
+		gl.viewport(0, 0, this._width | 0, this._height | 0);
+	}
+
 	public getContext():WebGLRenderingContext
 	{
 		if(!this._gl)
@@ -34,6 +41,20 @@ export class CanvasWebGL extends Canvas
 		}
 
 		return this._gl;
+	}
+
+	public setHeight(value:number):void
+	{
+		super.setHeight(value);
+
+		this.updateViewport();
+	}
+
+	public setWidth(value:number):void
+	{
+		super.setWidth(value);
+
+		this.updateViewport();
 	}
 
 	public clear():void

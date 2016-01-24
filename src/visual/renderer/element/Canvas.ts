@@ -17,10 +17,27 @@ export class Canvas
 	protected _width:number;
 	protected _height:number;
 
-	constructor(domElement:HTMLCanvasElement = <HTMLCanvasElement> document.createElement('canvas'), width:number, height:number)
+	constructor(domElement?:HTMLCanvasElement, width?:number, height?:number)
 	{
-		this.domElement = domElement;
+		if(!domElement){
+			domElement = <HTMLCanvasElement> document.createElement('canvas');
 
+			if(width == null || height == null ){
+				throw new Error('width and height are required when not providing a HTMLCanvasElement');
+			}
+		} else {
+			if(width == null)
+			{
+				width = domElement.width;
+			}
+
+			if(height == null)
+			{
+				height = domElement.height;
+			}
+		}
+
+		this.domElement = domElement;
 		this.setSize(width, height);
 	}
 

@@ -66,7 +66,7 @@ define(["require", "exports"], function (require, exports) {
                 return this._value;
             },
             set: function (value) {
-                this._value = value;
+                this.setValue(value);
             },
             enumerable: true,
             configurable: true
