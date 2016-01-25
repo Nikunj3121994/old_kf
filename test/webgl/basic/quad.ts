@@ -47,10 +47,13 @@ void main(void) {
 `);
 
 var fragment = new Shader(ShaderType.FRAGMENT, `
-precision mediump float;
+precision lowp float;
 uniform float time;
+uniform float color;
 void main(void) {
-	gl_FragColor = vec4(sin(time), sin(time), sin(time), 1);
+	//vec3 color = vec3(sin(time)*.5 + .5, cos(time*10.0)*.5 + .5, sin(time)*.5 + .5);
+	float color = sin(time) * .5 + .5;
+	gl_FragColor = vec4(color, color, color, 1.0);
 }
 `);
 
@@ -80,32 +83,29 @@ gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
 gl.enableVertexAttribArray(coord);
 
 /*============= Drawing the Quad ================*/
-//gl.viewport(0,0,canvas.width / 2 | 0,canvas.height / 2 | 0);
 
 // Enable the depth test
 gl.enable(gl.DEPTH_TEST);
 
 var time = (() => {
-	var prev = 0;
-	return () => {
-		var current = new Date().getTime();
-		if(prev == 0){
-			prev = current;
+	var startTime = 0;
+	return function(){
+		if(!startTime){
+			startTime = new Date().getTime();
 		}
-		let ntime = current;
-		prev = current;
-		return ntime / 1000 | 0;
-	}
-})()
 
+		return new Date().getTime() - startTime;
+	}
+})();
 
 var render = () => {
 
-	uLocations.time.value = new Date().getTime() / 1000;
+
+	var current = time() / 1000;
 
 	// Clear the canvas
 	gl.clearColor(0.0, 0.0, 0.0, 1);
-
+	uLocations.time.setValue(current);
 
 	// Draw the triangle
 	gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT,0);
