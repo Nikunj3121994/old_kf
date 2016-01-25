@@ -47,7 +47,7 @@ class SignalConnection
 	 * Only dispatches once
 	 * @returns {SignalConnection}
 	 */
-	once():SignalConnection
+	public once():SignalConnection
 	{
 		this.stayInList = false;
 		return this;
@@ -56,7 +56,7 @@ class SignalConnection
 	/**
 	 * Throws away the signal
 	 */
-	dispose():void
+	public dispose():void
 	{
 		if(this._signal != null)
 		{

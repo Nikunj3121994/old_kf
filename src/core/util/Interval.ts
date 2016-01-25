@@ -32,6 +32,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import Signal2 from "../event/Signal2";
 (function() {
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -90,10 +91,8 @@ import SignalConnection from "../event/SignalConnection";
 
 class FpsCollection {
 
-	public signal:Signal1<number> = new Signal1<number>();
-	public frame:number = 0;
+	public signal:Signal2<number> = new Signal2<number>();
 	public time:number = 0;
-	public ptime:number = 0;
 	public accum:number = 0;
 
 	public fps:number;
@@ -127,13 +126,11 @@ function requestAnimationFrame(timeUpdate:number):void
 
 		if(fc.accum > fc.mspf )
 		{
-			fc.accum -= fc.mspf;
-			fc.signal.emit(fc.mspf);
+			fc.accum = Math.max(0, fc.accum - delta);
+			fc.signal.emit(delta, fc.mspf);
 			fc.ptime = fc.time;
 		}
 	}
-
-
 }
 
 class Interval

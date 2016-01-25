@@ -69,8 +69,7 @@ class SignalAbstract
 	 * @param {boolean} prioritize
 	 * @returns {SignalConnection}
 	 */
-
-	public connectImpl(listener:Function, prioritize:boolean = false):SignalConnection
+	public connect(listener:Function, prioritize:boolean = false):SignalConnection
 	{
 		var _g:SignalAbstract = this;
 		var conn:SignalConnection = new SignalConnection(this, listener);
@@ -88,8 +87,6 @@ class SignalAbstract
 		}
 		return conn;
 	}
-
-	public connect = this.connectImpl;
 
 	/**
 	 *

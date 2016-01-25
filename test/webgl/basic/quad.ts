@@ -3,6 +3,8 @@ import ShaderType from "../../../src/core/webgl/ShaderType";
 import ShaderProgram from "../../../src/core/webgl/ShaderProgram";
 import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
 import {Mesh} from "../../../src/core/webgl/Mesh";
+import Interval from "../../../src/core/util/Interval";
+import Time from "../../../src/core/util/Time";
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'))
@@ -52,8 +54,8 @@ uniform float time;
 uniform float color;
 void main(void) {
 	//vec3 color = vec3(sin(time)*.5 + .5, cos(time*10.0)*.5 + .5, sin(time)*.5 + .5);
-	float color = sin(time) * .5 + .5;
-	gl_FragColor = vec4(color, color, color, 1.0);
+	vec3 color = vec3(sin(time) * .5 + .5, cos(time) * .5 + .5, sin(time*.5) * .5 + .5);
+	gl_FragColor = vec4(color, 1.0);
 }
 `);
 
@@ -87,21 +89,12 @@ gl.enableVertexAttribArray(coord);
 // Enable the depth test
 gl.enable(gl.DEPTH_TEST);
 
-var time = (() => {
-	var startTime = 0;
-	return function(){
-		if(!startTime){
-			startTime = new Date().getTime();
-		}
-
-		return new Date().getTime() - startTime;
-	}
-})();
-
-var render = () => {
+var interval = new Interval(60).attach((delta:number, mathdelta:number) => {
 
 
-	var current = time() / 1000;
+	var current = Time.getSafeDelta() / 1000;
+	console.log(current, Time.getSafeDelta());
+	
 
 	// Clear the canvas
 	gl.clearColor(0.0, 0.0, 0.0, 1);
@@ -109,6 +102,4 @@ var render = () => {
 
 	// Draw the triangle
 	gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT,0);
-}
-
-setInterval(render, 1000/60);
+});
