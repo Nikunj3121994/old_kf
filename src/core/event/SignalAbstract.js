@@ -10,13 +10,12 @@ define(["require", "exports", "./SignalConnection"], function (require, exports,
         function SignalAbstract(listener) {
             if (listener === void 0) { listener = null; }
             this._deferredTasks = null;
-            this.connect = this.connectImpl;
             this._head = (listener != null) ? new SignalConnection_1.default(this, listener) : null;
         }
         SignalAbstract.prototype.hasListeners = function () {
             return this._head != null;
         };
-        SignalAbstract.prototype.connectImpl = function (listener, prioritize) {
+        SignalAbstract.prototype.connect = function (listener, prioritize) {
             if (prioritize === void 0) { prioritize = false; }
             var _g = this;
             var conn = new SignalConnection_1.default(this, listener);

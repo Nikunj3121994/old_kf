@@ -24,8 +24,10 @@ class UniformLocation
 	public setValue(value):any
 	{
 		var gl = this._gl;
+
 		if( this._value != value )
 		{
+		//console.log(this._name, this._value, value);
 			this._value = value;
 
 			switch(this._type)
@@ -91,7 +93,7 @@ class UniformLocation
 
 	public set value(value:any)
 	{
-		this._value = value;
+		this.setValue(value);
 	}
 }
 

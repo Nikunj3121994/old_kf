@@ -1,4 +1,4 @@
-define(["require", "exports", "../event/Signal1"], function (require, exports, Signal1_1) {
+define(["require", "exports", "../event/Signal2"], function (require, exports, Signal2_1) {
     (function () {
         var lastTime = 0;
         var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -22,10 +22,8 @@ define(["require", "exports", "../event/Signal1"], function (require, exports, S
     }());
     var FpsCollection = (function () {
         function FpsCollection(fps) {
-            this.signal = new Signal1_1.default();
-            this.frame = 0;
+            this.signal = new Signal2_1.default();
             this.time = 0;
-            this.ptime = 0;
             this.accum = 0;
             this.fps = fps;
             this.mspf = 1000 / fps;
@@ -47,8 +45,8 @@ define(["require", "exports", "../event/Signal1"], function (require, exports, S
             fc.time += delta;
             fc.accum += delta;
             if (fc.accum > fc.mspf) {
-                fc.accum -= fc.mspf;
-                fc.signal.emit(fc.mspf);
+                fc.accum = Math.max(0, fc.accum - delta);
+                fc.signal.emit(delta, fc.mspf);
                 fc.ptime = fc.time;
             }
         }

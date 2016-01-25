@@ -9,6 +9,10 @@ define(["require", "exports", "./Canvas"], function (require, exports, Canvas_1)
         function CanvasWebGL() {
             _super.apply(this, arguments);
         }
+        CanvasWebGL.prototype.updateViewport = function () {
+            var gl = this.getContext();
+            gl.viewport(0, 0, this._width | 0, this._height | 0);
+        };
         CanvasWebGL.prototype.getContext = function () {
             if (!this._gl) {
                 var gl = null;
@@ -24,6 +28,14 @@ define(["require", "exports", "./Canvas"], function (require, exports, Canvas_1)
                 this._gl = gl;
             }
             return this._gl;
+        };
+        CanvasWebGL.prototype.setHeight = function (value) {
+            _super.prototype.setHeight.call(this, value);
+            this.updateViewport();
+        };
+        CanvasWebGL.prototype.setWidth = function (value) {
+            _super.prototype.setWidth.call(this, value);
+            this.updateViewport();
         };
         CanvasWebGL.prototype.clear = function () {
             this._gl.clear(this._gl.COLOR_BUFFER_BIT);

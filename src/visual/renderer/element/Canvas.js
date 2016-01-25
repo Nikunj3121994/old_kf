@@ -1,7 +1,20 @@
 define(["require", "exports"], function (require, exports) {
     var Canvas = (function () {
         function Canvas(domElement, width, height) {
-            if (domElement === void 0) { domElement = document.createElement('canvas'); }
+            if (!domElement) {
+                domElement = document.createElement('canvas');
+                if (width == null || height == null) {
+                    throw new Error('width and height are required when not providing a HTMLCanvasElement');
+                }
+            }
+            else {
+                if (width == null) {
+                    width = domElement.width;
+                }
+                if (height == null) {
+                    height = domElement.height;
+                }
+            }
             this.domElement = domElement;
             this.setSize(width, height);
         }
