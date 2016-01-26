@@ -17,6 +17,11 @@ define(["require", "exports", "./Buffer"], function (require, exports, Buffer_1)
             return new Mesh(gl, vertices, indices);
         };
         Mesh.prototype.bind = function () {
+            if (!this.vertexBuffer) {
+                this.vertexBuffer = new Buffer_1.default(gl, new Float32Array(vertex), gl.ARRAY_BUFFER, gl.STATIC_DRAW);
+            }
+            if (!this.indexBuffer)
+                this.indexBuffer = new Buffer_1.default(gl, new Uint16Array(index), gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
             this.vertexBuffer.bind();
             this.indexBuffer.bind();
         };

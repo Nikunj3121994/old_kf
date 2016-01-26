@@ -31,6 +31,11 @@ export class Mesh
 
     public bind()
     {
+        if(!this.vertexBuffer) {
+            this.vertexBuffer = new Buffer(gl, new Float32Array(vertex), gl.ARRAY_BUFFER, gl.STATIC_DRAW);
+        }
+        if(!this.indexBuffer) this.indexBuffer = new Buffer(gl, new Uint16Array(index), gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+
         this.vertexBuffer.bind();
         this.indexBuffer.bind();
     }
