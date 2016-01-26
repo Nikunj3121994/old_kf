@@ -10,9 +10,8 @@ var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'))
 var gl = canvas.getContext();
 
-var quad = Mesh.createQuad();
+var quad = Mesh.createQuad(gl);
 
-quad.initBuffer(gl)
 //// Create an empty buffer object to store vertex buffer
 //var vertex_buffer = gl.createBuffer();
 //

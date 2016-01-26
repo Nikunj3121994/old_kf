@@ -91,7 +91,7 @@ import SignalConnection from "../event/SignalConnection";
 
 class FpsCollection {
 
-	public signal:Signal2<number> = new Signal2<number>();
+	public signal:Signal2<number, number> = new Signal2<number, number>();
 	public time:number = 0;
 	public accum:number = 0;
 

@@ -1,9 +1,10 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "./Buffer"], function (require, exports, Buffer_1) {
     var Mesh = (function () {
-        function Mesh(vertex, index) {
-            this.vertex = new Float32Array(vertex);
-            this.index = new Uint16Array(index);
-            this.length = this.index.length;
+        function Mesh(gl, vertex, index) {
+            this._gl = gl;
+            this.vertexBuffer = new Buffer_1.default(gl, new Float32Array(vertex), gl.ARRAY_BUFFER, gl.STATIC_DRAW);
+            this.indexBuffer = new Buffer_1.default(gl, new Uint16Array(index), gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+            this.length = index.length;
         }
         Mesh.createQuad = function (gl) {
             var vertices = [
@@ -13,30 +14,20 @@ define(["require", "exports"], function (require, exports) {
                 1.0, 1.0, 0.0
             ];
             var indices = [3, 2, 1, 3, 1, 0];
-            return new Mesh(vertices, indices);
+            return new Mesh(gl, vertices, indices);
         };
-        Mesh.prototype.initBuffer = function (gl) {
+        Mesh.prototype.bind = function () {
             if (!this.vertexBuffer) {
-                this.vertexBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-                gl.bufferData(gl.ARRAY_BUFFER, this.vertex, gl.STATIC_DRAW);
-                gl.bindBuffer(gl.ARRAY_BUFFER, null);
+                this.vertexBuffer = new Buffer_1.default(gl, new Float32Array(vertex), gl.ARRAY_BUFFER, gl.STATIC_DRAW);
             }
-            if (!this.indexBuffer) {
-                this.indexBuffer = gl.createBuffer();
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, this.index, gl.STATIC_DRAW);
-                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-            }
-            return this;
+            if (!this.indexBuffer)
+                this.indexBuffer = new Buffer_1.default(gl, new Uint16Array(index), gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+            this.vertexBuffer.bind();
+            this.indexBuffer.bind();
         };
-        Mesh.prototype.bindBuffer = function (gl) {
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexBuffer);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
-        };
-        Mesh.prototype.unbindBuffer = function (gl) {
-            gl.bindBuffer(gl.ARRAY_BUFFER, null);
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+        Mesh.prototype.unbind = function () {
+            this.vertexBuffer.unbind();
+            this.indexBuffer.unbind();
         };
         return Mesh;
     })();
