@@ -17,6 +17,8 @@ export class Mesh
     protected _gl:WebGLRenderingContext;
     public length:number;
 
+    public vertex:Float32Array;
+    public index:Uint16Array;
     public vertexBuffer:Buffer;
     public indexBuffer:Buffer;
 
@@ -24,17 +26,22 @@ export class Mesh
     {
 
         this._gl = gl;
-        this.vertexBuffer = new Buffer(gl, new Float32Array(vertex), gl.ARRAY_BUFFER, gl.STATIC_DRAW);
-        this.indexBuffer = new Buffer(gl, new Uint16Array(index), gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+        this.vertex = new Float32Array(vertex);
+        this.index = new Uint16Array(index);
         this.length = index.length;
     }
 
     public bind()
     {
+        var gl = this._gl;
+
         if(!this.vertexBuffer) {
-            this.vertexBuffer = new Buffer(gl, new Float32Array(vertex), gl.ARRAY_BUFFER, gl.STATIC_DRAW);
+            this.vertexBuffer = new Buffer(gl, this.vertex, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
         }
-        if(!this.indexBuffer) this.indexBuffer = new Buffer(gl, new Uint16Array(index), gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+
+        if(!this.indexBuffer){
+            this.indexBuffer = new Buffer(gl, this.index, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+        }
 
         this.vertexBuffer.bind();
         this.indexBuffer.bind();

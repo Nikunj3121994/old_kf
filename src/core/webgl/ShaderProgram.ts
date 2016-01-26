@@ -70,6 +70,11 @@ class ShaderProgram
 		return this.gl.getAttribLocation(this.program, value);
 	}
 
+	public getAttribute(value:string):number
+	{
+		return this.gl.getAttribLocation(this.program, value);
+	}
+
 	public getUniformLocation(value:string):WebGLUniformLocation
 	{
 		return this.gl.getUniformLocation(this.program, value);

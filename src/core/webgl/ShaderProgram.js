@@ -42,6 +42,9 @@ define(["require", "exports", "./UniformLocation"], function (require, exports, 
         ShaderProgram.prototype.getAttribLocation = function (value) {
             return this.gl.getAttribLocation(this.program, value);
         };
+        ShaderProgram.prototype.getAttribute = function (value) {
+            return this.gl.getAttribLocation(this.program, value);
+        };
         ShaderProgram.prototype.getUniformLocation = function (value) {
             return this.gl.getUniformLocation(this.program, value);
         };
