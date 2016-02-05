@@ -1,9 +1,8 @@
 
 
 // Use polyfill for setImmediate for performance gains
-var asap = (typeof setImmediate === 'function' && setImmediate) ||
-	function(fn) { setTimeout(fn, 1);
-	};
+var asap = (typeof setImmediate === 'function' && setImmediate) || function(fn) { setTimeout(fn, 1); };
+
 if (!Function.prototype.bind) {
 	Function.prototype.bind = function(oThis) {
 		if (typeof this !== 'function') {
@@ -40,6 +39,7 @@ function handle(deferred) {
 		this._deferreds.push(deferred);
 		return
 	}
+
 	asap(function() {
 		var cb = me['_state'] ? deferred.onFulfilled : deferred.onRejected
 		if (cb === null) {
@@ -122,15 +122,30 @@ function doResolve(fn, onFulfilled, onRejected) {
 	}
 }
 
-class Promise<T>
+interface Thenable<R> {
+	then<U>(onFulfilled?: (value: R) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
+	then<U>(onFulfilled?: (value: R) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
+	catch<U>(onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
+}
+
+class Promise<T> implements Thenable<T>
 {
-	public static all<T>(promiseList:Array<Promise<T>>):Promise<Array<T>>
+	/**
+	 *
+	 * Make a promise that fulfills when every item in the array fulfills, and rejects if (and when) any item rejects.
+	 * the array passed to all can be a mixture of promise-like objects and other objects.
+	 * The fulfillment value is an array (in order) of fulfillment values. The rejection value is the first rejection value.
+	 *
+	 * @param promiseList
+	 * @returns {Promise}
+	 */
+	public static all<U>(promises: Array<U | Thenable<U>>): Promise<Array<U>>
 	{
-		return new Promise(function(resolve:(response:Array<T>) => any, reject:(response:Error) => any)
+		return new Promise(function(resolve:(response:Array<U>) => any, reject:(response:Error) => any)
 		{
-			if(promiseList.length === 0) return resolve([]);
-			var remaining = promiseList.length;
-			var resultCollection:Array<T> = [];
+			if(promises.length === 0) return resolve([]);
+			var remaining = promises.length;
+			var resultCollection:Array<U> = [];
 
 			function res(i, val)
 			{
@@ -159,41 +174,48 @@ class Promise<T>
 				}
 			}
 
-			for(var i = 0; i < promiseList.length; i++)
+			for(var i = 0; i < promises.length; i++)
 			{
-				res(i, promiseList[i]);
+				res(i, promises[i]);
 			}
 		});
 	}
 
-	public static resolve<T>(value:T|Promise<T>):Promise<T>
+	/**
+	 *
+	 * Make a new promise from the thenable.
+	 * A thenable is promise-like in as far as it has a "then" method.
+	 *
+	 * @param value
+	 */
+	public static resolve<U>(value?: U | Thenable<U>): Promise<U>
 	{
 		if(value && typeof value === 'object' && value.constructor === Promise)
 		{
-			return <Promise<T>> value;
+			return <Promise<U>> value;
 		}
 
-		return new Promise<T>(function(resolve)
+		return new Promise<U>(function(resolve)
 		{
 			resolve(value);
 		});
 	}
 
-	public static reject<T>(value):Promise<any>
+	public static reject(error: any): Promise<any>
 	{
-		return new Promise(function (resolve, reject)
+		return new Promise<any>(function(resolve, reject)
 		{
-			reject(value);
+			reject(error);
 		});
 	}
 
-	public static race<T>(values:Array<Promise<T>>):Promise<T>
+	public static race<U>(promises: Array<Thenable<U>>): Promise<U>
 	{
 		return new Promise(function(resolve, reject)
 		{
-			for(var i = 0, len = values.length; i < len; i++)
+			for(var i = 0, len = promises.length; i < len; i++)
 			{
-				values[i].then(resolve, reject);
+				promises[i].then(resolve, reject);
 			}
 		});
 	}
@@ -212,7 +234,7 @@ class Promise<T>
 	private _value:any = null;
 	private _deferreds:Array<any> = [];
 
-	constructor(init: (resolve: (value?: T | Promise<T>) => void, reject: (reason?: any) => void) => void)
+	constructor(init: (resolve :(value?: T | Thenable<T>) => void, reject: (error?: any) => void) => void)
 	{
 		if (typeof this !== 'object') throw new TypeError('Promises must be constructed via new');
 		if (typeof init !== 'function') throw new TypeError('not a function');
@@ -220,17 +242,41 @@ class Promise<T>
 		doResolve(init, resolve.bind(this), reject.bind(this));
 	}
 
+	/**
+	 * @method catch
+	 * @param onRejected
+	 * @returns {Promise<T>}
+	 */
 	public catch(onRejected:(value:any) => any):Promise<T>
 	{
 		return this.then(null, onRejected);
 	}
 
-	public then(onFulfilled:any, onRejected?:any):Promise<T>
+	/**
+	 * Alias `.caught();` for compatibility with earlier ECMAScript version.
+	 *
+	 * @method cought
+	 * @param onRejected
+	 * @returns {Promise<U>}
+	 */
+	public cought(onRejected:(value:any) => any):Promise<T>
 	{
-		var me = this;
+		return this.then(null, onRejected);
+	}
+
+	/**
+	 * @then then
+	 * @param onFulfilled
+	 * @param onRejected
+	 * @returns {Promise}
+	 */
+	public then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Promise<U>;
+	public then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Promise<U>
+	{
+		var scope = this;
 		return new Promise(function (resolve, reject)
 		{
-			handle.call(me, new Handler(onFulfilled, onRejected, resolve, reject));
+			handle.call(scope, new Handler(onFulfilled, onRejected, resolve, reject));
 		})
 	}
 }
