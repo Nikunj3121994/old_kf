@@ -18,29 +18,6 @@ define(["require", "exports"], function (require, exports) {
         };
     }
     var isArray = Array.isArray || function (value) { return Object.prototype.toString.call(value) === "[object Array]"; };
-    function handle(deferred) {
-        var me = this;
-        if (this._state === null) {
-            this._deferreds.push(deferred);
-            return;
-        }
-        asap(function () {
-            var cb = me['_state'] ? deferred.onFulfilled : deferred.onRejected;
-            if (cb === null) {
-                (me['_state'] ? deferred.resolve : deferred.reject)(me._value);
-                return;
-            }
-            var ret;
-            try {
-                ret = cb(me._value);
-            }
-            catch (e) {
-                deferred.reject(e);
-                return;
-            }
-            deferred.resolve(ret);
-        });
-    }
     function resolve(newValue) {
         try {
             if (newValue === this)
@@ -67,15 +44,41 @@ define(["require", "exports"], function (require, exports) {
     }
     function finale() {
         for (var i = 0, len = this._deferreds.length; i < len; i++) {
-            handle.call(this, this._deferreds[i]);
+            handleHandler.call(this, this._deferreds[i]);
         }
         this._deferreds = null;
     }
-    function Handler(onFulfilled, onRejected, resolve, reject) {
-        this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-        this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-        this.resolve = resolve;
-        this.reject = reject;
+    var Handler = (function () {
+        function Handler(onFulfilled, onRejected, resolve, reject) {
+            this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+            this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+            this.resolve = resolve;
+            this.reject = reject;
+        }
+        return Handler;
+    })();
+    function handleHandler(promise, deferred) {
+        var _this = this;
+        if (this._state === null) {
+            this._deferreds.push(deferred);
+            return;
+        }
+        asap(function () {
+            var callback = _this['_state'] ? deferred.onFulfilled : deferred.onRejected;
+            if (callback === null) {
+                (_this['_state'] ? deferred.resolve : deferred.reject)(_this._value);
+                return;
+            }
+            var ret;
+            try {
+                ret = callback(_this._value);
+            }
+            catch (e) {
+                deferred.reject(e);
+                return;
+            }
+            deferred.resolve(ret);
+        });
     }
     function doResolve(fn, onFulfilled, onRejected) {
         var done = false;
@@ -161,9 +164,6 @@ define(["require", "exports"], function (require, exports) {
                 }
             });
         };
-        Promise._setImmediateFn = function (fn) {
-            asap = fn;
-        };
         Promise.prototype.catch = function (onRejected) {
             return this.then(null, onRejected);
         };
@@ -171,9 +171,9 @@ define(["require", "exports"], function (require, exports) {
             return this.then(null, onRejected);
         };
         Promise.prototype.then = function (onFulfilled, onRejected) {
-            var scope = this;
+            var _this = this;
             return new Promise(function (resolve, reject) {
-                handle.call(scope, new Handler(onFulfilled, onRejected, resolve, reject));
+                handleHandler.call(_this, new Handler(onFulfilled, onRejected, resolve, reject));
             });
         };
         return Promise;

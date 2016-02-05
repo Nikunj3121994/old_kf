@@ -33,30 +33,6 @@ if (!Function.prototype.bind) {
 
 var isArray = Array.isArray || function(value) { return Object.prototype.toString.call(value) === "[object Array]" };
 
-function handle(deferred) {
-	var me = this;
-	if (this._state === null) {
-		this._deferreds.push(deferred);
-		return
-	}
-
-	asap(function() {
-		var cb = me['_state'] ? deferred.onFulfilled : deferred.onRejected
-		if (cb === null) {
-			(me['_state'] ? deferred.resolve : deferred.reject)(me._value);
-			return;
-		}
-		var ret;
-		try {
-			ret = cb(me._value);
-		}
-		catch (e) {
-			deferred.reject(e);
-			return;
-		}
-		deferred.resolve(ret);
-	})
-}
 
 function resolve(newValue)
 {
@@ -85,16 +61,53 @@ function reject(newValue) {
 
 function finale() {
 	for (var i = 0, len = this._deferreds.length; i < len; i++) {
-		handle.call(this, this._deferreds[i]);
+		handleHandler.call(this, this._deferreds[i]);
 	}
 	this._deferreds = null;
 }
 
-function Handler(onFulfilled, onRejected, resolve, reject){
-	this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
-	this.onRejected = typeof onRejected === 'function' ? onRejected : null;
-	this.resolve = resolve;
-	this.reject = reject;
+class Handler {
+
+	public onFulfilled:Function;
+	public onRejected:Function;
+	public resolve:Function;
+	public reject:Function;
+
+	constructor(onFulfilled, onRejected, resolve, reject){
+		this.onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : null;
+		this.onRejected = typeof onRejected === 'function' ? onRejected : null;
+		this.resolve = resolve;
+		this.reject = reject;
+
+	}
+}
+
+function handleHandler(promise:Promise<any>, deferred:Handler) {
+
+
+
+	if (this._state === null) {
+		this._deferreds.push(deferred);
+		return;
+	}
+
+	asap(() => {
+		var callback = this['_state'] ? deferred.onFulfilled : deferred.onRejected;
+		if (callback === null) {
+			(this['_state'] ? deferred.resolve : deferred.reject)(this._value);
+			return;
+		}
+
+		var ret;
+		try {
+			ret = callback(this._value);
+		}
+		catch (e) {
+			deferred.reject(e);
+			return;
+		}
+		deferred.resolve(ret);
+	})
 }
 
 /**
@@ -103,7 +116,7 @@ function Handler(onFulfilled, onRejected, resolve, reject){
  *
  * Makes no guarantees about asynchrony.
  */
-function doResolve(fn, onFulfilled, onRejected) {
+function doResolve(fn:Function, onFulfilled:Function, onRejected:Function) {
 	var done = false;
 	try {
 		fn(function (value) {
@@ -201,6 +214,11 @@ class Promise<T> implements Thenable<T>
 		});
 	}
 
+	/**
+	 * @method reject
+	 * @param error
+	 * @returns {Promise<any>}
+     */
 	public static reject(error: any): Promise<any>
 	{
 		return new Promise<any>(function(resolve, reject)
@@ -211,7 +229,7 @@ class Promise<T> implements Thenable<T>
 
 	public static race<U>(promises: Array<Thenable<U>>): Promise<U>
 	{
-		return new Promise(function(resolve, reject)
+		return new Promise<U>(function(resolve, reject)
 		{
 			for(var i = 0, len = promises.length; i < len; i++)
 			{
@@ -220,19 +238,9 @@ class Promise<T> implements Thenable<T>
 		});
 	}
 
-	/**
-	 * Set the immediate function to execute callbacks
-	 * @param fn {function} Function to execute
-	 * @private
-	 */
-	public static _setImmediateFn(fn)
-	{
-		asap = fn;
-	}
-
 	private _state:boolean = null;
-	private _value:any = null;
-	private _deferreds:Array<any> = [];
+	private _value:T = null;
+	private _deferreds:Array<Handler> = [];
 
 	constructor(init: (resolve :(value?: T | Thenable<T>) => void, reject: (error?: any) => void) => void)
 	{
@@ -273,10 +281,9 @@ class Promise<T> implements Thenable<T>
 	public then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Promise<U>;
 	public then<U>(onFulfilled?: (value: T) => U | Thenable<U>, onRejected?: (error: any) => void): Promise<U>
 	{
-		var scope = this;
-		return new Promise(function (resolve, reject)
+		return new Promise<U>((resolve, reject) =>
 		{
-			handle.call(scope, new Handler(onFulfilled, onRejected, resolve, reject));
+			handleHandler.call(this, new Handler(onFulfilled, onRejected, resolve, reject));
 		})
 	}
 }

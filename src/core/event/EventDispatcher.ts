@@ -27,7 +27,7 @@
  */
 
 /**
- * @module createts
+ * @module core
  */
 
 "use strict";
@@ -122,17 +122,7 @@ class EventDispatcher
 	 * @param {Object} target The target object to inject EventDispatcher methods into. This can be an instance or a
 	 * prototype.
 	 **/
-		constructor(target?)
-	{
-		//			target.addEventListener = p.addEventListener;
-		//			target.on = p.on;
-		//			target.removeEventListener = target.off = p.removeEventListener;
-		//			target.removeAllEventListeners = p.removeAllEventListeners;
-		//			target.hasEventListener = p.hasEventListener;
-		//			target.dispatchEvent = p.dispatchEvent;
-		//			target._dispatchEvent = p._dispatchEvent;
-		//			target.willTrigger = p.willTrigger;
-	}
+	constructor(target?){}
 
 	/**
 	 * parent element
@@ -145,16 +135,15 @@ class EventDispatcher
 	 * @property _listeners
 	 * @type Object
 	 **/
-	public _listeners:any = null;
+	private _listeners:any = null;
 
 	/**
 	 * @protected
 	 * @property _captureListeners
 	 * @type Object
 	 **/
-	public _captureListeners = null;
+	private _captureListeners = null;
 
-	// public methods:
 	/**
 	 * Adds the specified event listener. Note that adding multiple listeners to the same function will result in
 	 * multiple callbacks getting fired.
@@ -176,6 +165,7 @@ class EventDispatcher
 	public addEventListener(type:string, listener:Function, useCapture?:boolean):any
 	{
 		var listeners;
+
 		if(useCapture)
 		{
 			listeners = this._captureListeners = this._captureListeners || {};
@@ -184,12 +174,16 @@ class EventDispatcher
 		{
 			listeners = this._listeners = this._listeners || {};
 		}
+
 		var arr = listeners[type];
+
 		if(arr)
 		{
 			this.removeEventListener(type, listener, useCapture);
 		}
+
 		arr = listeners[type]; // remove may have deleted the array
+
 		if(!arr)
 		{
 			listeners[type] = [listener];
@@ -198,6 +192,7 @@ class EventDispatcher
 		{
 			arr.push(listener);
 		}
+
 		return listener;
 	}
 
@@ -314,6 +309,7 @@ class EventDispatcher
 			}
 			eventObj = new Event(eventObj);
 		}
+
 		// TODO: deprecated. Target param is deprecated, only use case is MouseEvent/mousemove, remove.
 		try
 		{

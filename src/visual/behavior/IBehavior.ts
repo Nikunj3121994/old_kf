@@ -8,7 +8,7 @@ interface IBehavior
 {
 	owner:DisplayObject;
 
-	initialize(owner:DisplayObject):void
+	init(owner:DisplayObject):void
 	destruct():void
 }
 

@@ -19,7 +19,7 @@ class AbstractBehavior implements IBehavior
 	 * @method initialize
 	 * @param {DisplayObject} owner
 	 */
-	public initialize(owner:DisplayObject):void
+	public init(owner:DisplayObject):void
 	{
 		if(this.owner)
 		{
