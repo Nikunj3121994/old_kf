@@ -26,11 +26,11 @@ class Buffer {
         gl.bindBuffer(this.type, null);
     }
 
-    bind(){
+    public bind(){
         this.gl.bindBuffer(this.type, this.buffer);
     }
 
-    unbind(){
+    public unbind(){
         this.gl.bindBuffer(this.type, null);
     }
 }

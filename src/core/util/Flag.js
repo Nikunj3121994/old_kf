@@ -4,29 +4,54 @@ define(["require", "exports"], function (require, exports) {
             if (value === void 0) { value = 0; }
             this._value = 0 + value;
         }
-        Flag.prototype.contains = function (value) {
+        Flag.contains = function (a, value) {
             var n = 0 + value;
-            return (this._value & n) === n;
+            return (a & n) === n;
+        };
+        Flag.add = function (a, value) {
+            var n = 0 + value;
+            return a | n;
+        };
+        Flag.remove = function (a, value) {
+            var n = 0 + value;
+            return (a ^ n) & a;
+        };
+        Flag.set = function (a, value) {
+            return a;
+        };
+        Flag.equals = function (a, value) {
+            var n = 0 + value;
+            return a === n;
+        };
+        Flag.diff = function (a, value) {
+            var n = 0 + value;
+            return (a ^ n);
+        };
+        Flag.intersection = function (a, value) {
+            var n = 0 + value;
+            return (a & n);
+        };
+        Flag.prototype.contains = function (value) {
+            return Flag.contains(this._value, value);
         };
         Flag.prototype.add = function (value) {
-            var n = 0 + value;
-            this._value |= n;
+            this._value = Flag.add(this._value, value);
         };
         Flag.prototype.remove = function (value) {
-            var n = 0 + value;
-            this._value = (this._value ^ n) & this._value;
+            this._value = Flag.remove(this._value, value);
+        };
+        Flag.prototype.set = function (value) {
+            this._value = 0 + value;
         };
         Flag.prototype.equals = function (value) {
             var n = 0 + value;
             return this._value === n;
         };
         Flag.prototype.diff = function (value) {
-            var n = 0 + value;
-            return new Flag(this._value ^ n);
+            return new Flag(Flag.diff(this._value, value));
         };
         Flag.prototype.intersection = function (value) {
-            var n = 0 + value;
-            return new Flag(this._value & n);
+            return new Flag(Flag.intersection(this._value, value));
         };
         Flag.prototype.valueOf = function () {
             return this._value;
@@ -38,4 +63,5 @@ define(["require", "exports"], function (require, exports) {
     })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Flag;
+    var value = Flag.add(0, 1 << 0);
 });

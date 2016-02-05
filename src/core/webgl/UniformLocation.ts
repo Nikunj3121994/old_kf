@@ -27,7 +27,6 @@ class UniformLocation
 
 		if( this._value != value )
 		{
-		//console.log(this._name, this._value, value);
 			this._value = value;
 
 			switch(this._type)

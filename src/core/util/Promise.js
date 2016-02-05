@@ -1,8 +1,5 @@
 define(["require", "exports"], function (require, exports) {
-    var asap = (typeof setImmediate === 'function' && setImmediate) ||
-        function (fn) {
-            setTimeout(fn, 1);
-        };
+    var asap = (typeof setImmediate === 'function' && setImmediate) || function (fn) { setTimeout(fn, 1); };
     if (!Function.prototype.bind) {
         Function.prototype.bind = function (oThis) {
             if (typeof this !== 'function') {
@@ -113,11 +110,12 @@ define(["require", "exports"], function (require, exports) {
                 throw new TypeError('not a function');
             doResolve(init, resolve.bind(this), reject.bind(this));
         }
-        Promise.all = function (promiseList) {
+        Promise.all = function (promises) {
             return new Promise(function (resolve, reject) {
-                if (promiseList.length === 0)
+                if (promises.length === 0)
                     return resolve([]);
-                var remaining = promiseList.length;
+                var remaining = promises.length;
+                var resultCollection = [];
                 function res(i, val) {
                     try {
                         if (val && (typeof val === 'object' || typeof val === 'function')) {
@@ -129,17 +127,17 @@ define(["require", "exports"], function (require, exports) {
                                 return;
                             }
                         }
-                        promiseList[i] = val;
+                        resultCollection[i] = val;
                         if (--remaining === 0) {
-                            resolve(promiseList);
+                            resolve(resultCollection);
                         }
                     }
                     catch (ex) {
                         reject(ex);
                     }
                 }
-                for (var i = 0; i < promiseList.length; i++) {
-                    res(i, promiseList[i]);
+                for (var i = 0; i < promises.length; i++) {
+                    res(i, promises[i]);
                 }
             });
         };
@@ -151,15 +149,15 @@ define(["require", "exports"], function (require, exports) {
                 resolve(value);
             });
         };
-        Promise.reject = function (value) {
+        Promise.reject = function (error) {
             return new Promise(function (resolve, reject) {
-                reject(value);
+                reject(error);
             });
         };
-        Promise.race = function (values) {
+        Promise.race = function (promises) {
             return new Promise(function (resolve, reject) {
-                for (var i = 0, len = values.length; i < len; i++) {
-                    values[i].then(resolve, reject);
+                for (var i = 0, len = promises.length; i < len; i++) {
+                    promises[i].then(resolve, reject);
                 }
             });
         };
@@ -169,10 +167,13 @@ define(["require", "exports"], function (require, exports) {
         Promise.prototype.catch = function (onRejected) {
             return this.then(null, onRejected);
         };
+        Promise.prototype.cought = function (onRejected) {
+            return this.then(null, onRejected);
+        };
         Promise.prototype.then = function (onFulfilled, onRejected) {
-            var me = this;
+            var scope = this;
             return new Promise(function (resolve, reject) {
-                handle.call(me, new Handler(onFulfilled, onRejected, resolve, reject));
+                handle.call(scope, new Handler(onFulfilled, onRejected, resolve, reject));
             });
         };
         return Promise;

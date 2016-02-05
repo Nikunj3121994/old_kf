@@ -56,6 +56,100 @@
  */
 class Flag<T>
 {
+
+	/**
+	 * @method contains
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static contains(a:number, value:number|Flag<any>):boolean
+	{
+		var n = 0 + <number> value;
+		return (a & n) === n;
+	}
+
+	/**
+	 * @method add
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static add(a:number, value:number|Flag<any>):number
+	{
+		var n = 0 + <number> value;
+		return a | n;
+	}
+
+	/**
+	 * @method remove
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static remove(a:number, value:number|Flag<any>):number
+	{
+		var n = 0 + <number> value;
+		return (a ^ n) & a;
+	}
+
+	/**
+	 * Will override the current value.
+	 *
+	 * @method set
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static set(a:number, value:number|Flag<any>):number
+	{
+		return a;
+	}
+
+	/**
+	 * Compares the value of the Flag with the given value
+	 *
+	 * @method equals
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static equals(a:number, value:number|Flag<any>):boolean
+	{
+		var n = 0 + <number> value;
+
+		// adding n + 0 because this triggers valueOf on a Object when Flag class is given
+		return a === n;
+	}
+
+	/**
+	 * Returns a new Flag with the diff between the two flags
+	 *
+	 * Flags without
+	 *
+	 * @method intersection
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static diff(a:number, value:number|Flag<any>):number
+	{
+		var n = 0 + <number> value;
+
+		// adding n + 0 because this triggers valueOf on a Object when Flag class is given
+		return (a ^ n);
+	}
+
+
+	/**
+	 * Returns a new Flag with the intersection between the two flags
+	 *
+	 * @method intersection
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public static intersection(a:number, value:number|Flag<any>):number
+	{
+		var n = 0 + <number> value;
+
+		// adding n + 0 because this triggers valueOf on a Object when Flag class is given
+		return (a & n);
+	}
+
 	protected _value:number;
 
 	constructor(value:number|T|Flag<T> = 0)
@@ -70,8 +164,7 @@ class Flag<T>
 	 */
 	public contains(value:number|T|Flag<T>):boolean
 	{
-		var n = 0 + <number> value;
-		return (this._value & n) === n;
+		return Flag.contains(this._value, <number> value);
 	}
 
 	/**
@@ -81,8 +174,7 @@ class Flag<T>
 	 */
 	public add(value:number|T|Flag<T>):void
 	{
-		var n = 0 + <number> value;
-		this._value |= n;
+		this._value = Flag.add(this._value, <number> value);
 	}
 
 	/**
@@ -92,8 +184,19 @@ class Flag<T>
 	 */
 	public remove(value:number|T|Flag<T>):void
 	{
-		var n = 0 + <number> value;
-		this._value = (this._value ^ n) & this._value;
+		this._value = Flag.remove(this._value, <number> value);
+	}
+
+	/**
+	 * Will override the current value.
+	 *
+	 * @method set
+	 * @param value
+	 * @returns {boolean}
+	 */
+	public set(value:number|T|Flag<T>):void
+	{
+		this._value = 0 + <number> value;
 	}
 
 	/**
@@ -122,10 +225,8 @@ class Flag<T>
 	 */
 	public diff(value:number|T|Flag<T>):Flag<T>
 	{
-		var n = 0 + <number> value;
-
 		// adding n + 0 because this triggers valueOf on a Object when Flag class is given
-		return new Flag<T>(this._value ^ n);
+		return new Flag<T>(Flag.diff(this._value, <number> value));
 	}
 
 
@@ -138,10 +239,8 @@ class Flag<T>
 	 */
 	public intersection(value:number|T|Flag<T>):Flag<T>
 	{
-		var n = 0 + <number> value;
-
 		// adding n + 0 because this triggers valueOf on a Object when Flag class is given
-		return new Flag<T>(this._value & n);
+		return new Flag<T>(Flag.intersection(this._value, <number> value));
 	}
 
 	/**
@@ -169,3 +268,5 @@ class Flag<T>
 }
 
 export default Flag;
+
+var value = Flag.add(0, 1 << 0);
