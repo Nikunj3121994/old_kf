@@ -58,7 +58,8 @@ function handle(deferred) {
 	})
 }
 
-function resolve(newValue) {
+function resolve(newValue)
+{
 	try { //Promise Resolution Procedure: https://github.com/promises-aplus/promises-spec#the-promise-resolution-procedure
 		if (newValue === this) throw new TypeError('A promise cannot be resolved with itself.');
 		if (newValue && (typeof newValue === 'object' || typeof newValue === 'function')) {
@@ -123,12 +124,13 @@ function doResolve(fn, onFulfilled, onRejected) {
 
 class Promise<T>
 {
-	public static all(promiseList:Array<Promise<any>>):Promise<any>
+	public static all<T>(promiseList:Array<Promise<T>>):Promise<Array<T>>
 	{
-		return new Promise(function (resolve, reject)
+		return new Promise(function(resolve:(response:Array<T>) => any, reject:(response:Error) => any)
 		{
 			if(promiseList.length === 0) return resolve([]);
 			var remaining = promiseList.length;
+			var resultCollection:Array<T> = [];
 
 			function res(i, val)
 			{
@@ -146,10 +148,10 @@ class Promise<T>
 							return;
 						}
 					}
-					promiseList[i] = val;
+					resultCollection[i] = val;
 					if(--remaining === 0)
 					{
-						resolve(promiseList);
+						resolve( resultCollection );
 					}
 				} catch(ex)
 				{
@@ -164,20 +166,20 @@ class Promise<T>
 		});
 	}
 
-	public static resolve(value):Promise<any>
+	public static resolve<T>(value:T|Promise<T>):Promise<T>
 	{
 		if(value && typeof value === 'object' && value.constructor === Promise)
 		{
-			return value;
+			return <Promise<T>> value;
 		}
 
-		return new Promise(function (resolve)
+		return new Promise<T>(function(resolve)
 		{
 			resolve(value);
 		});
 	}
 
-	public static reject(value):Promise<any>
+	public static reject<T>(value):Promise<any>
 	{
 		return new Promise(function (resolve, reject)
 		{
@@ -185,9 +187,9 @@ class Promise<T>
 		});
 	}
 
-	public static race(values):Promise<any>
+	public static race<T>(values:Array<Promise<T>>):Promise<T>
 	{
-		return new Promise(function (resolve, reject)
+		return new Promise(function(resolve, reject)
 		{
 			for(var i = 0, len = values.length; i < len; i++)
 			{

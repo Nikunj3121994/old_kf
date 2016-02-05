@@ -3,22 +3,17 @@ define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/co
     canvas.appendTo(document.body.querySelector('[container="main"]'));
     var gl = canvas.getContext();
     var quad = Mesh_1.Mesh.createQuad(gl);
-    quad.bind();
-    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 coordinates;\nattribute vec2 texCoordinates;\nvarying vec2 v_texCoordinates;\n\nvoid main(void) {\n v_texCoordinates = texCoordinates;\n gl_Position = vec4(coordinates, 1.0);\n}\n");
-    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nuniform float time;\nuniform sampler2D texture;\nvarying vec2 v_texCoordinates;\nvoid main(void) {\n gl_FragColor = texture2D(texture, v_texCoordinates);\n}\n");
-    var program = new ShaderProgram_1.default(gl, vertex, fragment);
-    program.useProgram();
+    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 coordinates;\n\nvoid main(void) {\n gl_Position = vec4(coordinates, 1.0);\n}\n");
+    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nuniform float time;\nuniform float color;\nvoid main(void) {\n\t//vec3 color = vec3(sin(time)*.5 + .5, cos(time*10.0)*.5 + .5, sin(time)*.5 + .5);\n\tvec3 color = vec3(sin(time) * .5 + .5, cos(time) * .5 + .5, sin(time*.5) * .5 + .5);\n\tgl_FragColor = vec4(color, 1.0);\n}\n");
+    var program = new ShaderProgram_1.default(gl, vertex, fragment).use();
     var uLocations = program.getUniformLocations();
-    quad.bind();
-    var coord = program.getAttribLocation("coordinates");
-    var texture = program.getAttribLocation("coordinates");
-    gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(coord);
+    var coord = program.defineAttribute("coordinates", 3);
+    coord.point(quad).enable();
     gl.enable(gl.DEPTH_TEST);
-    var interval = new Interval_1.default(60).attach(function (delta, mathdelta) {
-        var current = Time_1.default.getSafeDelta() / 1000;
+    var interval = new Interval_1.default(60).attach(function (delta) {
+        var current = Time_1.default.getSafeFromStart() / 1000;
         gl.clearColor(0.0, 0.0, 0.0, 1);
-        uLocations.time.setValue(current);
+        uLocations['time'].setValue(current);
         gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT, 0);
     });
 });

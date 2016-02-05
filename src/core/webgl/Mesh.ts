@@ -19,8 +19,9 @@ export class Mesh
 
     public vertex:Float32Array;
     public index:Uint16Array;
-    public vertexBuffer:Buffer;
-    public indexBuffer:Buffer;
+
+    protected vertexBuffer:Buffer;
+    protected indexBuffer:Buffer;
 
     constructor(gl:WebGLRenderingContext, vertex:Array<number>, index:Array<number>)
     {
@@ -33,23 +34,34 @@ export class Mesh
 
     public bind()
     {
-        var gl = this._gl;
-
-        if(!this.vertexBuffer) {
-            this.vertexBuffer = new Buffer(gl, this.vertex, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
-        }
-
-        if(!this.indexBuffer){
-            this.indexBuffer = new Buffer(gl, this.index, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
-        }
-
-        this.vertexBuffer.bind();
-        this.indexBuffer.bind();
+        this.getVertexBuffer().bind();
+        this.getIndexBuffer().bind();
     }
 
     public unbind(){
 
-        this.vertexBuffer.unbind();
-        this.indexBuffer.unbind();
+        this.getVertexBuffer().unbind();
+        this.getIndexBuffer().unbind();
+    }
+
+    public getVertexBuffer():Buffer
+    {
+        if(!this.vertexBuffer) {
+            var gl = this._gl;
+            this.vertexBuffer = new Buffer(gl, this.vertex, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
+        }
+
+        return this.vertexBuffer;
+    }
+
+    public getIndexBuffer():Buffer
+    {
+
+        if(!this.indexBuffer) {
+            var gl = this._gl;
+            this.indexBuffer = new Buffer(gl, this.index, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+        }
+
+        return this.indexBuffer;
     }
 }

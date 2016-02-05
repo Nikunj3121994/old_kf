@@ -2,13 +2,15 @@
 import Shader from "./Shader";
 import IHashMap from "../../core/interface/IHashMap";
 import UniformLocation from "./UniformLocation";
+import AttributeLocation from "./AttributeLocation";
+
 class ShaderProgram
 {
 	gl:WebGLRenderingContext;
 	program:WebGLProgram;
 
-	private _uniforms:IHashMap<UniformLocation> = null;
-	private _attributes:IHashMap<number> = null;
+	private _uniforms:any = null;
+	private _attributes:IHashMap<AttributeLocation> = {};
 
 	constructor(gl:WebGLRenderingContext, vertex:Shader, fragment:Shader)
 	{
@@ -28,15 +30,10 @@ class ShaderProgram
 
 	/**
 	 *
-	 * @returns {IHashMap<number>}
+	 * @returns {IHashMap<AttributeLocation>}
 	 */
 	public get attributes()
 	{
-		if(!this._attributes)
-		{
-			this._attributes = this.fetchAttributeLocations();
-		}
-
 		return this._attributes;
 	}
 
@@ -49,13 +46,13 @@ class ShaderProgram
 		return this.getUniformLocations();
 	}
 
-	public useProgram():ShaderProgram
+	public use():ShaderProgram
 	{
 		this.gl.useProgram(this.program);
 		return this;
 	}
 
-	public getProgram():WebGLProgram
+	public get():WebGLProgram
 	{
 		return this.program;
 	}
@@ -70,9 +67,22 @@ class ShaderProgram
 		return this.gl.getAttribLocation(this.program, value);
 	}
 
-	public getAttribute(value:string):number
+	public defineAttribute(name:string, size: number, type:number = this.gl.FLOAT, normalized: boolean = false, stride: number = 0, offset: number = 0):AttributeLocation
 	{
-		return this.gl.getAttribLocation(this.program, value);
+		if(this._attributes[name])
+		{
+			throw new Error('attribute already defined');
+		}
+
+		var location = this.getAttribLocation(name)
+		this._attributes[name] = new AttributeLocation(this.gl, location, name, size, type, normalized, stride, offset);
+
+		return this._attributes[name];
+	}
+
+	public getAttribute(name:string):AttributeLocation
+	{
+		return this._attributes[name];
 	}
 
 	public getUniformLocation(value:string):WebGLUniformLocation
@@ -118,28 +128,27 @@ class ShaderProgram
 		return uniforms;
 	}
 
-	protected fetchAttributeLocations():IHashMap<number>
-	{
-		var attributes:IHashMap<number> = {};
-
-		var n = this.getParameter( this.gl.ACTIVE_ATTRIBUTES );
-		var program = this.program;
-		var gl = this.gl;
-
-		for ( var i = 0; i < n; i ++ ) {
-
-			var info = gl.getActiveAttrib( program, i );
-			var name = info.name;
-			var type = info.type;
-
-			// console.log("ACTIVE VERTEX ATTRIBUTE:", name, i );
-
-			attributes[ name ] = this.getAttribLocation(name);
-
-		}
-
-		return attributes;
-	}
+	//protected fetchAttributeLocations():IHashMap<number>
+	//{
+	//	var attributes:IHashMap<number> = {};
+	//
+	//	var n = this.getParameter( this.gl.ACTIVE_ATTRIBUTES );
+	//	var program = this.program;
+	//	var gl = this.gl;
+	//
+	//	for ( var i = 0; i < n; i ++ ) {
+	//
+	//		var info = gl.getActiveAttrib( program, i );
+	//		var name = info.name;
+	//		var type = info.type;
+	//		var location = this.getAttribLocation(name);
+	//
+	//		attributes[name] = new AttributeLocation(gl, name, location, type);
+	//
+	//	}
+	//
+	//	return attributes;
+	//}
 
 	public destruct():void
 	{

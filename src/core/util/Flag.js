@@ -63,4 +63,5 @@ define(["require", "exports"], function (require, exports) {
     })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Flag;
+    var value = Flag.add(0, 1 << 0);
 });

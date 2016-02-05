@@ -58,8 +58,7 @@ void main(void) {
 }
 `);
 
-var program = new ShaderProgram(gl, vertex, fragment);
-program.useProgram();
+var program = new ShaderProgram(gl, vertex, fragment).use();
 
 var uLocations = program.getUniformLocations();
 
@@ -71,33 +70,34 @@ var uLocations = program.getUniformLocations();
 //
 //// Bind index buffer object
 //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-quad.bindBuffer(gl);
+//quad.bind();
+var coord = program.defineAttribute("coordinates", 3);
+coord.point(quad).enable();
 
-
-// Get the attribute location
-var coord = program.getAttribLocation("coordinates");
-
-// Point an attribute to the currently bound VBO
-gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
-
-// Enable the attribute
-gl.enableVertexAttribArray(coord);
+//// Get the attribute location
+//var coord = program.getAttribLocation("coordinates");
+//
+//// Point an attribute to the currently bound VBO
+//gl.vertexAttribPointer(coord, 3, gl.FLOAT, false, 0, 0);
+//
+//// Enable the attribute
+//gl.enableVertexAttribArray(coord);
 
 /*============= Drawing the Quad ================*/
 
 // Enable the depth test
 gl.enable(gl.DEPTH_TEST);
 
-var interval = new Interval(60).attach((delta:number, mathdelta:number) => {
+var interval = new Interval(60).attach((delta:number) => {
 
 
-	var current = Time.getSafeDelta() / 1000;
-	console.log(current, Time.getSafeDelta());
+	var current = Time.getSafeFromStart() / 1000;
+	console.log(current, Time.getSafeFromStart());
 	
 
 	// Clear the canvas
 	gl.clearColor(0.0, 0.0, 0.0, 1);
-	uLocations.time.setValue(current);
+	uLocations['time'].setValue(current);
 
 	// Draw the triangle
 	gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT,0);

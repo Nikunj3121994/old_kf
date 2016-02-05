@@ -118,6 +118,7 @@ define(["require", "exports"], function (require, exports) {
                 if (promiseList.length === 0)
                     return resolve([]);
                 var remaining = promiseList.length;
+                var resultCollection = [];
                 function res(i, val) {
                     try {
                         if (val && (typeof val === 'object' || typeof val === 'function')) {
@@ -129,9 +130,9 @@ define(["require", "exports"], function (require, exports) {
                                 return;
                             }
                         }
-                        promiseList[i] = val;
+                        resultCollection[i] = val;
                         if (--remaining === 0) {
-                            resolve(promiseList);
+                            resolve(resultCollection);
                         }
                     }
                     catch (ex) {

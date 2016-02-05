@@ -1,8 +1,8 @@
-define(["require", "exports", "./UniformLocation"], function (require, exports, UniformLocation_1) {
+define(["require", "exports", "./UniformLocation", "./AttributeLocation"], function (require, exports, UniformLocation_1, AttributeLocation_1) {
     var ShaderProgram = (function () {
         function ShaderProgram(gl, vertex, fragment) {
             this._uniforms = null;
-            this._attributes = null;
+            this._attributes = {};
             this.gl = gl;
             this.program = gl.createProgram();
             gl.attachShader(this.program, vertex.getShader(gl));
@@ -14,9 +14,6 @@ define(["require", "exports", "./UniformLocation"], function (require, exports, 
         }
         Object.defineProperty(ShaderProgram.prototype, "attributes", {
             get: function () {
-                if (!this._attributes) {
-                    this._attributes = this.fetchAttributeLocations();
-                }
                 return this._attributes;
             },
             enumerable: true,
@@ -29,11 +26,11 @@ define(["require", "exports", "./UniformLocation"], function (require, exports, 
             enumerable: true,
             configurable: true
         });
-        ShaderProgram.prototype.useProgram = function () {
+        ShaderProgram.prototype.use = function () {
             this.gl.useProgram(this.program);
             return this;
         };
-        ShaderProgram.prototype.getProgram = function () {
+        ShaderProgram.prototype.get = function () {
             return this.program;
         };
         ShaderProgram.prototype.getParameter = function (parameter) {
@@ -42,8 +39,20 @@ define(["require", "exports", "./UniformLocation"], function (require, exports, 
         ShaderProgram.prototype.getAttribLocation = function (value) {
             return this.gl.getAttribLocation(this.program, value);
         };
-        ShaderProgram.prototype.getAttribute = function (value) {
-            return this.gl.getAttribLocation(this.program, value);
+        ShaderProgram.prototype.defineAttribute = function (name, size, type, normalized, stride, offset) {
+            if (type === void 0) { type = this.gl.FLOAT; }
+            if (normalized === void 0) { normalized = false; }
+            if (stride === void 0) { stride = 0; }
+            if (offset === void 0) { offset = 0; }
+            if (this._attributes[name]) {
+                throw new Error('attribute already defined');
+            }
+            var location = this.getAttribLocation(name);
+            this._attributes[name] = new AttributeLocation_1.default(this.gl, location, name, size, type, normalized, stride, offset);
+            return this._attributes[name];
+        };
+        ShaderProgram.prototype.getAttribute = function (name) {
+            return this._attributes[name];
         };
         ShaderProgram.prototype.getUniformLocation = function (value) {
             return this.gl.getUniformLocation(this.program, value);
@@ -67,19 +76,6 @@ define(["require", "exports", "./UniformLocation"], function (require, exports, 
                 uniforms[name] = new UniformLocation_1.default(this.gl, name, location, type);
             }
             return uniforms;
-        };
-        ShaderProgram.prototype.fetchAttributeLocations = function () {
-            var attributes = {};
-            var n = this.getParameter(this.gl.ACTIVE_ATTRIBUTES);
-            var program = this.program;
-            var gl = this.gl;
-            for (var i = 0; i < n; i++) {
-                var info = gl.getActiveAttrib(program, i);
-                var name = info.name;
-                var type = info.type;
-                attributes[name] = this.getAttribLocation(name);
-            }
-            return attributes;
         };
         ShaderProgram.prototype.destruct = function () {
             this.gl.deleteProgram(this.program);

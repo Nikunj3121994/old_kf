@@ -3,13 +3,31 @@ class Time
 	//maxSaveTimeMs = 60 * 60 * 24 * 2 * 1000;
 	//maxSaveTimeMs = 60 * 60 * 24 * 2 * 1000;
 	//public static maxSaveTimeMs = 20 * 1000;// * 60 * 24 * 2 * 1000;
-	public static maxSaveTimeMs = 2147483648;// * 60 * 24 * 2 * 1000;
+	public static maxSaveTimeMs = 2147483647;// * 60 * 24 * 2 * 1000;
 
 	/**
 	 *
 	 * @return {number}
 	 */
 	public static getDelta:(time:number) => number = (() => {
+		var startTime = 0;
+		return function(time){
+			time = time || new Date().getTime();
+			if(!startTime){
+				startTime = time;
+			}
+			var returnTime = time - startTime;
+			startTime = time;
+
+			return returnTime;
+		}
+	})();
+
+	/**
+	 *
+	 * @return {number}
+	 */
+	public static getFromStart:(time:number) => number = (() => {
 		var startTime = 0;
 		return function(time){
 			time = time || new Date().getTime();
@@ -25,7 +43,7 @@ class Time
 	 *
 	 * @return {number}
 	 */
-	public static getSafeDelta:(time:number) => number = (() => {
+	public static getSafeFromStart:(time?:number) => number = (() => {
 		var startTime = 0;
 		var maxSaveTimeMs = Time.maxSaveTimeMs;
 		return function(time){

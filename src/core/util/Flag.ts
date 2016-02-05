@@ -268,3 +268,5 @@ class Flag<T>
 }
 
 export default Flag;
+
+var value = Flag.add(0, 1 << 0);
