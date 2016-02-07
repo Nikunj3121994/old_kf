@@ -42,6 +42,7 @@ import HttpRequest from "../../core/net/HttpRequest";
 import Promise from "../../core/util/Promise";
 import ILoadable from "../../core/interface/ILoadable";
 import {CanvasBuffer} from "../renderer/buffer/CanvasBuffer";
+import {PromiseUtil} from "../../core/util/PromiseUtil";
 
 /**
  * A Container is a nestable display list that allows you to work with compound display elements. For  example you could
@@ -156,7 +157,7 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 
 	public load(onProgress?:(progress:number)=>any):Promise<T>
 	{
-		return HttpRequest.waitForLoadable(this.children, onProgress).then(() => {
+		return PromiseUtil.allForLoadable<any>(this.children, onProgress).then(() => {
 			this._hasLoaded = true;
 			return this;
 		})

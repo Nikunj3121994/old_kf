@@ -2,7 +2,7 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
     var PromiseUtil = (function () {
         function PromiseUtil() {
         }
-        PromiseUtil.wait = function (list, onProgress) {
+        PromiseUtil.allWithProgress = function (list, onProgress) {
             if (onProgress === void 0) { onProgress = function (progress) { }; }
             return new Promise_1.default(function (resolve) {
                 var newList = [];
@@ -18,7 +18,7 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
                 }
             });
         };
-        PromiseUtil.waitForLoadable = function (list, onProgress) {
+        PromiseUtil.allForLoadable = function (list, onProgress) {
             if (onProgress === void 0) { onProgress = function (progress) { }; }
             var count = list.length;
             var progressList = [];
@@ -42,4 +42,5 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
         };
         return PromiseUtil;
     })();
+    exports.PromiseUtil = PromiseUtil;
 });

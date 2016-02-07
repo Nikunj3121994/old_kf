@@ -2,6 +2,9 @@ import Promise from "../util/Promise";
 
 interface ILoadable<T>
 {
+
+	hasLoaded():boolean;
+
 	/**
 	 *
 	 * @param onProgress

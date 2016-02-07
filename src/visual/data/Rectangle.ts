@@ -47,7 +47,6 @@
  **/
 class Rectangle
 {
-	// public properties:
 	/**
 	 * X position.
 	 * @property x
@@ -64,28 +63,18 @@ class Rectangle
 
 	/**
 	 * Width.
-	 * @property width
+	 * @property w
 	 * @type Number
 	 **/
-	public width:number = 0;
+	public w:number = 0;
 
 	/**
 	 * Height.
-	 * @property height
+	 * @property h
 	 * @type Number
 	 **/
-	public height:number = 0;
+	public h:number = 0;
 
-	// constructor:
-	/**
-	 * Initialization method. Can also be used to reinitialize the instance.
-	 * @method initialize
-	 * @param {Number} [x=0] X position.
-	 * @param {Number} [y=0] Y position.
-	 * @param {Number} [width=0] The width of the Rectangle.
-	 * @param {Number} [height=0] The height of the Rectangle.
-	 * @return {Rectangle} This instance. Useful for chaining method calls.
-	 */
 	constructor(x:number, y:number, width:number, height:number)
 	{
 		this.setProperies(x, y, width, height);
@@ -95,8 +84,8 @@ class Rectangle
 	{
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
+		this.w = width;
+		this.h = height;
 		return this;
 	}
 
@@ -108,7 +97,7 @@ class Rectangle
 	 */
 	public copy(rectangle:Rectangle):Rectangle
 	{
-		return this.setProperies(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
+		return this.setProperies(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
 	}
 
 	/**
@@ -118,7 +107,7 @@ class Rectangle
 	 **/
 	public clone():Rectangle
 	{
-		return new Rectangle(this.x, this.y, this.width, this.height);
+		return new Rectangle(this.x, this.y, this.w, this.h);
 	}
 
 	/**
@@ -128,7 +117,7 @@ class Rectangle
 	 **/
 	public toString():string
 	{
-		return "[Rectangle (x=" + this.x + " y=" + this.y + " width=" + this.width + " height=" + this.height + ")]";
+		return "[Rectangle (x=" + this.x + " y=" + this.y + " width=" + this.w + " height=" + this.h + ")]";
 	}
 }
 

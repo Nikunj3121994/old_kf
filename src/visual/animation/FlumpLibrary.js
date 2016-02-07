@@ -1,4 +1,4 @@
-define(["require", "exports", '../../core/net/HttpRequest', '../../core/util/Promise', './flump/FlumpMovieData', './flump/FlumpTextureGroup', './flump/FlumpMovie', "../../core/util/QueueItem"], function (require, exports, HttpRequest_1, Promise_1, FlumpMovieData_1, FlumpTextureGroup_1, FlumpMovie_1, QueueItem_1) {
+define(["require", "exports", '../../core/net/HttpRequest', '../../core/util/Promise', './flump/FlumpMovieData', './flump/FlumpTextureGroup', './flump/FlumpMovie', "../../core/util/QueueItem", "../../core/util/PromiseUtil"], function (require, exports, HttpRequest_1, Promise_1, FlumpMovieData_1, FlumpTextureGroup_1, FlumpMovie_1, QueueItem_1, PromiseUtil_1) {
     var FlumpLibrary = (function () {
         function FlumpLibrary(basePath) {
             this.movieData = [];
@@ -70,7 +70,7 @@ define(["require", "exports", '../../core/net/HttpRequest', '../../core/util/Pro
                 var promise = FlumpTextureGroup_1.default.load(this, textureGroup);
                 textureGroupLoaders.push(promise);
             }
-            return HttpRequest_1.default.wait(textureGroupLoaders, onProcess)
+            return PromiseUtil_1.PromiseUtil.allWithProgress(textureGroupLoaders, onProcess)
                 .then(function (textureGroups) {
                 for (var i = 0; i < textureGroups.length; i++) {
                     var textureGroup = textureGroups[i];

@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "./DisplayObject", "../../core/net/HttpRequest"], function (require, exports, DisplayObject_1, HttpRequest_1) {
+define(["require", "exports", "./DisplayObject", "../../core/util/PromiseUtil"], function (require, exports, DisplayObject_1, PromiseUtil_1) {
     var Container = (function (_super) {
         __extends(Container, _super);
         function Container(width, height, x, y, regX, regY) {
@@ -41,7 +41,7 @@ define(["require", "exports", "./DisplayObject", "../../core/net/HttpRequest"], 
         };
         Container.prototype.load = function (onProgress) {
             var _this = this;
-            return HttpRequest_1.default.waitForLoadable(this.children, onProgress).then(function () {
+            return PromiseUtil_1.PromiseUtil.allForLoadable(this.children, onProgress).then(function () {
                 _this._hasLoaded = true;
                 return _this;
             });

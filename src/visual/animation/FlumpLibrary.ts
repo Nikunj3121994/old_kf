@@ -13,6 +13,7 @@ import EventDispatcher from "../../core/event/EventDispatcher";
 import IFlumpMovie from "./flump/IFlumpMovie";
 import QueueItem from "../../core/util/QueueItem";
 import {ILibrary} from "./flump/IFlumpLibrary";
+import {PromiseUtil} from "../../core/util/PromiseUtil";
 
 class FlumpLibrary implements ILoadable<FlumpLibrary>
 {
@@ -124,7 +125,7 @@ class FlumpLibrary implements ILoadable<FlumpLibrary>
 			textureGroupLoaders.push(promise);
 		}
 
-		return HttpRequest.wait(textureGroupLoaders, onProcess)
+		return PromiseUtil.allWithProgress(textureGroupLoaders, onProcess)
 			.then((textureGroups:Array<FlumpTextureGroup>) => {
 
 				for(var i = 0; i < textureGroups.length; i++)

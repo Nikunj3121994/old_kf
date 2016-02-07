@@ -2,7 +2,7 @@ import Promise from "./Promise";
 import ILoadable from "../interface/ILoadable";
 
 
-class PromiseUtil
+export class PromiseUtil
 {
     /**
      * @static
@@ -11,7 +11,7 @@ class PromiseUtil
      * @param {(progress:number) => any} onProgress
      * @returns {Promise}
      */
-    public static wait<T>(list:Array<Promise<T>>, onProgress:(progress:number) => any = (progress:number) => {}):Promise<Array<T>>
+    public static allWithProgress<T>(list:Array<Promise<T>>, onProgress:(progress:number) => any = (progress:number) => {}):Promise<Array<T>>
     {
         return new Promise(function(resolve:(response:Array<T>) => any)
         {
@@ -41,7 +41,7 @@ class PromiseUtil
      * @param {(progress:number) => any} onProgress
      * @returns {Promise}
      */
-    public static waitForLoadable<T>(list:Array<ILoadable<T>>, onProgress:(progress:number) => any = (progress:number) => {}):Promise<Array<T>>
+    public static allForLoadable<T>(list:Array<ILoadable<T>>, onProgress:(progress:number) => any = (progress:number) => {}):Promise<Array<T>>
     {
         var count = list.length;
         var progressList = [];

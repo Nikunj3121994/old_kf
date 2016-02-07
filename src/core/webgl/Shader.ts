@@ -9,7 +9,7 @@ class Shader
 {
 	public static createFromUrl(type:ShaderType, url:string):Promise<Shader>
 	{
-		return HttpRequest.getString<Shader>(url).then(data => {
+		return HttpRequest.getString<string>(url).then((data:string) => {
 			return new Shader(type, data);
 		})
 	}

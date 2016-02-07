@@ -1,4 +1,4 @@
-define(["require", "exports", "../geom/Size", "../geom/Vector2", "../geom/Bounds"], function (require, exports, Size_1, Vector2_1, Bounds_1) {
+define(["require", "exports", "../../visual/geom/Size", "../../visual/geom/Bounds", "../../visual/geom/Vector2"], function (require, exports, Size_1, Bounds_1, Vector2_1) {
     var ArrayUtil = (function () {
         function ArrayUtil() {
         }

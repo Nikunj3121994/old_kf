@@ -1,9 +1,10 @@
-import Size from "../geom/Size";
-import ISize from "../interface/ISize";
-import Vector2 from "../geom/Vector2";
-import IVector2 from "../../core/interface/IVector2";
-import Bounds from "../geom/Bounds";
 
+
+import Size from "../../visual/geom/Size";
+import ISize from "../../visual/interface/ISize";
+import IVector2 from "../interface/IVector2";
+import Bounds from "../../visual/geom/Bounds";
+import Vector2 from "../../visual/geom/Vector2";
 class ArrayUtil
 {
 	public static getMaxSize(arr:Array<ISize>):Size
