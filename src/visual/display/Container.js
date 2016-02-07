@@ -6,38 +6,17 @@ var __extends = (this && this.__extends) || function (d, b) {
 define(["require", "exports", "./DisplayObject", "../../core/util/PromiseUtil"], function (require, exports, DisplayObject_1, PromiseUtil_1) {
     var Container = (function (_super) {
         __extends(Container, _super);
-        function Container(width, height, x, y, regX, regY) {
-            if (width === void 0) { width = '100%'; }
-            if (height === void 0) { height = '100%'; }
+        function Container(x, y, regX, regY) {
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
             if (regX === void 0) { regX = 0; }
             if (regY === void 0) { regY = 0; }
-            _super.call(this, width, height, x, y, regX, regY);
+            _super.call(this, x, y, regX, regY);
             this.type = 8;
             this.children = [];
-            this.mouseChildren = true;
-            this.tickChildren = true;
-            this._buffer = null;
-            this._willBufferAutoResize = true;
-            this._willBufferUpdate = true;
         }
         Container.prototype.isVisible = function () {
-            return !!(this.visible && this.alpha > 0 && this.scaleX != 0 && this.scaleY != 0 && (this.cacheCanvas || this.children.length));
-        };
-        Container.prototype.setMouseInteraction = function (value) {
-            this.mouseChildren = value;
-            _super.prototype.setMouseInteraction.call(this, value);
-        };
-        Container.prototype.setBuffer = function (buffer, autoResize) {
-            if (autoResize === void 0) { autoResize = true; }
-            this._buffer = buffer;
-            this._willBufferAutoResize = autoResize;
-            return this;
-        };
-        Container.prototype.setBufferUpdate = function (value) {
-            this._willBufferUpdate = value;
-            return this;
+            return !!(this.visible && this.alpha > 0 && this.scaleX != 0 && this.scaleY != 0 && this.children.length);
         };
         Container.prototype.load = function (onProgress) {
             var _this = this;
@@ -45,37 +24,6 @@ define(["require", "exports", "./DisplayObject", "../../core/util/PromiseUtil"],
                 _this._hasLoaded = true;
                 return _this;
             });
-        };
-        Container.prototype.draw = function (ctx, ignoreCache) {
-            var willBufferUpdate = this._willBufferUpdate;
-            var bufferAvailable = this._buffer ? true : false;
-            var buffer = this._buffer;
-            var list = this.children, child;
-            if (_super.prototype.draw.call(this, ctx, ignoreCache)) {
-                return true;
-            }
-            if (bufferAvailable) {
-                var localCtx = buffer.context;
-            }
-            else {
-                var localCtx = ctx;
-            }
-            if ((bufferAvailable && willBufferUpdate) || !bufferAvailable) {
-                for (var i = 0, l = list.length; i < l; ++i) {
-                    child = list[i];
-                    if (!child.isVisible()) {
-                        continue;
-                    }
-                    localCtx.save();
-                    child.updateContext(localCtx);
-                    child.draw(localCtx);
-                    localCtx.restore();
-                }
-            }
-            if (buffer && this.type != 4) {
-                buffer.draw(ctx);
-            }
-            return true;
         };
         Container.prototype.addChild = function () {
             var children = [];
@@ -97,28 +45,13 @@ define(["require", "exports", "./DisplayObject", "../../core/util/PromiseUtil"],
                 child.parent.removeChild(child);
             }
             child.parent = this;
-            child.isDirty = true;
-            if (this.stage) {
-                child.setStage(this.stage);
-            }
             this.children.push(child);
             child.onResize(child.parent.width, child.parent.height);
             return child;
         };
-        Container.prototype.setStage = function (stage) {
-            this.stage = stage;
-            var children = this.children;
-            for (var i = 0; i < children.length; i++) {
-                var child = children[i];
-                child.setStage(this.stage);
-            }
-        };
         Container.prototype.addChildAt = function (child, index) {
             if (child.parent) {
                 child.parent.removeChild(child);
-            }
-            if (this.stage) {
-                child.setStage(this.stage);
             }
             child.parent = this;
             child.isDirty = true;

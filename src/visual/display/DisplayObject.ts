@@ -111,7 +111,7 @@ abstract class DisplayObject implements ILoadable
 	 */
 	public _off:boolean = false;
 
-	constructor(width:any = '100%', height:any = '100%', x:any = 0, y:any = 0, regX:any = 0, regY:any = 0)
+	constructor(x:any = 0, y:any = 0, regX:any = 0, regY:any = 0)
 	{
 		//super();
 

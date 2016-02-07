@@ -1,8 +1,6 @@
 define(["require", "exports", "../../core/util/UID", "../../core/util/Promise", "../geom/Point", "../geom/Matrix2"], function (require, exports, UID_1, Promise_1, Point_1, Matrix2_1) {
     var DisplayObject = (function () {
-        function DisplayObject(width, height, x, y, regX, regY) {
-            if (width === void 0) { width = '100%'; }
-            if (height === void 0) { height = '100%'; }
+        function DisplayObject(x, y, regX, regY) {
             if (x === void 0) { x = 0; }
             if (y === void 0) { y = 0; }
             if (regX === void 0) { regX = 0; }

@@ -68,7 +68,4 @@ export class Texture extends AbstractTexture
         ];
     }
 
-    hasLoaded():boolean {
-        return this._hasLoaded;
-    }
 }

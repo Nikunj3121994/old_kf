@@ -65,7 +65,7 @@ import {PromiseUtil} from "../../core/util/PromiseUtil";
  * @extends DisplayObject
  * @constructor
  **/
-class Container<T extends IDisplayObject> extends DisplayObject implements ILoadable<T>
+class Container extends DisplayObject implements ILoadable<Container>
 {
 	// public properties:
 	public type:DisplayType = DisplayType.CONTAINER;
@@ -79,31 +79,7 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 	 * @type Array
 	 * @default null
 	 **/
-	public children:Array<T> = [];
-
-	/**
-	 * Indicates whether the children of this container are independently enabled for mouse/pointer interaction.
-	 * If false, the children will be aggregated under the container - for example, a click on a child shape would
-	 * trigger a click event on the container.
-	 * @property mouseChildren
-	 * @type Boolean
-	 * @default false
-	 **/
-	public mouseChildren:boolean = true;
-
-	/**
-	 * If false, the tick will not be propagated to children of this Container. This can provide some performance benefits.
-	 * In addition to preventing the "tick" event from being dispatched, it will also prevent tick related updates
-	 * on some display objects (ex. Sprite & MovieClip frame advancing, DOMElement visibility handling).
-	 * @property tickChildren
-	 * @type Boolean
-	 * @default false
-	 **/
-	public tickChildren:boolean = true;
-
-	protected _buffer:CanvasBuffer = null;
-	protected _willBufferAutoResize:boolean = true;
-	protected _willBufferUpdate:boolean = true;
+	public children:Array<DisplayObject> = [];
 
 	/**
 	 * @constructor
@@ -114,9 +90,9 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 	 * @param regX {string|number}
 	 * @param regY {string|number}
 	 */
-	constructor(width:any = '100%', height:any = '100%', x:any = 0, y:any = 0, regX:any = 0, regY:any = 0)
+	constructor(x:any = 0, y:any = 0, regX:any = 0, regY:any = 0)
 	{
-		super(width, height, x, y, regX, regY);
+		super(x, y, regX, regY);
 	}
 
 	/**
@@ -129,30 +105,7 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 	 **/
 	public isVisible()
 	{
-		return !!(this.visible && this.alpha > 0 && this.scaleX != 0 && this.scaleY != 0 && (this.cacheCanvas || this.children.length) );
-	}
-
-	/**
-	 * @method enableMouseInteraction
-	 * @return void
-	 */
-	public setMouseInteraction(value:boolean):void
-	{
-		this.mouseChildren = value;
-		super.setMouseInteraction(value);
-	}
-
-	public setBuffer(buffer:CanvasBuffer, autoResize:boolean = true):Container<T>
-	{
-		this._buffer = buffer;
-		this._willBufferAutoResize = autoResize;
-		return this;
-	}
-
-	public setBufferUpdate(value:boolean):Container<T>
-	{
-		this._willBufferUpdate = value;
-		return this;
+		return !!(this.visible && this.alpha > 0 && this.scaleX != 0 && this.scaleY != 0 && this.children.length );
 	}
 
 	public load(onProgress?:(progress:number)=>any):Promise<T>
@@ -163,65 +116,6 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 		})
 	}
 
-	/**
-	 * Draws the display object into the specified context ignoring its visible, alpha, shadow, and transform.
-	 * Returns true if the draw was handled (useful for overriding functionality).
-	 *
-	 * NOTE: This method is mainly for internal use, though it may be useful for advanced uses.
-	 * @method draw
-	 * @param {CanvasRenderingContext2D} ctx The canvas 2D context object to draw into.
-	 * @param {Boolean} [ignoreCache=false] Indicates whether the draw operation should ignore any current cache.
-	 * For example, used for drawing the cache (to prevent it from simply drawing an existing cache back
-	 * into itself).
-	 **/
-	public draw(ctx:CanvasRenderingContext2D, ignoreCache?:boolean):boolean
-	{
-		var willBufferUpdate = this._willBufferUpdate;
-		var bufferAvailable = this._buffer ? true : false;
-		var buffer = this._buffer;
-		var list = this.children,
-				child;
-
-		if(super.draw(ctx, ignoreCache))
-		{
-			return true;
-		}
-
-		if(bufferAvailable)
-		{
-			var localCtx = buffer.context;
-		}
-		else
-		{
-			var localCtx:CanvasRenderingContext2D = ctx;
-		}
-
-		if( (bufferAvailable && willBufferUpdate) || !bufferAvailable)
-		{
-			for(var i = 0, l = list.length; i < l; ++i)
-			{
-				child = list[i];
-
-				if(!child.isVisible())
-				{
-					continue;
-				}
-
-				// draw the child:
-				localCtx.save();
-				child.updateContext(localCtx);
-				child.draw(localCtx);
-				localCtx.restore();
-			}
-		}
-
-		if(buffer && this.type != DisplayType.STAGE)
-		{
-			buffer.draw(ctx);
-		}
-
-		return true;
-	}
 
 	/**
 	 * Adds a child to the top of the display list.
@@ -238,7 +132,7 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 	 * @param {DisplayObject} child The display object to add.
 	 * @return {DisplayObject} The child that was added, or the last child if multiple children were added.
 	 **/
-	public addChild(...children:Array<T>):T
+	public addChild(...children:Array<DisplayObject>):any
 	{
 		var length = children.length;
 		if(length == 0)
@@ -263,34 +157,18 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 			child.parent.removeChild(child);
 		}
 
-		child.parent = <Container<T>> this;
-		child.isDirty = true;
+		child.parent = <Container> this;
+		//child.isDirty = true;
 
-		if(this.stage)
-		{
-			child.setStage(this.stage);
-		}
+		//if(this.stage)
+		//{
+		//	child.setStage(this.stage);
+		//}
 
 		this.children.push(child);
 		child.onResize(child.parent.width, child.parent.height);
 
 		return child;
-	}
-
-	/**
-	 * @method onStageSet
-	 * @description When the stage is set this method is called to all its children.
-	 */
-	public setStage(stage:Stage):void
-	{
-		this.stage = stage;
-
-		var children = this.children;
-		for(var i = 0; i < children.length; i++)
-		{
-			var child = children[i];
-			child.setStage(this.stage);
-		}
 	}
 
 	/**
@@ -320,12 +198,12 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 			child.parent.removeChild(child);
 		}
 
-		if(this.stage)
-		{
-			child.setStage(this.stage)
-		}
+		//if(this.stage)
+		//{
+		//	child.setStage(this.stage)
+		//}
 
-		child.parent = <Container<T>> this;
+		child.parent = <Container> this;
 		child.isDirty = true;
 
 		this.children.splice(index, 0, child);
@@ -351,7 +229,7 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 	 * @param {IDisplayObject} child The child to remove.
 	 * @return {Boolean} true if the child (or children) was removed, or false if it was not in the display list.
 	 **/
-	public removeChild(...children:Array<T>):boolean
+	public removeChild(...children:Array<DisplayObject>):boolean
 	{
 		var l = children.length;
 		if(l > 1)
@@ -427,7 +305,7 @@ class Container<T extends IDisplayObject> extends DisplayObject implements ILoad
 	 *
 	 * @method removeAllChildren
 	 **/
-	public removeAllChildren():Container<T>
+	public removeAllChildren():Container
 	{
 		var children = this.children;
 		while(children.length)
