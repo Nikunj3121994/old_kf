@@ -3,6 +3,27 @@ import Rectangle from "../../visual/data/Rectangle";
 
 export class Texture extends AbstractTexture
 {
+    public static createFromUrl(gl:WebGLRenderingContext, src:string):Texture
+    {
+        var img = document.createElement('img');
+        img.src = src;
+
+        return new Texture(gl, img);
+    }
+
+    public static getFullUV():Array<number>
+    {
+        return [
+            0.0 , 0.0,  // 0
+            0.0 , 1.0,  // 1
+            1.0 , 0.0,  // 2
+
+            0.0 , 1.0,  // 1
+            1.0 , 1.0,  // 3
+            1.0 , 0.0   // 2
+        ];
+    }
+
     width:number = 0;
     height:number = 0;
 
@@ -66,6 +87,11 @@ export class Texture extends AbstractTexture
             f[0] + f[2] , f[1] + f[3],  // 3
             f[0] + f[2] , f[1]          // 2
         ];
+    }
+
+    getFullUV():Array<number>
+    {
+        return Texture.getFullUV();
     }
 
 }

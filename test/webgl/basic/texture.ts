@@ -5,6 +5,8 @@ import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
 import {Mesh} from "../../../src/core/webgl/Mesh";
 import Interval from "../../../src/core/util/Interval";
 import Time from "../../../src/core/util/Time";
+import Buffer from "../../../src/core/webgl/Buffer";
+import {Texture} from "../../../src/core/webgl/Texture";
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'))
@@ -40,21 +42,25 @@ var quad = Mesh.createQuad(gl);
 
 // Vertex shader source code
 var vertex = new Shader(ShaderType.VERTEX, `
-attribute vec3 coordinates;
+attribute vec3 a_position;
+attribute vec2 a_texcoord;
+varying vec2 v_texcoord;
 
 void main(void) {
  gl_Position = vec4(coordinates, 1.0);
+ v_textcoord = a_textcoord;
 }
 `);
 
 var fragment = new Shader(ShaderType.FRAGMENT, `
 precision lowp float;
 uniform float time;
-uniform float color;
+
+uniform sampler2D u_texture;
+
 void main(void) {
-	//vec3 color = vec3(sin(time)*.5 + .5, cos(time*10.0)*.5 + .5, sin(time)*.5 + .5);
-	vec3 color = vec3(sin(time) * .5 + .5, cos(time) * .5 + .5, sin(time*.5) * .5 + .5);
-	gl_FragColor = vec4(color, 1.0);
+
+	gl_FragColor = texture2D(u_texture, v_texcoord);
 }
 `);
 
@@ -71,8 +77,23 @@ var uLocations = program.getUniformLocations();
 //// Bind index buffer object
 //gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
 //quad.bind();
-var coord = program.defineAttribute("coordinates", 3);
-coord.point(quad).enable();
+
+var text = new Texture(gl)
+
+var aPosition = program.defineAttribute("a_position", 3);
+aPosition.point(quad).enable();
+
+var uvBuffer = new Buffer(gl, new Float32Array([
+	0, 0,
+	0, 1,
+	1, 0,
+	0, 1,
+	1, 1,
+	1, 0
+]));
+
+var aTexcoord = program.defineAttribute("a_texcoord", 2);
+aTexcoord.point(uvBuffer).enable();
 
 //// Get the attribute location
 //var coord = program.getAttribLocation("coordinates");
