@@ -23,7 +23,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import SignalAbstract from "./SignalAbstract";
+
+import {SignalAbstract} from "./SignalAbstract";
 
 class SignalConnection
 {

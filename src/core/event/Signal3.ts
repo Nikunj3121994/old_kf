@@ -1,5 +1,3 @@
-import Event from "./Event";
-
 /*
  * Signal3
  *
@@ -25,7 +23,7 @@ import Event from "./Event";
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import SignalAbstract from "./SignalAbstract";
+import {SignalAbstract} from "./SignalAbstract";
 
 /**
  * @namespace core.events

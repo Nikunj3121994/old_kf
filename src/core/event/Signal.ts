@@ -1,5 +1,3 @@
-import Event from "./Event";
-
 /*
  * Signal
  *
@@ -25,7 +23,7 @@ import Event from "./Event";
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import SignalAbstract from "./SignalAbstract";
+import {SignalAbstract} from "./SignalAbstract";
 
 /**
  * @namespace createts.events
@@ -68,4 +66,4 @@ class Signal extends SignalAbstract
 	}
 }
 
-export default Signal;
+export {Signal};

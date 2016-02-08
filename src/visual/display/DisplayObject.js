@@ -13,6 +13,8 @@ define(["require", "exports", "../../core/util/UID", "../../core/util/Promise", 
             this._bounds = null;
             this._matrix = new Matrix2_1.default();
             this._hasLoaded = false;
+            this.width = 0;
+            this.height = 0;
             this.x = 0;
             this.y = 0;
             this.scaleX = 1;

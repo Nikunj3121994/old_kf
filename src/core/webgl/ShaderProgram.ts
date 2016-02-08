@@ -99,6 +99,12 @@ class ShaderProgram
 
 		return this._uniforms;
 	}
+
+	public getUniform(name:string):UniformLocation
+	{
+		return this.getUniformLocations()[name];
+	}
+
 	protected fetchUniformLocations():IHashMap<UniformLocation>
 	{
 		var uniforms:IHashMap<UniformLocation> = {};

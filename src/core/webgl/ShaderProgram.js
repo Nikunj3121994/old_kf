@@ -63,6 +63,9 @@ define(["require", "exports", "./UniformLocation", "./AttributeLocation"], funct
             }
             return this._uniforms;
         };
+        ShaderProgram.prototype.getUniform = function (name) {
+            return this.getUniformLocations()[name];
+        };
         ShaderProgram.prototype.fetchUniformLocations = function () {
             var uniforms = {};
             var program = this.program;

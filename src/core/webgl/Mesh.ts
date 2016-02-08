@@ -4,13 +4,13 @@ export class Mesh
     public static createQuad(gl:WebGLRenderingContext):Mesh
     {
         var vertices = [
-            -1.0, 1.0,  0.0,
-            -1.0, -1.0, 0.0,
-            1.0,  -1.0, 0.0,
-            1.0,  1.0,  0.0
+            -1.0, -1.0,  0.0,
+            1.0, -1.0,  0.0,
+            1.0,  1.0,  0.0,
+            -1.0,  1.0,  0.0,
         ];
 
-        var indices = [3, 2, 1, 3, 1, 0];
+        var indices = [0,  1,  2, 0,  2,  3];
         return new Mesh(gl, vertices, indices);
     }
 

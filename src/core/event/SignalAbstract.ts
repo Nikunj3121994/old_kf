@@ -203,4 +203,4 @@ class SignalAbstract
 	}
 }
 
-export default SignalAbstract;
+export {SignalAbstract, Task};

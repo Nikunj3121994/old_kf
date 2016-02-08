@@ -8,12 +8,12 @@ define(["require", "exports", "./Buffer"], function (require, exports, Buffer_1)
         }
         Mesh.createQuad = function (gl) {
             var vertices = [
-                -1.0, 1.0, 0.0,
                 -1.0, -1.0, 0.0,
                 1.0, -1.0, 0.0,
-                1.0, 1.0, 0.0
+                1.0, 1.0, 0.0,
+                -1.0, 1.0, 0.0,
             ];
-            var indices = [3, 2, 1, 3, 1, 0];
+            var indices = [0, 1, 2, 0, 2, 3];
             return new Mesh(gl, vertices, indices);
         };
         Mesh.prototype.bind = function () {

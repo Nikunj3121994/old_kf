@@ -40,18 +40,23 @@ class AttributeLocation
 				buffer.getVertexBuffer().bind();
 				buffer.getIndexBuffer().bind();
 
+				// Point an attribute to the currently bound VBO
+				this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
+
 			} else {
 				for(var i = 0; i < buffers.length; i++)
 				{
 					let buffer = buffers[i];
 					buffer.bind();
 				}
+
+				// Point an attribute to the currently bound VBO
+				this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
+
 			}
 
 		}
 
-		// Point an attribute to the currently bound VBO
-		this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
 
 		return this;
 	}

@@ -1,12 +1,12 @@
+import {Mesh} from "../../../src/core/webgl/Mesh";
+import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
 import Shader from "../../../src/core/webgl/Shader";
 import ShaderType from "../../../src/core/webgl/ShaderType";
 import ShaderProgram from "../../../src/core/webgl/ShaderProgram";
-import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
-import {Mesh} from "../../../src/core/webgl/Mesh";
+import {Texture} from "../../../src/core/webgl/Texture";
+import Buffer from "../../../src/core/webgl/Buffer";
 import Interval from "../../../src/core/util/Interval";
 import Time from "../../../src/core/util/Time";
-import Buffer from "../../../src/core/webgl/Buffer";
-import {Texture} from "../../../src/core/webgl/Texture";
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'))
@@ -44,56 +44,49 @@ var quad = Mesh.createQuad(gl);
 var vertex = new Shader(ShaderType.VERTEX, `
 attribute vec3 a_position;
 attribute vec2 a_texcoord;
+
 varying vec2 v_texcoord;
 
 void main(void) {
- gl_Position = vec4(coordinates, 1.0);
- v_textcoord = a_textcoord;
+ gl_Position = vec4(a_position, 1.0);
+ v_texcoord = a_texcoord;
 }
 `);
 
 var fragment = new Shader(ShaderType.FRAGMENT, `
-precision lowp float;
-uniform float time;
-
+precision mediump float;
+uniform float u_time;
 uniform sampler2D u_texture;
 
-void main(void) {
+varying vec2 v_texcoord;
+uniform vec4 color;
 
-	gl_FragColor = texture2D(u_texture, v_texcoord);
+void main(void) {
+	vec4 color = vec4(sin(u_time) * .5 + .5, cos(u_time) * .5 + .5, sin(u_time*.5) * .5 + .5, 1);
+	gl_FragColor = color * texture2D(u_texture, v_texcoord);
 }
 `);
 
 var program = new ShaderProgram(gl, vertex, fragment).use();
 
-var uLocations = program.getUniformLocations();
-
-
-/* ======= Associating shaders to buffer objects =======*/
-
-//// Bind vertex buffer object
-//gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-//
-//// Bind index buffer object
-//gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-//quad.bind();
-
-var text = new Texture(gl)
-
 var aPosition = program.defineAttribute("a_position", 3);
 aPosition.point(quad).enable();
-
-var uvBuffer = new Buffer(gl, new Float32Array([
-	0, 0,
-	0, 1,
-	1, 0,
-	0, 1,
-	1, 1,
-	1, 0
-]));
+//
+var uvBuffer = new Buffer(gl, new Float32Array(Texture.getFullUV()));
 
 var aTexcoord = program.defineAttribute("a_texcoord", 2);
 aTexcoord.point(uvBuffer).enable();
+//
+
+var uTexture = program.getUniform('u_texture').setValue(0);
+var uTime = program.getUniform('u_time');
+
+var texture = Texture.createFromUrl(gl, '../uv.jpg');
+texture.signalLoad.connect(() => {
+	uTexture.activate();
+	texture.bind().update();
+})
+
 
 //// Get the attribute location
 //var coord = program.getAttribLocation("coordinates");
@@ -116,7 +109,7 @@ var interval = new Interval(60).attach((delta:number) => {
 
 	// Clear the canvas
 	gl.clearColor(0.0, 0.0, 0.0, 1);
-	uLocations['time'].setValue(current);
+	uTime.setValue(current);
 
 	// Draw the triangle
 	gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT,0);
