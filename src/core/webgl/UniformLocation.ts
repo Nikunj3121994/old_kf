@@ -21,11 +21,13 @@ class UniformLocation
 		return this._value;
 	}
 
-	public setValue(value):any
+	public setValue(value):this
 	{
 		var gl = this._gl;
 
-		if( this._value != value )
+		console.log(this._value !== value)
+
+		if( this._value !== value )
 		{
 			this._value = value;
 
@@ -76,8 +78,19 @@ class UniformLocation
 					break;
 				}
 
+				case gl.SAMPLER_2D:{
+
+					if(value >= 0 && value < 16){
+						gl.uniform1i(this._location, value);
+					}
+
+					break;
+				}
+
+
 			}
 		}
+		return this;
 	}
 
 	public get name()
@@ -93,6 +106,51 @@ class UniformLocation
 	public set value(value:any)
 	{
 		this.setValue(value);
+	}
+
+	public activate(){
+		var value = this._value;
+		if(this._type != this._gl.SAMPLER_2D){
+			throw new TypeError('activate can only be triggerd with a sampler2d uniform');
+		}
+
+		if(value < 0 || value > 15 || value === void 0){
+			throw new TypeError('value can only be 0 - 15');
+		}
+
+		if(value === 0){
+			this._gl.activeTexture(this._gl.TEXTURE0);
+		} else if(value === 1){
+			this._gl.activeTexture(this._gl.TEXTURE1);
+		} else if(value === 2){
+			this._gl.activeTexture(this._gl.TEXTURE2);
+		} else if(value === 3){
+			this._gl.activeTexture(this._gl.TEXTURE3);
+		} else if(value === 4){
+			this._gl.activeTexture(this._gl.TEXTURE4);
+		} else if(value === 5){
+			this._gl.activeTexture(this._gl.TEXTURE5);
+		} else if(value === 6){
+			this._gl.activeTexture(this._gl.TEXTURE6);
+		} else if(value === 7){
+			this._gl.activeTexture(this._gl.TEXTURE7);
+		} else if(value === 8){
+			this._gl.activeTexture(this._gl.TEXTURE8);
+		} else if(value === 9){
+			this._gl.activeTexture(this._gl.TEXTURE9);
+		} else if(value === 10){
+			this._gl.activeTexture(this._gl.TEXTURE10);
+		} else if(value === 11){
+			this._gl.activeTexture(this._gl.TEXTURE11);
+		} else if(value === 12){
+			this._gl.activeTexture(this._gl.TEXTURE12);
+		} else if(value === 13){
+			this._gl.activeTexture(this._gl.TEXTURE13);
+		} else if(value === 14){
+			this._gl.activeTexture(this._gl.TEXTURE14);
+		} else if(value === 15) {
+			this._gl.activeTexture(this._gl.TEXTURE15);
+		}
 	}
 }
 

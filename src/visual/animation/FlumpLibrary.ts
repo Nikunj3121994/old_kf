@@ -1,6 +1,5 @@
 import ILoadable from '../../core/interface/ILoadable';
 
-import Signal from '../../core/event/Signal';
 import HttpRequest from '../../core/net/HttpRequest';
 import Promise from '../../core/util/Promise';
 import SignalConnection from '../../core/event/SignalConnection';

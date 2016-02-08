@@ -28,15 +28,16 @@ define(["require", "exports", "./Mesh"], function (require, exports, Mesh_1) {
                     var buffer = buffers[0];
                     buffer.getVertexBuffer().bind();
                     buffer.getIndexBuffer().bind();
+                    this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
                 }
                 else {
                     for (var i = 0; i < buffers.length; i++) {
                         var buffer = buffers[i];
                         buffer.bind();
                     }
+                    this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
                 }
             }
-            this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
             return this;
         };
         AttributeLocation.prototype.enable = function () {

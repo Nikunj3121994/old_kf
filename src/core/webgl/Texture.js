@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "../event/Signal"], function (require, exports, Signal_1) {
+define(["require", "exports", "./AbstractTexture", "../event/Signal"], function (require, exports, AbstractTexture_1, Signal_1) {
     var Texture = (function (_super) {
         __extends(Texture, _super);
         function Texture(gl, source) {
@@ -11,8 +11,8 @@ define(["require", "exports", "../event/Signal"], function (require, exports, Si
             _super.call(this, gl, source);
             this.width = 0;
             this.height = 0;
+            this.signalLoad = new Signal_1.Signal();
             this._hasLoaded = false;
-            this.signalLoad = new Signal_1.default();
             if (source.nodeName
                 && source.tagName.toLowerCase() == 'img') {
                 var img = this.source;
@@ -48,12 +48,13 @@ define(["require", "exports", "../event/Signal"], function (require, exports, Si
         Texture.getFullUV = function () {
             return [
                 0.0, 0.0,
-                0.0, 1.0,
                 1.0, 0.0,
-                0.0, 1.0,
                 1.0, 1.0,
-                1.0, 0.0
+                0.0, 1.0
             ];
+        };
+        Texture.prototype.hasLoaded = function () {
+            return this._hasLoaded;
         };
         Texture.prototype.getUVFromRect = function (rect) {
             var width = this.width;
@@ -61,9 +62,7 @@ define(["require", "exports", "../event/Signal"], function (require, exports, Si
             var f = [rect.x / width, rect.y / height, rect.w / width, rect.h / height];
             return [
                 f[0], f[1],
-                f[0], f[1] + f[3],
                 f[0] + f[2], f[1],
-                f[0], f[1] + f[3],
                 f[0] + f[2], f[1] + f[3],
                 f[0] + f[2], f[1]
             ];
@@ -72,6 +71,6 @@ define(["require", "exports", "../event/Signal"], function (require, exports, Si
             return Texture.getFullUV();
         };
         return Texture;
-    })(AbstractTexture);
+    })(AbstractTexture_1.AbstractTexture);
     exports.Texture = Texture;
 });

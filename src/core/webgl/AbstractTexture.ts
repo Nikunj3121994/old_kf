@@ -1,4 +1,6 @@
-abstract class AbstractTexture
+import ILoadable from "../interface/ILoadable";
+
+export abstract class AbstractTexture
 {
 
     gl:WebGLRenderingContext;
@@ -26,7 +28,8 @@ abstract class AbstractTexture
         {
             var gl = this.gl;
             var texture = this.texture = gl.createTexture();
-            this.bind();
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
             // Set up texture so we can render any size image and so we are
             // working with pixels.
@@ -34,7 +37,7 @@ abstract class AbstractTexture
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-            this.unbind();
+            gl.bindTexture(gl.TEXTURE_2D, null);
 
         }
 
@@ -49,7 +52,7 @@ abstract class AbstractTexture
     public bind():this
     {
         var gl = this.gl;
-        gl.bindTexture(gl.TEXTURE_2D, this.texture);
+        gl.bindTexture(gl.TEXTURE_2D, this.getTexture());
         return this;
     }
 

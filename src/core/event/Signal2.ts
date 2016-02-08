@@ -1,4 +1,4 @@
-import Event from "./Event";
+import {SignalAbstract} from "./SignalAbstract";
 
 /*
  * Signal2
@@ -24,8 +24,6 @@ import Event from "./Event";
  * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  */
-
-import SignalAbstract from "./SignalAbstract";
 
 /**
  * @namespace createts.events

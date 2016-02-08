@@ -1,5 +1,6 @@
-import Signal from "../event/Signal";
-import Rectangle from "../../visual/data/Rectangle";
+import {AbstractTexture} from "./AbstractTexture";
+import {Rectangle} from "../../visual/data/Rectangle";
+import {Signal} from "../event/Signal";
 
 export class Texture extends AbstractTexture
 {
@@ -13,23 +14,30 @@ export class Texture extends AbstractTexture
 
     public static getFullUV():Array<number>
     {
-        return [
-            0.0 , 0.0,  // 0
-            0.0 , 1.0,  // 1
-            1.0 , 0.0,  // 2
+        //3, 2, 1, 3, 1, 0
 
-            0.0 , 1.0,  // 1
-            1.0 , 1.0,  // 3
-            1.0 , 0.0   // 2
+        //return [
+        //    0.0 , 0.0,  // 0
+        //    0.0 , 1.0,  // 1
+        //    1.0 , 0.0,  // 2
+        //
+        //    0.0 , 1.0,  // 1
+        //    1.0 , 1.0,  // 3
+        //    1.0 , 0.0   // 2
+        //];
+        return [
+            0.0,  0.0,
+            1.0,  0.0,
+            1.0,  1.0,
+            0.0,  1.0
         ];
     }
 
     width:number = 0;
     height:number = 0;
 
-    _hasLoaded:boolean = false;
-
     signalLoad:Signal = new Signal();
+    _hasLoaded:boolean = false;
 
     constructor(gl:WebGLRenderingContext, source:ImageData | HTMLCanvasElement | HTMLImageElement ){
         super(gl, source);
@@ -63,6 +71,10 @@ export class Texture extends AbstractTexture
         }
     }
 
+    public hasLoaded():boolean {
+        return this._hasLoaded;
+    }
+
     /**
      * 0---2
      * | / |
@@ -77,14 +89,10 @@ export class Texture extends AbstractTexture
 
         var f = [rect.x / width,  rect.y / height, rect.w / width,  rect.h / height];
 
-
         return [
             f[0]        , f[1],         // 0
-            f[0]        , f[1] + f[3],  // 1
-            f[0] + f[2] , f[1],         // 2
-
-            f[0]        , f[1] + f[3],  // 1
-            f[0] + f[2] , f[1] + f[3],  // 3
+            f[0] + f[2] , f[1],         // 1
+            f[0] + f[2] , f[1] + f[3],  // 2
             f[0] + f[2] , f[1]          // 2
         ];
     }

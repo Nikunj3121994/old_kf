@@ -25,6 +25,5 @@ define(["require", "exports"], function (require, exports) {
         };
         return Rectangle;
     })();
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = Rectangle;
+    exports.Rectangle = Rectangle;
 });

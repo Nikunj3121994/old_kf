@@ -59,7 +59,6 @@ import Signal2 from "../event/Signal2";
 }());
 
 import Signal1 from "../event/Signal1";
-import Signal from "../event/Signal";
 import SignalConnection from "../event/SignalConnection";
 
 /*
