@@ -1,4 +1,4 @@
-define(["require", "exports", "./Mesh"], function (require, exports, Mesh_1) {
+define(["require", "exports"], function (require, exports) {
     var AttributeLocation = (function () {
         function AttributeLocation(gl, location, name, size, type, normalized, stride, offset) {
             if (type === void 0) { type = gl.FLOAT; }
@@ -15,29 +15,15 @@ define(["require", "exports", "./Mesh"], function (require, exports, Mesh_1) {
             this._stride = stride;
             this._offset = offset;
         }
-        AttributeLocation.prototype.point = function () {
+        AttributeLocation.prototype.point2 = function () {
             var buffers = [];
             for (var _i = 0; _i < arguments.length; _i++) {
                 buffers[_i - 0] = arguments[_i];
             }
-            if (buffers.length > 0) {
-                if (buffers[0] instanceof Mesh_1.Mesh) {
-                    if (buffers.length > 1) {
-                        throw new Error('a attribute location can only point to one buffer');
-                    }
-                    var buffer = buffers[0];
-                    buffer.getVertexBuffer().bind();
-                    buffer.getIndexBuffer().bind();
-                    this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
-                }
-                else {
-                    for (var i = 0; i < buffers.length; i++) {
-                        var buffer = buffers[i];
-                        buffer.bind();
-                    }
-                    this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
-                }
-            }
+            return this;
+        };
+        AttributeLocation.prototype.point = function () {
+            this._gl.vertexAttribPointer(this._location, this._size, this._type, this._normalized, this._stride, this._offset);
             return this;
         };
         AttributeLocation.prototype.enable = function () {

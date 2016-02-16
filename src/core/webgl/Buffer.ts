@@ -1,38 +1,97 @@
-class Buffer {
+import {Geometry} from "./Geometry";
 
-    gl:WebGLRenderingContext;
-    buffer:WebGLBuffer;
-    type:number;
-    usage:number;
-    data:Float32Array|Uint16Array;
+class Buffer
+{
+	gl:WebGLRenderingContext;
+	buffer:WebGLBuffer;
+	type:number;
+	usage:number;
+	data:Float32Array|Uint16Array;
 
-    constructor(gl:WebGLRenderingContext, data:Float32Array|Uint16Array, type?:number, usage?:number){
+	protected _buffers:Array<Buffer> = null;
+	public hasGeometry:boolean = false;
+	public hasPassed:boolean = false;
 
-        this.gl = gl;
-        this.data = data;
-        this.type = type || gl.ARRAY_BUFFER;
-        this.usage = usage || gl.STATIC_DRAW;
+	constructor(gl:WebGLRenderingContext, data:Float32Array|Uint16Array|Geometry, type?:number, usage?:number)
+	{
+		this.gl = gl;
 
-        // Create an empty buffer object to store vertex buffer
-        this.buffer = gl.createBuffer();
+		if(data instanceof Geometry){
+			this.hasGeometry = true;
+			this._buffers = [];
+			var vbuffer = new Buffer(gl, data.vertex, gl.ARRAY_BUFFER, usage);
+			var ibuffer = new Buffer(gl, data.index, gl.ELEMENT_ARRAY_BUFFER, usage);
+			this._buffers.push(vbuffer);
+			this._buffers.push(ibuffer);
+		} else {
+			this.data = <Float32Array|Uint16Array> data;
+			this.type = type || gl.ARRAY_BUFFER;
+			this.usage = usage || gl.STATIC_DRAW;
 
-        // Bind appropriate array buffer to it
-        gl.bindBuffer(this.type, this.buffer);
+			// Create an empty buffer object to store vertex buffer
+			this.buffer = gl.createBuffer();
+		}
 
-        // Pass the vertex data to the buffer
-        gl.bufferData(this.type, this.data, this.usage);
+	}
 
-        // Unbind the buffer
-        gl.bindBuffer(this.type, null);
-    }
+	public update()
+	{
+		if(!this.hasGeometry){
+			// Bind appropriate array buffer to it
+			this.gl.bindBuffer(this.type, this.buffer);
 
-    public bind(){
-        this.gl.bindBuffer(this.type, this.buffer);
-    }
+			// Pass the vertex data to the buffer
+			this.gl.bufferData(this.type, this.data, this.usage);
 
-    public unbind(){
-        this.gl.bindBuffer(this.type, null);
-    }
+			// Unbind the buffer
+			this.gl.bindBuffer(this.type, null);
+		} else {
+			this._buffers[0].update();
+			this._buffers[1].update();
+		}
+
+		this.hasPassed = true;
+	}
+
+
+	public updateBind()
+	{
+		if(!this.hasGeometry){
+		// Bind appropriate array buffer to it
+		this.gl.bindBuffer(this.type, this.buffer);
+
+		// Pass the vertex data to the buffer
+		this.gl.bufferData(this.type, this.data, this.usage);
+	} else {
+		this._buffers[0].updateBind();
+		this._buffers[1].updateBind();
+	}
+		this.hasPassed = true;
+	}
+
+	public bind()
+	{
+		if(!this.hasPassed){
+			this.updateBind();
+		} else {
+			if(!this.hasGeometry){
+				this.gl.bindBuffer(this.type, this.buffer);
+			} else {
+				this._buffers[0].bind();
+				this._buffers[1].bind();
+			}
+		}
+	}
+
+	public unbind()
+	{
+		if(!this.hasGeometry){
+			this.gl.bindBuffer(this.type, null);
+		} else {
+			this._buffers[0].unbind();
+			this._buffers[1].unbind();
+		}
+	}
 }
 
 export default Buffer;

@@ -21,7 +21,7 @@ define(["require", "exports", "../util/Promise"], function (require, exports, Pr
                 client.open(method, uri);
                 client.send();
                 client.onload = function () {
-                    if (this.status === 200 || this.status === 0) {
+                    if ((this.status >= 200 && this.status < 400) || this.status === 0) {
                         resolve(this.response || this.responseText);
                     }
                     else {

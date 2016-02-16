@@ -1,28 +1,54 @@
-define(["require", "exports", "../../../src/core/webgl/Mesh", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/core/webgl/Texture", "../../../src/core/webgl/Buffer", "../../../src/core/util/Interval", "../../../src/core/util/Time"], function (require, exports, Mesh_1, CanvasWebGL_1, Shader_1, ShaderType_1, ShaderProgram_1, Texture_1, Buffer_1, Interval_1, Time_1) {
+define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/util/Interval", "../../../src/core/util/Time", "../../../src/core/webgl/Buffer", "../../../src/core/webgl/Geometry", "../../../src/vendor/gl-matrix/gl-matrix", "../../../src/vendor/dat.gui/dat.gui", "../../../src/visual/display/Texture"], function (require, exports, Shader_1, ShaderType_1, ShaderProgram_1, CanvasWebGL_1, Interval_1, Time_1, Buffer_1, Geometry_1, gl_matrix_1, dat_gui_1, Texture_1) {
     var canvas = new CanvasWebGL_1.CanvasWebGL(void 0, 1024, 1024);
     canvas.appendTo(document.body.querySelector('[container="main"]'));
     var gl = canvas.getContext();
-    var quad = Mesh_1.Mesh.createQuad(gl);
-    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 a_position;\nattribute vec2 a_texcoord;\n\nvarying vec2 v_texcoord;\n\nvoid main(void) {\n gl_Position = vec4(a_position, 1.0);\n v_texcoord = a_texcoord;\n}\n");
-    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision mediump float;\nuniform float u_time;\nuniform sampler2D u_texture;\n\nvarying vec2 v_texcoord;\nuniform vec4 color;\n\nvoid main(void) {\n\tvec4 color = vec4(sin(u_time) * .5 + .5, cos(u_time) * .5 + .5, sin(u_time*.5) * .5 + .5, 1);\n\tgl_FragColor = color * texture2D(u_texture, v_texcoord);\n}\n");
+    var quad = Geometry_1.Geometry.QUAD;
+    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 aVertexPosition;\nattribute vec2 aTexcoord;\n\nuniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\n\nvarying vec3 color;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\n color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);\n vec3 pos = color * aVertexPosition;\n gl_Position = uPMatrix * uMVMatrix * vec4(pos, 1.0);\n vTexcoord = aTexcoord;\n}\n");
+    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nvarying vec3 color;\nuniform sampler2D uTexture;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\tgl_FragColor = texture2D(uTexture, vTexcoord);\n\t//gl_FragColor = vec4(color, 1.0);\n}\n");
     var program = new ShaderProgram_1.default(gl, vertex, fragment).use();
-    var aPosition = program.defineAttribute("a_position", 3);
-    aPosition.point(quad).enable();
+    var texture = Texture_1.Texture.createFromUrl('../uv.jpg');
     var uvBuffer = new Buffer_1.default(gl, new Float32Array(Texture_1.Texture.getFullUV()));
-    var aTexcoord = program.defineAttribute("a_texcoord", 2);
-    aTexcoord.point(uvBuffer).enable();
-    var uTexture = program.getUniform('u_texture').setValue(0);
-    var uTime = program.getUniform('u_time');
-    var texture = Texture_1.Texture.createFromUrl(gl, '../uv.jpg');
-    texture.signalLoad.connect(function () {
-        uTexture.activate();
-        texture.bind().update();
+    var aTexcoord = program.defineAttribute("aTexcoord", 2);
+    uvBuffer.bind();
+    aTexcoord.point().enable();
+    var aVertexPosition = program.defineAttribute("aVertexPosition", 3);
+    var quadBuffer = new Buffer_1.default(gl, quad);
+    quadBuffer.bind();
+    aVertexPosition.point().enable();
+    var uTexture = program.getUniform("uTexture");
+    var uMVMatrix = program.getUniform("uMVMatrix");
+    var uPMatrix = program.getUniform("uPMatrix");
+    var uTime = program.getUniform("uTime");
+    texture.load().then(function () {
+        Texture_1.Texture.getTexture(gl, texture);
+        uTexture.setValue(0).activate();
+        Texture_1.Texture.bind(gl, texture);
+        Texture_1.Texture.update(gl, texture);
     });
     gl.enable(gl.DEPTH_TEST);
-    var interval = new Interval_1.default(60).attach(function (delta) {
-        var current = Time_1.default.getSafeFromStart() / 1000;
+    var DEGREE_RAD = Math.PI / 180;
+    var mvMatrix = gl_matrix_1.mat4.create();
+    var pMatrix = gl_matrix_1.mat4.create();
+    var position = gl_matrix_1.vec3.create();
+    gl_matrix_1.mat4.perspective(pMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
+    gl_matrix_1.mat4.translate(mvMatrix, mvMatrix, position);
+    var pos = { x: 0, y: 0, z: -2 };
+    var gui = new dat_gui_1.GUI();
+    gui.add(pos, 'x', -50, 50);
+    gui.add(pos, 'y', -50, 50);
+    gui.add(pos, 'z', -50, 50);
+    var interval = new Interval_1.default(10).attach(function (delta) {
+        var current = Time_1.default.getSafeFromStart() / 100;
+        gl_matrix_1.vec3.set(position, pos.x, pos.y, pos.z);
+        gl_matrix_1.mat4.identity(mvMatrix);
+        gl_matrix_1.mat4.translate(mvMatrix, mvMatrix, position);
+        gl_matrix_1.mat4.rotateX(mvMatrix, mvMatrix, current * DEGREE_RAD);
+        gl_matrix_1.mat4.rotateY(mvMatrix, mvMatrix, (current * 10) * DEGREE_RAD);
+        gl_matrix_1.mat4.rotateZ(mvMatrix, mvMatrix, (current * 10) * DEGREE_RAD);
+        uMVMatrix.value = mvMatrix;
+        uPMatrix.value = pMatrix;
+        uTime.value = current;
         gl.clearColor(0.0, 0.0, 0.0, 1);
-        uTime.setValue(current);
         gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT, 0);
     });
 });

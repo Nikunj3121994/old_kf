@@ -72,8 +72,10 @@ class HttpRequest
 			client.open(method, uri);
 			client.send();
 
-			client.onload = function () {
-				if (this.status === 200 || this.status === 0) {
+			client.onload = function ()
+			{
+				if ( (this.status >= 200 && this.status < 400) || this.status === 0)
+				{
 					// Performs the function "resolve" when this.status is equal to 200
 					resolve(this.response || this.responseText);
 				} else {

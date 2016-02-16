@@ -1,20 +1,42 @@
-define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/webgl/Mesh", "../../../src/core/util/Interval", "../../../src/core/util/Time"], function (require, exports, Shader_1, ShaderType_1, ShaderProgram_1, CanvasWebGL_1, Mesh_1, Interval_1, Time_1) {
+define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/util/Interval", "../../../src/core/util/Time", "../../../src/core/webgl/Buffer", "../../../src/core/webgl/Geometry", "../../../src/vendor/gl-matrix/gl-matrix", "../../../src/vendor/dat.gui/dat.gui"], function (require, exports, Shader_1, ShaderType_1, ShaderProgram_1, CanvasWebGL_1, Interval_1, Time_1, Buffer_1, Geometry_1, gl_matrix_1, dat_gui_1) {
     var canvas = new CanvasWebGL_1.CanvasWebGL(void 0, 1024, 1024);
     canvas.appendTo(document.body.querySelector('[container="main"]'));
     var gl = canvas.getContext();
-    var quad = Mesh_1.Mesh.createQuad(gl);
-    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 coordinates;\n\nvoid main(void) {\n gl_Position = vec4(coordinates, 1.0);\n}\n");
-    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nuniform float time;\nuniform float color;\nvoid main(void) {\n\t//vec3 color = vec3(sin(time)*.5 + .5, cos(time*10.0)*.5 + .5, sin(time)*.5 + .5);\n\tvec3 color = vec3(sin(time) * .5 + .5, cos(time) * .5 + .5, sin(time*.5) * .5 + .5);\n\tgl_FragColor = vec4(color, 1.0);\n}\n");
+    var quad = Geometry_1.Geometry.QUAD;
+    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 aVertexPosition;\nuniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\nvarying vec3 color;\n\nvoid main(void) {\n\n color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);\n vec3 pos = color * aVertexPosition;\n gl_Position = uPMatrix * uMVMatrix * vec4(pos, 1.0);\n}\n");
+    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nvarying vec3 color;\n\nvoid main(void) {\n\tgl_FragColor = vec4(color, 1.0);\n}\n");
     var program = new ShaderProgram_1.default(gl, vertex, fragment).use();
-    var uLocations = program.getUniformLocations();
-    var coord = program.defineAttribute("coordinates", 3);
-    coord.point(quad).enable();
+    var coord = program.defineAttribute("aVertexPosition", 3);
+    var quadBuffer = new Buffer_1.default(gl, quad);
+    quadBuffer.bind();
+    coord.point().enable();
+    var uMVMatrix = program.getUniform("uMVMatrix");
+    var uPMatrix = program.getUniform("uPMatrix");
+    var uTime = program.getUniform("uTime");
     gl.enable(gl.DEPTH_TEST);
-    var interval = new Interval_1.default(60).attach(function (delta) {
-        var current = Time_1.default.getSafeFromStart() / 1000;
-        console.log(current, Time_1.default.getSafeFromStart());
+    var DEGREE_RAD = Math.PI / 180;
+    var mvMatrix = gl_matrix_1.mat4.create();
+    var pMatrix = gl_matrix_1.mat4.create();
+    var position = gl_matrix_1.vec3.create();
+    gl_matrix_1.mat4.perspective(pMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
+    gl_matrix_1.mat4.translate(mvMatrix, mvMatrix, position);
+    var pos = { x: 0, y: 0, z: -2 };
+    var gui = new dat_gui_1.GUI();
+    gui.add(pos, 'x', -50, 50);
+    gui.add(pos, 'y', -50, 50);
+    gui.add(pos, 'z', -50, 50);
+    var interval = new Interval_1.default(10).attach(function (delta) {
+        var current = Time_1.default.getSafeFromStart() / 100;
+        gl_matrix_1.vec3.set(position, pos.x, pos.y, pos.z);
+        gl_matrix_1.mat4.identity(mvMatrix);
+        gl_matrix_1.mat4.translate(mvMatrix, mvMatrix, position);
+        gl_matrix_1.mat4.rotateX(mvMatrix, mvMatrix, current * DEGREE_RAD);
+        gl_matrix_1.mat4.rotateY(mvMatrix, mvMatrix, (current * 10) * DEGREE_RAD);
+        gl_matrix_1.mat4.rotateZ(mvMatrix, mvMatrix, (current * 10) * DEGREE_RAD);
+        uMVMatrix.value = mvMatrix;
+        uPMatrix.value = pMatrix;
+        uTime.value = current;
         gl.clearColor(0.0, 0.0, 0.0, 1);
-        uLocations['time'].setValue(current);
         gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT, 0);
     });
 });

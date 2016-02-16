@@ -1,4 +1,5 @@
 import ShaderProgram from "./ShaderProgram";
+import {AbstractTexture} from "../../visual/display/AbstractTexture";
 
 class UniformLocation
 {
@@ -16,6 +17,16 @@ class UniformLocation
 		this._type = type;
 	}
 
+	public getName():string
+	{
+		return this._name;
+	}
+
+	public getType():number
+	{
+		return this._type;
+	}
+
 	public getValue():any
 	{
 		return this._value;
@@ -25,11 +36,10 @@ class UniformLocation
 	{
 		var gl = this._gl;
 
-		console.log(this._value !== value)
-
-		if( this._value !== value )
+		if( this._value !== value || ( this._type != gl.FLOAT && this._type != gl.INT ))
 		{
 			this._value = value;
+
 
 			switch(this._type)
 			{
@@ -82,6 +92,8 @@ class UniformLocation
 
 					if(value >= 0 && value < 16){
 						gl.uniform1i(this._location, value);
+					} else if(value instanceof AbstractTexture ){
+
 					}
 
 					break;

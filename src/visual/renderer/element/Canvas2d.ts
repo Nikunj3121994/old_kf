@@ -1,6 +1,6 @@
 import {Canvas} from "./Canvas";
 import QualityType from "../../visual/enum/QualityType";
-import Rectangle from "../../visual/geom/Rectangle";
+import {Rectangle} from "../../data/Rectangle";
 
 /**
  * Creates a Canvas element of the given size.

@@ -3,9 +3,19 @@ import Shader from "./Shader";
 import IHashMap from "../../core/interface/IHashMap";
 import UniformLocation from "./UniformLocation";
 import AttributeLocation from "./AttributeLocation";
+import GUI = dat.GUI;
 
 class ShaderProgram
 {
+	public static createGuiItems(gui:GUI, program:ShaderProgram):void
+	{
+		//var locations = program.getUniformLocations();
+		//
+		//Object.keys(locations).forEach(name => {
+		//	gui.
+		//})
+	}
+
 	gl:WebGLRenderingContext;
 	program:WebGLProgram;
 
@@ -43,7 +53,7 @@ class ShaderProgram
 	 */
 	public get uniforms()
 	{
-		return this.getUniformLocations();
+		return this.getUniforms();
 	}
 
 	public use():ShaderProgram
@@ -90,7 +100,7 @@ class ShaderProgram
 		return this.gl.getUniformLocation(this.program, value);
 	}
 
-	public getUniformLocations():IHashMap<UniformLocation>
+	public getUniforms():IHashMap<UniformLocation>
 	{
 		if(!this._uniforms)
 		{
@@ -102,7 +112,7 @@ class ShaderProgram
 
 	public getUniform(name:string):UniformLocation
 	{
-		return this.getUniformLocations()[name];
+		return this.getUniforms()[name];
 	}
 
 	protected fetchUniformLocations():IHashMap<UniformLocation>

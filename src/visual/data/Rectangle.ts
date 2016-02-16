@@ -66,14 +66,14 @@ export class Rectangle
 	 * @property w
 	 * @type Number
 	 **/
-	public w:number = 0;
+	public width:number = 0;
 
 	/**
 	 * Height.
 	 * @property h
 	 * @type Number
 	 **/
-	public h:number = 0;
+	public height:number = 0;
 
 	constructor(x:number, y:number, width:number, height:number)
 	{
@@ -84,8 +84,8 @@ export class Rectangle
 	{
 		this.x = x;
 		this.y = y;
-		this.w = width;
-		this.h = height;
+		this.width = width;
+		this.height = height;
 		return this;
 	}
 
@@ -97,7 +97,7 @@ export class Rectangle
 	 */
 	public copy(rectangle:Rectangle):Rectangle
 	{
-		return this.setProperies(rectangle.x, rectangle.y, rectangle.w, rectangle.h);
+		return this.setProperies(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
 	}
 
 	/**
@@ -107,7 +107,7 @@ export class Rectangle
 	 **/
 	public clone():Rectangle
 	{
-		return new Rectangle(this.x, this.y, this.w, this.h);
+		return new Rectangle(this.x, this.y, this.width, this.height);
 	}
 
 	/**
@@ -117,6 +117,6 @@ export class Rectangle
 	 **/
 	public toString():string
 	{
-		return "[Rectangle (x=" + this.x + " y=" + this.y + " width=" + this.w + " height=" + this.h + ")]";
+		return "[Rectangle (x=" + this.x + " y=" + this.y + " width=" + this.width + " height=" + this.height + ")]";
 	}
 }

@@ -1,4 +1,4 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../../visual/display/AbstractTexture"], function (require, exports, AbstractTexture_1) {
     var UniformLocation = (function () {
         function UniformLocation(gl, name, location, type) {
             this._gl = null;
@@ -7,13 +7,18 @@ define(["require", "exports"], function (require, exports) {
             this._location = location;
             this._type = type;
         }
+        UniformLocation.prototype.getName = function () {
+            return this._name;
+        };
+        UniformLocation.prototype.getType = function () {
+            return this._type;
+        };
         UniformLocation.prototype.getValue = function () {
             return this._value;
         };
         UniformLocation.prototype.setValue = function (value) {
             var gl = this._gl;
-            console.log(this._value !== value);
-            if (this._value !== value) {
+            if (this._value !== value || (this._type != gl.FLOAT && this._type != gl.INT)) {
                 this._value = value;
                 switch (this._type) {
                     case gl.FLOAT: {
@@ -55,6 +60,8 @@ define(["require", "exports"], function (require, exports) {
                     case gl.SAMPLER_2D: {
                         if (value >= 0 && value < 16) {
                             gl.uniform1i(this._location, value);
+                        }
+                        else if (value instanceof AbstractTexture_1.AbstractTexture) {
                         }
                         break;
                     }

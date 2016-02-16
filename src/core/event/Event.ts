@@ -26,10 +26,7 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-
-import DisplayObject from "../../visual/display/DisplayObject";
-
-class Event
+class Event<T>
 {
 	public type:string = null;
 
@@ -40,7 +37,7 @@ class Event
 	 * @default null
 	 * @readonly
 	 */
-	public target:DisplayObject = null;
+	public target:T = null;
 
 	/**
 	 * The current target that a bubbling event is being dispatched from. For non-bubbling events, this will
@@ -52,7 +49,7 @@ class Event
 	 * @default null
 	 * @readonly
 	 */
-	public currentTarget:DisplayObject = null;
+	public currentTarget:T = null;
 
 	/**
 	 * For bubbling events, this indicates the current event phase:<OL>

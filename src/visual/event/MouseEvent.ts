@@ -51,7 +51,7 @@ import Event from "../../core/event/Event";
  * @constructor
  **/
 
-class MouseEvent extends Event
+class MouseEvent extends Event<any>
 {
 
 	// events:

@@ -1,4 +1,5 @@
 import Buffer from "./Buffer";
+
 export class Mesh
 {
     public static createQuad(gl:WebGLRenderingContext):Mesh

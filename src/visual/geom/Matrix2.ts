@@ -1,4 +1,3 @@
-/// <reference path="../display/DisplayObject.ts" />
 
 /*
  * Matrix2D

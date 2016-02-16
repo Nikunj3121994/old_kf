@@ -1,94 +1,89 @@
-import {Mesh} from "../../../src/core/webgl/Mesh";
-import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
 import Shader from "../../../src/core/webgl/Shader";
 import ShaderType from "../../../src/core/webgl/ShaderType";
 import ShaderProgram from "../../../src/core/webgl/ShaderProgram";
-import {Texture} from "../../../src/core/webgl/Texture";
-import Buffer from "../../../src/core/webgl/Buffer";
+import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
+import {Mesh} from "../../../src/core/webgl/Mesh";
 import Interval from "../../../src/core/util/Interval";
 import Time from "../../../src/core/util/Time";
+import Buffer from "../../../src/core/webgl/Buffer";
+import {Geometry} from "../../../src/core/webgl/Geometry";
+import {mat4, vec3, vec4} from "../../../src/vendor/gl-matrix/gl-matrix";
+import {GUI} from "../../../src/vendor/dat.gui/dat.gui";
+import {Texture} from "../../../src/visual/display/Texture";
+
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'))
 var gl = canvas.getContext();
-
-var quad = Mesh.createQuad(gl);
-
-//// Create an empty buffer object to store vertex buffer
-//var vertex_buffer = gl.createBuffer();
-//
-//// Bind appropriate array buffer to it
-//gl.bindBuffer(gl.ARRAY_BUFFER, vertex_buffer);
-//
-//// Pass the vertex data to the buffer
-//gl.bufferData(gl.ARRAY_BUFFER, quad.vertex, gl.STATIC_DRAW);
-//
-//// Unbind the buffer
-//gl.bindBuffer(gl.ARRAY_BUFFER, null);
-//
-//// Create an empty buffer object to store Index buffer
-//var Index_Buffer = gl.createBuffer();
-//
-//// Bind appropriate array buffer to it
-//gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, Index_Buffer);
-//
-//// Pass the vertex data to the buffer
-//gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,  quad.index, gl.STATIC_DRAW);
-//
-//// Unbind the buffer
-//gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+var quad = Geometry.QUAD;
 
 /*====================== Shaders =======================*/
 
 // Vertex shader source code
 var vertex = new Shader(ShaderType.VERTEX, `
-attribute vec3 a_position;
-attribute vec2 a_texcoord;
+attribute vec3 aVertexPosition;
+attribute vec2 aTexcoord;
 
-varying vec2 v_texcoord;
+uniform mat4 uMVMatrix;
+uniform mat4 uPMatrix;
+uniform float uTime;
+
+varying vec3 color;
+varying vec2 vTexcoord;
 
 void main(void) {
- gl_Position = vec4(a_position, 1.0);
- v_texcoord = a_texcoord;
+
+ color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);
+ vec3 pos = color * aVertexPosition;
+ gl_Position = uPMatrix * uMVMatrix * vec4(pos, 1.0);
+ vTexcoord = aTexcoord;
 }
 `);
 
 var fragment = new Shader(ShaderType.FRAGMENT, `
-precision mediump float;
-uniform float u_time;
-uniform sampler2D u_texture;
-
-varying vec2 v_texcoord;
-uniform vec4 color;
+precision lowp float;
+varying vec3 color;
+uniform sampler2D uTexture;
+varying vec2 vTexcoord;
 
 void main(void) {
-	vec4 color = vec4(sin(u_time) * .5 + .5, cos(u_time) * .5 + .5, sin(u_time*.5) * .5 + .5, 1);
-	gl_FragColor = color * texture2D(u_texture, v_texcoord);
+	gl_FragColor = texture2D(uTexture, vTexcoord);
+	//gl_FragColor = vec4(color, 1.0);
 }
 `);
 
 var program = new ShaderProgram(gl, vertex, fragment).use();
 
-var aPosition = program.defineAttribute("a_position", 3);
-aPosition.point(quad).enable();
-//
+
+/* ======= Associating shaders to buffer objects =======*/
+
+var texture = Texture.createFromUrl('../uv.jpg');
+
 var uvBuffer = new Buffer(gl, new Float32Array(Texture.getFullUV()));
+var aTexcoord = program.defineAttribute("aTexcoord", 2);
+uvBuffer.bind();
+aTexcoord.point().enable();
 
-var aTexcoord = program.defineAttribute("a_texcoord", 2);
-aTexcoord.point(uvBuffer).enable();
-//
+var aVertexPosition = program.defineAttribute("aVertexPosition", 3);
+var quadBuffer = new Buffer(gl, quad);
+quadBuffer.bind();
+aVertexPosition.point().enable();
 
-var uTexture = program.getUniform('u_texture').setValue(0);
-var uTime = program.getUniform('u_time');
-
-var texture = Texture.createFromUrl(gl, '../uv.jpg');
-texture.signalLoad.connect(() => {
-	uTexture.activate();
-	texture.bind().update();
-})
 
 
 //// Get the attribute location
+var uTexture = program.getUniform("uTexture");
+var uMVMatrix = program.getUniform("uMVMatrix");
+var uPMatrix = program.getUniform("uPMatrix");
+var uTime = program.getUniform("uTime");
+
+texture.load().then(() => {
+	Texture.getTexture(gl, texture);
+	uTexture.setValue(0).activate();
+	Texture.bind(gl, texture);
+	Texture.update(gl, texture);
+})
+
 //var coord = program.getAttribLocation("coordinates");
 //
 //// Point an attribute to the currently bound VBO
@@ -102,14 +97,49 @@ texture.signalLoad.connect(() => {
 // Enable the depth test
 gl.enable(gl.DEPTH_TEST);
 
-var interval = new Interval(60).attach((delta:number) => {
+var DEGREE_RAD = Math.PI / 180;
+
+var mvMatrix = mat4.create();
+var pMatrix = mat4.create();
+var position = vec3.create();
 
 
-	var current = Time.getSafeFromStart() / 1000;
+mat4.perspective(pMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
+
+
+//Initialize Model-View matrix
+//mat4.identity(mvMatrix);
+mat4.translate(mvMatrix, mvMatrix, position);
+
+var pos = {x:0, y:0, z:-2};
+
+var gui = new GUI();
+gui.add(pos, 'x', -50, 50);
+gui.add(pos, 'y', -50, 50);
+gui.add(pos, 'z', -50, 50);
+
+
+var interval = new Interval(10).attach((delta:number) => {
+
+
+	var current = Time.getSafeFromStart() / 100;
+	//console.log(current, Time.getSafeFromStart());
+	//quad.vertex[0] = -1 + Math.random()
+	vec3.set(position, pos.x, pos.y, pos.z);
+
+	mat4.identity(mvMatrix);
+	mat4.translate(mvMatrix, mvMatrix, position);
+
+	mat4.rotateX(mvMatrix, mvMatrix, current  * DEGREE_RAD);
+	mat4.rotateY(mvMatrix, mvMatrix, (current* 10)  * DEGREE_RAD);
+	mat4.rotateZ(mvMatrix, mvMatrix, (current* 10)  * DEGREE_RAD);
+
+	uMVMatrix.value = mvMatrix;
+	uPMatrix.value = pMatrix;
+	uTime.value = current;
 
 	// Clear the canvas
 	gl.clearColor(0.0, 0.0, 0.0, 1);
-	uTime.setValue(current);
 
 	// Draw the triangle
 	gl.drawElements(gl.TRIANGLES, quad.length, gl.UNSIGNED_SHORT,0);

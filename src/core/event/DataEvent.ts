@@ -25,11 +25,11 @@
 
 import Event from "./Event";
 
-class DataEvent<T> extends Event
+class DataEvent<TTarget, TData> extends Event<TTarget>
 {
-	public data:T;
+	public data:TData;
 
-	constructor(type:string, data:T, bubbles:boolean = null, cancelable:boolean = null)
+	constructor(type:string, data:TData, bubbles:boolean = null, cancelable:boolean = null)
 	{
 		super(type, bubbles, cancelable);
 		this.data = data;

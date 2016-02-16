@@ -1,133 +1,108 @@
-define(["require", "exports", "../../core/util/Promise", "../geom/Size", "../../core/math/MathUtil"], function (require, exports, Promise_1, Size_1, MathUtil_1) {
-    var Texture = (function () {
-        function Texture(source, autoload) {
-            if (autoload === void 0) { autoload = false; }
-            this.webGLTexture = null;
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
+define(["require", "exports", "./AbstractTexture", "../../core/event/Signal", "../../core/util/Promise"], function (require, exports, AbstractTexture_1, Signal_1, Promise_1) {
+    var Texture = (function (_super) {
+        __extends(Texture, _super);
+        function Texture(source) {
+            var _this = this;
+            _super.call(this, source);
             this.width = 0;
             this.height = 0;
-            this._loadPromise = null;
+            this.onload = new Signal_1.Signal();
             this._hasLoaded = false;
-            this.source = source;
-            if (autoload) {
-                this.load();
+            if (source.nodeName
+                && source.tagName.toLowerCase() == 'img') {
+                var img = this.source;
+                if (!img.complete) {
+                    var load = function () {
+                        _this._hasLoaded = true;
+                        img.removeEventListener('load', load);
+                        _this.width = img.naturalWidth;
+                        _this.height = img.naturalHeight;
+                        _this.onload.emit();
+                    };
+                    img.addEventListener('load', load);
+                }
+                else {
+                    this._hasLoaded = true;
+                    this.width = this.source.width;
+                    this.height = this.source.height;
+                    setImmediate(function () { return _this.onload.emit(); });
+                }
+            }
+            else {
+                this._hasLoaded = true;
+                this.width = this.source.width;
+                this.height = this.source.height;
+                setImmediate(function () { return _this.onload.emit(); });
             }
         }
-        Texture.createFromString = function (source, autoload) {
-            if (autoload === void 0) { autoload = false; }
+        Texture.createFromUrl = function (src) {
             var img = document.createElement('img');
-            return new Texture(img, autoload);
+            img.src = src;
+            return new Texture(img);
+        };
+        Texture.getFullUV = function () {
+            return [
+                0.0, 0.0,
+                1.0, 0.0,
+                1.0, 1.0,
+                0.0, 1.0
+            ];
+        };
+        Texture.getUVFromRect = function (text, rect) {
+            var w = text.width;
+            var h = text.height;
+            var rx = rect.x;
+            var ry = rect.y;
+            var rw = rect.width;
+            var rh = rect.height;
+            return new Float32Array([
+                rx / w, ry / h,
+                rx / w + rw / w, ry / h,
+                rx / w + rw / w, ry / h + rh / h,
+                rx / w, ry / h + rh / h
+            ]);
         };
         Texture.prototype.hasLoaded = function () {
             return this._hasLoaded;
         };
-        Texture.prototype.isLoading = function () {
-            return this._loadPromise != null;
-        };
         Texture.prototype.load = function (onProgress) {
             var _this = this;
-            if (!this._hasLoaded) {
-                if (!this._loadPromise) {
-                    this._loadPromise = new Promise_1.default(function (resolve, reject) {
-                        return _this._load(function (scope) {
-                            resolve(scope);
-                            _this._loadPromise = null;
-                        }, reject);
-                    });
-                }
-                return this._loadPromise;
-            }
-            if (onProgress) {
-                onProgress(1);
-            }
-            return Promise_1.default.resolve(this);
-        };
-        Texture.prototype._load = function (onComplete, onError) {
-            var bitmap = this.source;
-            var tagName = '';
-            if (bitmap) {
-                tagName = bitmap.tagName.toLowerCase();
-            }
-            switch (tagName) {
-                case 'img':
-                    {
-                        if ((bitmap['complete'] || bitmap['readyState'] >= 2)) {
-                            this.initImage(bitmap);
-                        }
-                        else {
-                            bitmap.onload = (function (scope) {
-                                return function (ev) {
-                                    scope.initImage(this);
-                                    onComplete(scope);
-                                };
-                            })(this);
-                            if (onError) {
-                                bitmap.onerror = onerror;
-                            }
-                        }
-                        break;
-                    }
-                case 'canvas':
-                    {
-                        this.initCanvas(bitmap);
-                        onComplete(this);
-                        break;
-                    }
-            }
-        };
-        Texture.prototype.initImage = function (image) {
-            this.width = image.naturalWidth;
-            this.height = image.naturalHeight;
-            this._hasLoaded = true;
-        };
-        Texture.prototype.initCanvas = function (canvas) {
-            this.width = canvas.width;
-            this.height = canvas.height;
-            this._hasLoaded = true;
-        };
-        Texture.prototype.getWidth = function () {
-            return this.width;
-        };
-        Texture.prototype.getHeight = function () {
-            return this.height;
-        };
-        Texture.prototype.draw = function (ctx, sx, sy, sw, sh, dx, dy, dw, dh) {
-            ctx.drawImage(this.source, sx, sy, sw, sh, dx, dy, dw, dh);
-            return true;
-        };
-        Texture.prototype.drawWebGL = function (ctx, sx, sy, sw, sh, dx, dy, dw, dh) {
-            return true;
-        };
-        Texture.prototype.bindTexture = function (ctx) {
-            var bitmap = this.source;
+            var result;
             if (this.hasLoaded()) {
-                if (!(MathUtil_1.default.isPowerOfTwo(this.width) && MathUtil_1.default.isPowerOfTwo(this.height))) {
-                    if (console && console.warn)
-                        console.warn("Texture " + this.width + "x" + this.height + " is not power of 2", this);
+                if (onProgress) {
+                    onProgress(1);
                 }
-                if (!this.webGLTexture) {
-                    var texture = this.webGLTexture = ctx.createTexture();
-                    ctx.bindTexture(ctx.TEXTURE_2D, texture);
-                    ctx.texImage2D(ctx.TEXTURE_2D, 0, ctx.RGBA, ctx.RGBA, ctx.UNSIGNED_BYTE, bitmap);
-                    ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MIN_FILTER, ctx.NEAREST);
-                    ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_MAG_FILTER, ctx.LINEAR);
-                    ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_S, ctx.CLAMP_TO_EDGE);
-                    ctx.texParameteri(ctx.TEXTURE_2D, ctx.TEXTURE_WRAP_T, ctx.CLAMP_TO_EDGE);
-                }
-                return texture;
+                result = Promise_1.default.resolve(this);
             }
-        };
-        Texture.prototype.getSize = function () {
-            return new Size_1.default(this.width, this.height);
-        };
-        Texture.prototype.destruct = function () {
-            this.source = null;
-            if (this.webGLTexture) {
-                delete this.webGLTexture;
+            else {
+                result = new Promise_1.default(function (resolve) {
+                    if (_this.hasLoaded()) {
+                        if (onProgress) {
+                            onProgress(1);
+                        }
+                        resolve(_this);
+                    }
+                    else {
+                        _this.onload.connect(function () {
+                            if (onProgress) {
+                                onProgress(1);
+                            }
+                            resolve(_this);
+                        }).once();
+                    }
+                });
             }
-            this._loadPromise = null;
+            return result;
+        };
+        Texture.prototype.getFullUV = function () {
+            return Texture.getFullUV();
         };
         return Texture;
-    })();
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = Texture;
+    })(AbstractTexture_1.AbstractTexture);
+    exports.Texture = Texture;
 });

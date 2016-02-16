@@ -3,7 +3,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-define(["require", "exports", "./Canvas", "../../visual/geom/Rectangle"], function (require, exports, Canvas_1, Rectangle_1) {
+define(["require", "exports", "./Canvas", "../../data/Rectangle"], function (require, exports, Canvas_1, Rectangle_1) {
     var Canvas2d = (function (_super) {
         __extends(Canvas2d, _super);
         function Canvas2d() {
@@ -84,7 +84,7 @@ define(["require", "exports", "./Canvas", "../../visual/geom/Rectangle"], functi
                     y1 = Math.max(y1, py);
                 }
             }
-            return new Rectangle_1.default(x0, y0, x1 - x0, y1 - y0);
+            return new Rectangle_1.Rectangle(x0, y0, x1 - x0, y1 - y0);
         };
         Canvas2d.prototype.getContext = function () {
             if (!this._context) {

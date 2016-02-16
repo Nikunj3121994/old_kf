@@ -12,6 +12,8 @@ define(["require", "exports", "./UniformLocation", "./AttributeLocation"], funct
                 alert("Unable to initialize the shader program.");
             }
         }
+        ShaderProgram.createGuiItems = function (gui, program) {
+        };
         Object.defineProperty(ShaderProgram.prototype, "attributes", {
             get: function () {
                 return this._attributes;
@@ -21,7 +23,7 @@ define(["require", "exports", "./UniformLocation", "./AttributeLocation"], funct
         });
         Object.defineProperty(ShaderProgram.prototype, "uniforms", {
             get: function () {
-                return this.getUniformLocations();
+                return this.getUniforms();
             },
             enumerable: true,
             configurable: true
@@ -57,14 +59,14 @@ define(["require", "exports", "./UniformLocation", "./AttributeLocation"], funct
         ShaderProgram.prototype.getUniformLocation = function (value) {
             return this.gl.getUniformLocation(this.program, value);
         };
-        ShaderProgram.prototype.getUniformLocations = function () {
+        ShaderProgram.prototype.getUniforms = function () {
             if (!this._uniforms) {
                 this._uniforms = this.fetchUniformLocations();
             }
             return this._uniforms;
         };
         ShaderProgram.prototype.getUniform = function (name) {
-            return this.getUniformLocations()[name];
+            return this.getUniforms()[name];
         };
         ShaderProgram.prototype.fetchUniformLocations = function () {
             var uniforms = {};

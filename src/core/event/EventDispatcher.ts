@@ -111,18 +111,6 @@ class EventDispatcher
 		target.willTrigger = p.willTrigger;
 	}
 
-	/**
-	 * Static initializer to mix EventDispatcher methods into a target object or prototype.
-	 *
-	 *        EventDispatcher.initialize(MyClass.prototype); // add to the prototype of the class
-	 *        EventDispatcher.initialize(myObject); // add to a specific instance
-	 *
-	 * @method initialize
-	 * @static
-	 * @param {Object} target The target object to inject EventDispatcher methods into. This can be an instance or a
-	 * prototype.
-	 **/
-	constructor(target?){}
 
 	/**
 	 * parent element
@@ -143,6 +131,22 @@ class EventDispatcher
 	 * @type Object
 	 **/
 	private _captureListeners = null;
+
+	/**
+	 * Static initializer to mix EventDispatcher methods into a target object or prototype.
+	 *
+	 *        EventDispatcher.initialize(MyClass.prototype); // add to the prototype of the class
+	 *        EventDispatcher.initialize(myObject); // add to a specific instance
+	 *
+	 * @method initialize
+	 * @static
+	 * @param {Object} target The target object to inject EventDispatcher methods into. This can be an instance or a
+	 * prototype.
+	 **/
+	constructor(target?:any){
+
+	}
+
 
 	/**
 	 * Adds the specified event listener. Note that adding multiple listeners to the same function will result in
@@ -296,7 +300,7 @@ class EventDispatcher
 	 * @return {Boolean} Returns the value of eventObj.defaultPrevented.
 	 **/
 	public dispatchEvent(eventObj:string, target?:any);
-	public dispatchEvent(eventObj:Event, target?:any);
+	public dispatchEvent(eventObj:Event<any>, target?:any);
 	public dispatchEvent(eventObj:any, target?:any)
 	{
 		if(typeof eventObj == "string")
@@ -307,7 +311,7 @@ class EventDispatcher
 			{
 				return false;
 			}
-			eventObj = new Event(eventObj);
+			eventObj = new Event<any>(eventObj);
 		}
 
 		// TODO: deprecated. Target param is deprecated, only use case is MouseEvent/mousemove, remove.
