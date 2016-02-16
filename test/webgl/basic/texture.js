@@ -3,8 +3,8 @@ define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/co
     canvas.appendTo(document.body.querySelector('[container="main"]'));
     var gl = canvas.getContext();
     var quad = Geometry_1.Geometry.QUAD;
-    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 aVertexPosition;\nattribute vec2 aTexcoord;\n\nuniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\n\nvarying vec3 color;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\n color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);\n vec3 pos = color * aVertexPosition;\n gl_Position = uPMatrix * uMVMatrix * vec4(pos, 1.0);\n vTexcoord = aTexcoord;\n}\n");
-    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nvarying vec3 color;\nuniform sampler2D uTexture;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\tgl_FragColor = texture2D(uTexture, vTexcoord);\n\t//gl_FragColor = vec4(color, 1.0);\n}\n");
+    var vertex = new Shader_1.default(ShaderType_1.default.VERTEX, "\nattribute vec3 aVertexPosition;\nattribute vec2 aTexcoord;\n\nuniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\n\nvarying vec3 color;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\n color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);\n gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\n vTexcoord = aTexcoord;\n}\n");
+    var fragment = new Shader_1.default(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nvarying vec3 color;\nuniform sampler2D uTexture;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\tgl_FragColor = texture2D(uTexture, vTexcoord) * vec4(color, 1.0);\n\t//gl_FragColor = vec4(color, 1.0);\n}\n");
     var program = new ShaderProgram_1.default(gl, vertex, fragment).use();
     var texture = Texture_1.Texture.createFromUrl('../uv.jpg');
     var uvBuffer = new Buffer_1.default(gl, new Float32Array(Texture_1.Texture.getFullUV()));
@@ -31,6 +31,7 @@ define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/co
     var pMatrix = gl_matrix_1.mat4.create();
     var position = gl_matrix_1.vec3.create();
     gl_matrix_1.mat4.perspective(pMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
+    console.log(canvas.getSettings());
     gl_matrix_1.mat4.translate(mvMatrix, mvMatrix, position);
     var pos = { x: 0, y: 0, z: -2 };
     var gui = new dat_gui_1.GUI();

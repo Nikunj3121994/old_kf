@@ -1,8 +1,12 @@
 define(["require", "exports"], function (require, exports) {
     var AbstractTexture = (function () {
         function AbstractTexture(source) {
+            this.id = AbstractTexture.getID();
             this.source = source;
         }
+        AbstractTexture.getID = function () {
+            return AbstractTexture._id++;
+        };
         AbstractTexture.bind = function (gl, texture) {
             gl.bindTexture(gl.TEXTURE_2D, AbstractTexture.getTexture(gl, texture));
         };
@@ -11,6 +15,7 @@ define(["require", "exports"], function (require, exports) {
         };
         AbstractTexture.update = function (gl, texture) {
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.source);
+            gl.generateMipmap(gl.TEXTURE_2D);
         };
         AbstractTexture.getTexture = function (gl, texture) {
             if (!texture.texture) {
@@ -28,6 +33,7 @@ define(["require", "exports"], function (require, exports) {
         AbstractTexture.prototype.isPowerOf2 = function (value) {
             return (value & (value - 1)) == 0;
         };
+        AbstractTexture._id = 0;
         return AbstractTexture;
     })();
     exports.AbstractTexture = AbstractTexture;

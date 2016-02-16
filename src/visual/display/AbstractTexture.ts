@@ -1,6 +1,11 @@
 
 export abstract class AbstractTexture
 {
+	private static _id:number = 0;
+	public static getID():number
+	{
+		return AbstractTexture._id++;
+	}
 
 	public static bind(gl:WebGLRenderingContext, texture:AbstractTexture):void
 	{
@@ -15,6 +20,7 @@ export abstract class AbstractTexture
 	public static update(gl:WebGLRenderingContext, texture:AbstractTexture):void
 	{
 		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, <any> texture.source);
+		gl.generateMipmap(gl.TEXTURE_2D);
 	}
 
 	public static getTexture(gl:WebGLRenderingContext, texture:AbstractTexture):WebGLTexture
@@ -24,6 +30,7 @@ export abstract class AbstractTexture
 			texture.texture = gl.createTexture();
 			gl.bindTexture(gl.TEXTURE_2D, texture.texture);
 			gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, 1);
+
 
 			// Set up texture so we can render any size image and so we are
 			// working with pixels.
@@ -38,8 +45,9 @@ export abstract class AbstractTexture
 		return texture.texture;
 	}
 
-	source:ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
-	texture:WebGLTexture;
+	public id:number = AbstractTexture.getID();
+	public source:ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
+	public texture:WebGLTexture;
 
 	constructor(source:ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement)
 	{

@@ -6,6 +6,7 @@ import Promise from "../../core/util/Promise";
 
 export class Texture extends AbstractTexture implements ILoadable<Texture>
 {
+
 	public static createFromUrl(src:string):Texture
 	{
 		var img = document.createElement('img');

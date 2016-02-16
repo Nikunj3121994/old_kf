@@ -34,8 +34,7 @@ varying vec2 vTexcoord;
 void main(void) {
 
  color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);
- vec3 pos = color * aVertexPosition;
- gl_Position = uPMatrix * uMVMatrix * vec4(pos, 1.0);
+ gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
  vTexcoord = aTexcoord;
 }
 `);
@@ -47,7 +46,7 @@ uniform sampler2D uTexture;
 varying vec2 vTexcoord;
 
 void main(void) {
-	gl_FragColor = texture2D(uTexture, vTexcoord);
+	gl_FragColor = texture2D(uTexture, vTexcoord) * vec4(color, 1.0);
 	//gl_FragColor = vec4(color, 1.0);
 }
 `);
@@ -68,7 +67,6 @@ var aVertexPosition = program.defineAttribute("aVertexPosition", 3);
 var quadBuffer = new Buffer(gl, quad);
 quadBuffer.bind();
 aVertexPosition.point().enable();
-
 
 
 //// Get the attribute location
@@ -105,6 +103,8 @@ var position = vec3.create();
 
 
 mat4.perspective(pMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
+
+console.log(canvas.getSettings());
 
 
 //Initialize Model-View matrix
