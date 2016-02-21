@@ -33,6 +33,7 @@
  */
 
 import Signal2 from "../event/Signal2";
+import {SignalConnection} from "../event/SignalConnection";
 (function() {
 	var lastTime = 0;
 	var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -58,8 +59,6 @@ import Signal2 from "../event/Signal2";
 		};
 }());
 
-import Signal1 from "../event/Signal1";
-import SignalConnection from "../event/SignalConnection";
 
 /*
  * Interval

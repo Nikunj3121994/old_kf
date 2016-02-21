@@ -1,6 +1,7 @@
-define(["require", "exports"], function (require, exports) {
+define(["require", "exports", "../../../core/event/Signal2"], function (require, exports, Signal2_1) {
     var Canvas = (function () {
         function Canvas(domElement, width, height) {
+            this.onResize = new Signal2_1.default();
             if (!domElement) {
                 domElement = document.createElement('canvas');
                 if (width == null || height == null) {
@@ -42,14 +43,23 @@ define(["require", "exports"], function (require, exports) {
             configurable: true
         });
         Canvas.prototype.setSize = function (width, height) {
-            this.setWidth(width);
-            this.setHeight(height);
+            this.domElement.width = this._width = width;
+            this.domElement.height = this._height = height;
+            this.onResize.emit(width, height);
         };
         Canvas.prototype.setHeight = function (value) {
             this.domElement.height = this._height = value;
+            this.onResize.emit(this._width, this._height);
         };
         Canvas.prototype.setWidth = function (value) {
             this.domElement.width = this._width = value;
+            this.onResize.emit(this._width, this._height);
+        };
+        Canvas.prototype.getHeight = function () {
+            return this._height;
+        };
+        Canvas.prototype.getWidth = function () {
+            return this._width;
         };
         Canvas.prototype.destruct = function () {
             this.domElement = void 0;

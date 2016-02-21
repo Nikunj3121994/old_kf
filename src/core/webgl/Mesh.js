@@ -27,14 +27,14 @@ define(["require", "exports", "./Buffer"], function (require, exports, Buffer_1)
         Mesh.prototype.getVertexBuffer = function () {
             if (!this.vertexBuffer) {
                 var gl = this._gl;
-                this.vertexBuffer = new Buffer_1.default(gl, this.vertex, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
+                this.vertexBuffer = new Buffer_1.Buffer(gl, this.vertex, gl.ARRAY_BUFFER, gl.STATIC_DRAW);
             }
             return this.vertexBuffer;
         };
         Mesh.prototype.getIndexBuffer = function () {
             if (!this.indexBuffer) {
                 var gl = this._gl;
-                this.indexBuffer = new Buffer_1.default(gl, this.index, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
+                this.indexBuffer = new Buffer_1.Buffer(gl, this.index, gl.ELEMENT_ARRAY_BUFFER, gl.STATIC_DRAW);
             }
             return this.indexBuffer;
         };

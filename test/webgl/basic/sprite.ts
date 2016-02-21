@@ -5,11 +5,11 @@ import {CanvasWebGL} from "../../../src/visual/renderer/element/CanvasWebGL";
 import {Mesh} from "../../../src/core/webgl/Mesh";
 import Interval from "../../../src/core/util/Interval";
 import Time from "../../../src/core/util/Time";
-import {Buffer} from "../../../src/core/webgl/Buffer";
 import {Geometry} from "../../../src/core/webgl/Geometry";
 import {mat4, vec3, vec4} from "../../../src/vendor/gl-matrix/gl-matrix";
+import {GUI} from "../../../src/vendor/dat.gui/dat.gui";
 import {Texture} from "../../../src/visual/display/Texture";
-import GUI = dat.GUI;
+import {Buffer} from "../../../src/core/webgl/Buffer";
 
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
@@ -20,36 +20,8 @@ var quad = Geometry.QUAD;
 /*====================== Shaders =======================*/
 
 // Vertex shader source code
-var vertex = new Shader(ShaderType.VERTEX, `
-attribute vec3 aVertexPosition;
-attribute vec2 aTexcoord;
-
-uniform mat4 uMVMatrix;
-uniform mat4 uPMatrix;
-uniform float uTime;
-
-varying vec3 color;
-varying vec2 vTexcoord;
-
-void main(void) {
-
- color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);
- gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
- vTexcoord = aTexcoord;
-}
-`);
-
-var fragment = new Shader(ShaderType.FRAGMENT, `
-precision lowp float;
-varying vec3 color;
-uniform sampler2D uTexture;
-varying vec2 vTexcoord;
-
-void main(void) {
-	gl_FragColor = texture2D(uTexture, vTexcoord) * vec4(color, 1.0);
-	//gl_FragColor = vec4(color, 1.0);
-}
-`);
+var vertex = new Shader(ShaderType.VERTEX, './sprite/shader.v.glsl');
+var fragment = new Shader(ShaderType.FRAGMENT, './sprite/shader.v.glsl');
 
 var program = new ShaderProgram(gl, vertex, fragment).use();
 

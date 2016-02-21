@@ -121,38 +121,30 @@ class FluidCalculation
 	 */
 	public static getCalcUnit(unit1:number, math:CalculationUnitType, unit2:number):number
 	{
-		switch(math)
+		var result;
+
+		if(math == CalculationUnitType.ADDITION)
 		{
-			case CalculationUnitType.ADDITION:
-			{
-				return unit1 + unit2;
-				break;
-			}
-
-			case CalculationUnitType.SUBSTRACTION:
-			{
-				return unit1 - unit2;
-				break;
-			}
-
-			case CalculationUnitType.MULTIPLICATION:
-			{
-				return unit1 * unit2;
-				break;
-			}
-
-			case CalculationUnitType.DIVISION:
-			{
-				return unit1 / unit2;
-				break;
-			}
-
-			default:
-			{
-				return 0;
-				break;
-			}
+			result = unit1 + unit2;
 		}
+		else if(math == CalculationUnitType.SUBSTRACTION)
+		{
+			result = unit1 - unit2;
+		}
+		else if(math == CalculationUnitType.MULTIPLICATION)
+		{
+			result = unit1 * unit2;
+		}
+		else if(math == CalculationUnitType.DIVISION)
+		{
+			result = unit1 / unit2;
+		}
+		else
+		{
+			result = 0;
+		}
+
+		return result;
 	}
 
 	/**

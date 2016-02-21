@@ -1,18 +1,20 @@
 import {Texture} from "./Texture";
+import {Rectangle} from "../data/Rectangle";
 
-class Sprite {
+export class Sprite
+{
+	public texture:Texture;
+	public rectangle:Rectangle;
+	public uv:Float32Array;
 
-    sheet:Texture;
-    uv:Array<number>;
+	constructor(sheet:Texture, rectangle:Rectangle)
+	{
+		this.texture = sheet;
+		this.rectangle = rectangle;
+	}
 
-    constructor(sheet:Texture, uv:Array<number> = null){
-        super(0, 0);
-
-        this.sheet = sheet;
-        this.uv = <Array<number>> uv;
-    }
-
-    hasLoaded():boolean {
-        return null;
-    }
+	hasLoaded():boolean
+	{
+		return null;
+	}
 }

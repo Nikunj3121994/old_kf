@@ -23,11 +23,11 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import {SignalConnection} from "./SignalConnection";
 /**
  * Signal provides method for managing queues of a single event listener and dispatching it.
  **/
 
-import SignalConnection from "./SignalConnection";
 
 class Task
 {

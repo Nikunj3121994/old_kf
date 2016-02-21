@@ -1,6 +1,6 @@
 import {Geometry} from "./Geometry";
 
-class Buffer
+export class Buffer
 {
 	gl:WebGLRenderingContext;
 	buffer:WebGLBuffer;
@@ -34,7 +34,7 @@ class Buffer
 
 	}
 
-	public update()
+	public update():this
 	{
 		if(!this.hasGeometry){
 			// Bind appropriate array buffer to it
@@ -51,25 +51,28 @@ class Buffer
 		}
 
 		this.hasPassed = true;
+		return this;
 	}
 
 
-	public updateBind()
+	public updateBind():this
 	{
 		if(!this.hasGeometry){
-		// Bind appropriate array buffer to it
-		this.gl.bindBuffer(this.type, this.buffer);
+			// Bind appropriate array buffer to it
+			this.gl.bindBuffer(this.type, this.buffer);
 
-		// Pass the vertex data to the buffer
-		this.gl.bufferData(this.type, this.data, this.usage);
-	} else {
-		this._buffers[0].updateBind();
-		this._buffers[1].updateBind();
-	}
+			// Pass the vertex data to the buffer
+			this.gl.bufferData(this.type, this.data, this.usage);
+		} else {
+			this._buffers[0].updateBind();
+			this._buffers[1].updateBind();
+		}
+
 		this.hasPassed = true;
+		return this;
 	}
 
-	public bind()
+	public bind():this
 	{
 		if(!this.hasPassed){
 			this.updateBind();
@@ -81,9 +84,11 @@ class Buffer
 				this._buffers[1].bind();
 			}
 		}
+
+		return this;
 	}
 
-	public unbind()
+	public unbind():this
 	{
 		if(!this.hasGeometry){
 			this.gl.bindBuffer(this.type, null);
@@ -91,7 +96,7 @@ class Buffer
 			this._buffers[0].unbind();
 			this._buffers[1].unbind();
 		}
+
+		return this;
 	}
 }
-
-export default Buffer;

@@ -1,8 +1,8 @@
 import {AbstractTexture} from "./AbstractTexture";
 import {Rectangle} from "../../visual/data/Rectangle";
 import {Signal} from "../../core/event/Signal";
-import ILoadable from "../../core/interface/ILoadable";
-import Promise from "../../core/util/Promise";
+import {ILoadable} from "../../core/interface/ILoadable";
+import {Promise} from "../../core/util/Promise";
 
 export class Texture extends AbstractTexture implements ILoadable<Texture>
 {

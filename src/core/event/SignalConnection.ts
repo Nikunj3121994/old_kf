@@ -26,7 +26,7 @@
 
 import {SignalAbstract} from "./SignalAbstract";
 
-class SignalConnection
+export class SignalConnection
 {
 	public _next:SignalConnection = null;
 	public _signal:SignalAbstract;
@@ -66,5 +66,3 @@ class SignalConnection
 		}
 	}
 }
-
-export default SignalConnection;

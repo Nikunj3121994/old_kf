@@ -4,19 +4,27 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
         }
         PromiseUtil.allWithProgress = function (list, onProgress) {
             if (onProgress === void 0) { onProgress = function (progress) { }; }
-            return new Promise_1.default(function (resolve) {
-                var newList = [];
-                var then = function (response) {
-                    newList.push(response);
-                    onProgress(newList.length / list.length);
-                    if (newList.length == list.length) {
-                        resolve(newList);
-                    }
-                };
-                for (var i = 0; i < list.length; i++) {
-                    list[i].then(then);
+            var count = list.length;
+            var progressList = [];
+            for (var i = 0; i < count; i++) {
+                progressList.push(0);
+            }
+            var prvProgress = function (index, onProgress, result) {
+                var progress = 1;
+                progressList[index] = progress;
+                var total = 0;
+                var length = progressList.length;
+                for (var i = 0; i < length; i++) {
+                    total += progressList[i];
                 }
-            });
+                onProgress(total / count);
+                return result;
+            };
+            var promiseList = [];
+            for (var i = 0; i < count; i++) {
+                promiseList[i] = list[i].then(prvProgress.bind(this, i, onProgress));
+            }
+            return Promise_1.Promise.all(promiseList);
         };
         PromiseUtil.allForLoadable = function (list, onProgress) {
             if (onProgress === void 0) { onProgress = function (progress) { }; }
@@ -38,7 +46,7 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
             for (var i = 0; i < count; i++) {
                 promiseList[i] = list[i].load(prvProgress.bind(this, i, onProgress));
             }
-            return Promise_1.default.all(promiseList);
+            return Promise_1.Promise.all(promiseList);
         };
         return PromiseUtil;
     })();

@@ -1,41 +1,70 @@
 
-import Shader from "./Shader";
 import IHashMap from "../../core/interface/IHashMap";
-import UniformLocation from "./UniformLocation";
-import AttributeLocation from "./AttributeLocation";
 import GUI = dat.GUI;
+import {Shader} from "./Shader";
+import {AttributeLocation} from "./AttributeLocation";
+import {UniformLocation} from "./UniformLocation"
+import {ILoadable} from "../interface/ILoadable";
+import {Promise} from "../util/Promise";
+import {PromiseUtil} from "../util/PromiseUtil";
+import ShaderType from "./ShaderType";
+import {HttpRequest} from "../net/HttpRequest";
 
-class ShaderProgram
+export class ShaderProgram implements ILoadable<ShaderProgram>
 {
-	public static createGuiItems(gui:GUI, program:ShaderProgram):void
-	{
-		//var locations = program.getUniformLocations();
-		//
-		//Object.keys(locations).forEach(name => {
-		//	gui.
-		//})
-	}
 
-	gl:WebGLRenderingContext;
-	program:WebGLProgram;
+	public gl:WebGLRenderingContext;
+	protected _program:WebGLProgram;
+	protected _vertex:Shader;
+	protected _fragment:Shader;
+
+	private _isLinked:boolean = false;
+	private _hasLoaded:boolean = false;
+	private _promise:Promise<this>;
 
 	private _uniforms:any = null;
 	private _attributes:IHashMap<AttributeLocation> = {};
 
-	constructor(gl:WebGLRenderingContext, vertex:Shader, fragment:Shader)
+	constructor(gl:WebGLRenderingContext, vertex:string|Shader, fragment:string|Shader)
 	{
 		this.gl = gl;
-		this.program = gl.createProgram();
+		this._program = gl.createProgram();
 
-		// Create the shader program
-		gl.attachShader(this.program, vertex.getShader(gl));
-		gl.attachShader(this.program, fragment.getShader(gl));
-		gl.linkProgram(this.program);
-
-		// If creating the shader program failed, alert
-		if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
-			alert("Unable to initialize the shader program.");
+		if(typeof vertex == 'string')
+		{
+			this._vertex = new Shader(ShaderType.VERTEX, new HttpRequest<string>( <string> vertex, null));
+		} else {
+			this._vertex = <Shader> vertex;
 		}
+
+		if(typeof fragment == 'string')
+		{
+			this._fragment = new Shader(ShaderType.VERTEX, new HttpRequest<string>( <string> fragment, null));
+		} else {
+			this._fragment = <Shader> fragment;
+		}
+
+		if(this._vertex.hasLoaded() && this._fragment.hasLoaded()){
+			this._hasLoaded = true;
+			if(!this._isLinked) this.link();
+		}
+	}
+
+	public hasLoaded():boolean
+	{
+		return this._hasLoaded;
+	}
+
+	public load(onProgress?:(progress:number)=>any):Promise<ShaderProgram>
+	{
+		if(!this._promise){
+			this._program = PromiseUtil.allForLoadable<Shader>([this._vertex, this._fragment], onProgress).then<ShaderProgram>(() => {
+				this.link();
+				return this;
+			});
+		}
+
+		return this._promise;
 	}
 
 	/**
@@ -49,36 +78,87 @@ class ShaderProgram
 
 	/**
 	 *
-	 * @returns {IHashMap<WebGLUniformLocation>}
+	 * @returns {IHashMap<UniformLocation>}
 	 */
 	public get uniforms()
 	{
 		return this.getUniforms();
 	}
 
-	public use():ShaderProgram
+	protected link():ShaderProgram
 	{
-		this.gl.useProgram(this.program);
+		if(!this._isLinked)
+		{
+			var gl = this.gl;
+			// Create the shader program
+			gl.attachShader(this._program, this._vertex.getShader(gl));
+			gl.attachShader(this._program, this._fragment.getShader(gl));
+			gl.linkProgram(this._program);
+
+			this._vertex.deleteShader(gl);
+			this._fragment.deleteShader(gl);
+
+			this._vertex = null;
+			this._fragment = null;
+
+			// If creating the shader program failed, alert
+			if (!gl.getProgramParameter(this._program, gl.LINK_STATUS)) {
+				alert("Unable to initialize the shader program.");
+				throw new Error("Unable to initialize the shader program.");
+			}
+
+			this._isLinked = true;
+		}
+
 		return this;
 	}
 
+	/**
+	 * WebGL start using this program
+	 * @method use
+	 * @returns {ShaderProgram}
+	 */
+	public use():ShaderProgram
+	{
+		if(!this._isLinked) this.link();
+
+		if(!this.hasLoaded()){
+			throw new Error('can not use program when shaders are not loaded yet')
+		}
+
+		this.gl.useProgram(this._program);
+		return this;
+	}
+
+	/**
+	 * Returns WebGLProgram program
+	 *
+	 * @method get
+	 * @returns {WebGLProgram}
+	 */
 	public get():WebGLProgram
 	{
-		return this.program;
+		return this._program;
 	}
 
 	public getParameter(parameter:number):any
 	{
-		return this.gl.getProgramParameter( this.program, parameter );
+		if(this._isLinked) this.link();
+
+		return this.gl.getProgramParameter( this._program, parameter );
 	}
 
 	public getAttribLocation(value:string):number
 	{
-		return this.gl.getAttribLocation(this.program, value);
+		if(this._isLinked) this.link();
+
+		return this.gl.getAttribLocation(this._program, value);
 	}
 
 	public defineAttribute(name:string, size: number, type:number = this.gl.FLOAT, normalized: boolean = false, stride: number = 0, offset: number = 0):AttributeLocation
 	{
+		if(this._isLinked) this.link();
+
 		if(this._attributes[name])
 		{
 			throw new Error('attribute already defined');
@@ -97,13 +177,17 @@ class ShaderProgram
 
 	public getUniformLocation(value:string):WebGLUniformLocation
 	{
-		return this.gl.getUniformLocation(this.program, value);
+		if(this._isLinked) this.link();
+
+		return this.gl.getUniformLocation(this._program, value);
 	}
 
 	public getUniforms():IHashMap<UniformLocation>
 	{
 		if(!this._uniforms)
 		{
+			if(this._isLinked) this.link();
+
 			this._uniforms = this.fetchUniformLocations();
 		}
 
@@ -118,7 +202,7 @@ class ShaderProgram
 	protected fetchUniformLocations():IHashMap<UniformLocation>
 	{
 		var uniforms:IHashMap<UniformLocation> = {};
-		var program = this.program;
+		var program = this._program;
 		var gl = this.gl;
 
 		var n = this.getParameter( gl.ACTIVE_UNIFORMS );
@@ -168,10 +252,11 @@ class ShaderProgram
 
 	public destruct():void
 	{
-		this.gl.deleteProgram(this.program);
-		this.program = void 0;
+		this._vertex = null;
+		this._fragment.deleteShader(this.gl);
+
+		this.gl.deleteProgram(this._program);
+		this._program = void 0;
 		this.gl = void 0;
 	}
 }
-
-export default ShaderProgram;

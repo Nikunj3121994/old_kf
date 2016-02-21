@@ -30,13 +30,13 @@
  */
 
 import IHashMap from "../interface/IHashMap";
-import Promise from "../util/Promise";
-import ILoadable from "../interface/ILoadable";
+import {Promise} from "../util/Promise";
+import {ILoadable} from "../interface/ILoadable";
 
 /**
  * @class HttpRequest
  */
-class HttpRequest
+export class HttpRequest<T> implements ILoadable<T>
 {
 	/**
 	 * @static
@@ -112,6 +112,46 @@ class HttpRequest
 		return HttpRequest.getString(url, query)
 			.then((response:string) => JSON.parse(response));
 	}
+
+	public path:string;
+	public query:IHashMap<any>;
+	public data:T;
+	public type:any;
+
+	protected _promise:any;
+	protected _hasLoaded:boolean = false;
+
+	constructor(path:string, query:IHashMap<any> = {}, type?:T)
+	{
+		this.path = path;
+		this.query = query;
+		this.type = type;
+	}
+
+
+	public hasLoaded():boolean
+	{
+		return this._hasLoaded;
+	}
+
+	public load(onProgress?:(progress:number)=>any):Promise<T>
+	{
+		if(!this._promise){
+			this._promise = HttpRequest.getString(this.path, this.query).then((data:T) => {
+				if(onProgress) {
+					onProgress(1);
+				}
+				this._hasLoaded = true;
+				this.data = data;
+				return data;
+			});
+		}
+
+		return this._promise;
+	}
 }
 
-export default HttpRequest;
+export enum Type {
+	JSON,
+	STRING
+}

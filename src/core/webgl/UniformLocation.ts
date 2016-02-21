@@ -1,7 +1,7 @@
-import ShaderProgram from "./ShaderProgram";
+
 import {AbstractTexture} from "../../visual/display/AbstractTexture";
 
-class UniformLocation
+export class UniformLocation
 {
 	protected _gl:WebGLRenderingContext = null;
 	protected _name:string;
@@ -165,5 +165,3 @@ class UniformLocation
 		}
 	}
 }
-
-export default UniformLocation;

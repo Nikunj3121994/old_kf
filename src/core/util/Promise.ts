@@ -122,13 +122,13 @@ function doResolve(fn, onFulfilled, onRejected) {
 	}
 }
 
-interface Thenable<R> {
+export interface Thenable<R> {
 	then<U>(onFulfilled?: (value: R) => U | Thenable<U>, onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
 	then<U>(onFulfilled?: (value: R) => U | Thenable<U>, onRejected?: (error: any) => void): Thenable<U>;
 	catch<U>(onRejected?: (error: any) => U | Thenable<U>): Thenable<U>;
 }
 
-class Promise<T> implements Thenable<T>
+export class Promise<T> implements Thenable<T>
 {
 	/**
 	 *
@@ -280,5 +280,3 @@ class Promise<T> implements Thenable<T>
 		})
 	}
 }
-
-export default Promise;

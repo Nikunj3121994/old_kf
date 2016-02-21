@@ -1,19 +1,15 @@
 
-import DisplayObject from "../../display/DisplayObject";
-import {ICanvasBufferOptions} from "../buffer/CanvasBuffer";
-import {CanvasBuffer} from "../buffer/CanvasBuffer";
 
 
-class RendererCanvas extends CanvasBuffer
+class RendererCanvas
 {
-	constructor(width:number, height:number, options:ICanvasBufferOptions)
+	constructor(width:number, height:number, options)
 	{
-		super(width, height, options);
 	}
 
-	public render(item:DisplayObject):void
+	public render(item):void
 	{
-		item.draw(this.context);
+		// item.draw(this.context);
 	}
 }
 

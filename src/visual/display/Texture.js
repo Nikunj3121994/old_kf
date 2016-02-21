@@ -77,10 +77,10 @@ define(["require", "exports", "./AbstractTexture", "../../core/event/Signal", ".
                 if (onProgress) {
                     onProgress(1);
                 }
-                result = Promise_1.default.resolve(this);
+                result = Promise_1.Promise.resolve(this);
             }
             else {
-                result = new Promise_1.default(function (resolve) {
+                result = new Promise_1.Promise(function (resolve) {
                     if (_this.hasLoaded()) {
                         if (onProgress) {
                             onProgress(1);

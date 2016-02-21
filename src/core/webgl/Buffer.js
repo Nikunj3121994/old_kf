@@ -31,6 +31,7 @@ define(["require", "exports", "./Geometry"], function (require, exports, Geometr
                 this._buffers[1].update();
             }
             this.hasPassed = true;
+            return this;
         };
         Buffer.prototype.updateBind = function () {
             if (!this.hasGeometry) {
@@ -42,6 +43,7 @@ define(["require", "exports", "./Geometry"], function (require, exports, Geometr
                 this._buffers[1].updateBind();
             }
             this.hasPassed = true;
+            return this;
         };
         Buffer.prototype.bind = function () {
             if (!this.hasPassed) {
@@ -56,6 +58,7 @@ define(["require", "exports", "./Geometry"], function (require, exports, Geometr
                     this._buffers[1].bind();
                 }
             }
+            return this;
         };
         Buffer.prototype.unbind = function () {
             if (!this.hasGeometry) {
@@ -65,9 +68,9 @@ define(["require", "exports", "./Geometry"], function (require, exports, Geometr
                 this._buffers[0].unbind();
                 this._buffers[1].unbind();
             }
+            return this;
         };
         return Buffer;
     })();
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = Buffer;
+    exports.Buffer = Buffer;
 });

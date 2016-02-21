@@ -1,9 +1,14 @@
 define(["require", "exports", "../util/Promise"], function (require, exports, Promise_1) {
     var HttpRequest = (function () {
-        function HttpRequest() {
+        function HttpRequest(path, query, type) {
+            if (query === void 0) { query = {}; }
+            this._hasLoaded = false;
+            this.path = path;
+            this.query = query;
+            this.type = type;
         }
         HttpRequest.request = function (method, url, args) {
-            return new Promise_1.default(function (resolve, reject) {
+            return new Promise_1.Promise(function (resolve, reject) {
                 var client = new XMLHttpRequest();
                 var uri = url;
                 if (args && (method === 'POST' || method === 'PUT')) {
@@ -42,8 +47,29 @@ define(["require", "exports", "../util/Promise"], function (require, exports, Pr
             return HttpRequest.getString(url, query)
                 .then(function (response) { return JSON.parse(response); });
         };
+        HttpRequest.prototype.hasLoaded = function () {
+            return this._hasLoaded;
+        };
+        HttpRequest.prototype.load = function (onProgress) {
+            var _this = this;
+            if (!this._promise) {
+                this._promise = HttpRequest.getString(this.path, this.query).then(function (data) {
+                    if (onProgress) {
+                        onProgress(1);
+                    }
+                    _this._hasLoaded = true;
+                    _this.data = data;
+                    return data;
+                });
+            }
+            return this._promise;
+        };
         return HttpRequest;
     })();
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = HttpRequest;
+    exports.HttpRequest = HttpRequest;
+    (function (Type) {
+        Type[Type["JSON"] = 0] = "JSON";
+        Type[Type["STRING"] = 1] = "STRING";
+    })(exports.Type || (exports.Type = {}));
+    var Type = exports.Type;
 });

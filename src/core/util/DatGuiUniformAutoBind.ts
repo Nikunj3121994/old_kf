@@ -1,5 +1,6 @@
-import ShaderProgram from "../webgl/ShaderProgram";
-import UniformLocation from "../webgl/UniformLocation";
+
+import {ShaderProgram} from "../webgl/ShaderProgram";
+import {UniformLocation} from "../webgl/UniformLocation";
 
 export class DatGuiUniformAutoBind
 {

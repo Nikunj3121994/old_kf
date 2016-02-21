@@ -38,33 +38,23 @@ define(["require", "exports", "./FluidMeasurementsUnit", "../enum/MeasurementUni
             return sizea;
         };
         FluidCalculation.getCalcUnit = function (unit1, math, unit2) {
-            switch (math) {
-                case 0:
-                    {
-                        return unit1 + unit2;
-                        break;
-                    }
-                case 1:
-                    {
-                        return unit1 - unit2;
-                        break;
-                    }
-                case 2:
-                    {
-                        return unit1 * unit2;
-                        break;
-                    }
-                case 3:
-                    {
-                        return unit1 / unit2;
-                        break;
-                    }
-                default:
-                    {
-                        return 0;
-                        break;
-                    }
+            var result;
+            if (math == 0) {
+                result = unit1 + unit2;
             }
+            else if (math == 1) {
+                result = unit1 - unit2;
+            }
+            else if (math == 2) {
+                result = unit1 * unit2;
+            }
+            else if (math == 3) {
+                result = unit1 / unit2;
+            }
+            else {
+                result = 0;
+            }
+            return result;
         };
         FluidCalculation.getCalculationTypeByValue = function (value) {
             if (typeof (value) == 'string') {

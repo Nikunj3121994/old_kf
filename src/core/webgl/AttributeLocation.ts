@@ -1,8 +1,5 @@
-import ShaderProgram from "./ShaderProgram";
-import Buffer from "./Buffer";
-import {Mesh} from "./Mesh";
-
-class AttributeLocation
+import {Buffer} from "./Buffer";
+export class AttributeLocation
 {
 	protected _gl:WebGLRenderingContext = null;
 	protected _name:string;
@@ -75,5 +72,3 @@ class AttributeLocation
 	}
 
 }
-
-export default AttributeLocation;

@@ -145,6 +145,5 @@ define(["require", "exports", "../../visual/display/AbstractTexture"], function 
         };
         return UniformLocation;
     })();
-    Object.defineProperty(exports, "__esModule", { value: true });
-    exports.default = UniformLocation;
+    exports.UniformLocation = UniformLocation;
 });

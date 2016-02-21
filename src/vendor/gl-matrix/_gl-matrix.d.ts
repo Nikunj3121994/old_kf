@@ -3,34 +3,31 @@
 // Definitions by: Tat <https://github.com/tatchx>
 // Definitions: https://github.com/borisyankov/DefinitelyTyped
 
-declare module GLM {
-	export interface IArray
-	{
-		/**
-		 * Must be indexable like an array
-		 */
-		[index: number]: number;
-	}
+interface IArray {
+	/**
+	 * Must be indexable like an array
+	 */
+	[index: number]: number;
 }
 
 // Common
-declare module glMatrix {
+export interface glMatrix {
 	/**
 	 * Convert Degree To Radian
 	 *
 	 * @param a Angle in Degrees
 	 */
-	export function toRadian(a: number): number;
+	toRadian(a: number): number;
 }
 
 // vec2
-declare module vec2 {
+export interface vec2 {
 	/**
 	 * Creates a new, empty vec2
 	 *
 	 * @returns a new 2D vector
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new vec2 initialized with values from an existing vector
@@ -38,7 +35,7 @@ declare module vec2 {
 	 * @param a a vector to clone
 	 * @returns a new 2D vector
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Creates a new vec2 initialized with the given values
@@ -47,7 +44,7 @@ declare module vec2 {
 	 * @param y Y component
 	 * @returns a new 2D vector
 	 */
-	export function fromValues(x: number, y: number): GLM.IArray;
+	fromValues(x: number, y: number): IArray;
 
 	/**
 	 * Copy the values from one vec2 to another
@@ -56,7 +53,7 @@ declare module vec2 {
 	 * @param a the source vector
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set the components of a vec2 to the given values
@@ -66,7 +63,7 @@ declare module vec2 {
 	 * @param y Y component
 	 * @returns out
 	 */
-	export function set(out: GLM.IArray, x: number, y: number): GLM.IArray;
+	set(out: IArray, x: number, y: number): IArray;
 
 	/**
 	 * Adds two vec2's
@@ -76,7 +73,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function add(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	add(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Subtracts vector b from vector a
@@ -86,7 +83,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function subtract(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	subtract(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Subtracts vector b from vector a
@@ -96,7 +93,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function sub(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	sub(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two vec2's
@@ -106,7 +103,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two vec2's
@@ -116,7 +113,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Divides two vec2's
@@ -126,7 +123,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function divide(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	divide(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Divides two vec2's
@@ -136,7 +133,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function div(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	div(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns the minimum of two vec2's
@@ -146,7 +143,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function min(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	min(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns the maximum of two vec2's
@@ -156,7 +153,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function max(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	max(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Scales a vec2 by a scalar number
@@ -166,7 +163,7 @@ declare module vec2 {
 	 * @param b amount to scale the vector by
 	 * @returns out
 	 */
-	export function scale(out: GLM.IArray, a: GLM.IArray, b: number): GLM.IArray;
+	scale(out: IArray, a: IArray, b: number): IArray;
 
 	/**
 	 * Adds two vec2's after scaling the second operand by a scalar value
@@ -177,7 +174,7 @@ declare module vec2 {
 	 * @param scale the amount to scale b by before adding
 	 * @returns out
 	 */
-	export function scaleAndAdd(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, scale: number): GLM.IArray;
+	scaleAndAdd(out: IArray, a: IArray, b: IArray, scale: number): IArray;
 
 	/**
 	 * Calculates the euclidian distance between two vec2's
@@ -186,7 +183,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns distance between a and b
 	 */
-	export function distance(a: GLM.IArray, b: GLM.IArray): number;
+	distance(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the euclidian distance between two vec2's
@@ -195,7 +192,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns distance between a and b
 	 */
-	export function dist(a: GLM.IArray, b: GLM.IArray): number;
+	dist(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the squared euclidian distance between two vec2's
@@ -204,7 +201,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns squared distance between a and b
 	 */
-	export function squaredDistance(a: GLM.IArray, b: GLM.IArray): number;
+	squaredDistance(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the squared euclidian distance between two vec2's
@@ -213,7 +210,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns squared distance between a and b
 	 */
-	export function sqrDist(a: GLM.IArray, b: GLM.IArray): number;
+	sqrDist(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the length of a vec2
@@ -221,7 +218,7 @@ declare module vec2 {
 	 * @param a vector to calculate length of
 	 * @returns length of a
 	 */
-	export function length(a: GLM.IArray): number;
+	length(a: IArray): number;
 
 	/**
 	 * Calculates the length of a vec2
@@ -229,7 +226,7 @@ declare module vec2 {
 	 * @param a vector to calculate length of
 	 * @returns length of a
 	 */
-	export function len(a: GLM.IArray): number;
+	len(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a vec2
@@ -237,7 +234,7 @@ declare module vec2 {
 	 * @param a vector to calculate squared length of
 	 * @returns squared length of a
 	 */
-	export function squaredLength(a: GLM.IArray): number;
+	squaredLength(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a vec2
@@ -245,7 +242,7 @@ declare module vec2 {
 	 * @param a vector to calculate squared length of
 	 * @returns squared length of a
 	 */
-	export function sqrLen(a: GLM.IArray): number;
+	sqrLen(a: IArray): number;
 
 	/**
 	 * Negates the components of a vec2
@@ -254,7 +251,7 @@ declare module vec2 {
 	 * @param a vector to negate
 	 * @returns out
 	 */
-	export function negate(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	negate(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Returns the inverse of the components of a vec2
@@ -263,7 +260,7 @@ declare module vec2 {
 	 * @param a vector to invert
 	 * @returns out
 	 */
-	export function inverse(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	inverse(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Normalize a vec2
@@ -272,7 +269,7 @@ declare module vec2 {
 	 * @param a vector to normalize
 	 * @returns out
 	 */
-	export function normalize(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	normalize(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the dot product of two vec2's
@@ -281,7 +278,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns dot product of a and b
 	 */
-	export function dot(a: GLM.IArray, b: GLM.IArray): number;
+	dot(a: IArray, b: IArray): number;
 
 	/**
 	 * Computes the cross product of two vec2's
@@ -292,7 +289,7 @@ declare module vec2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function cross(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	cross(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Performs a linear interpolation between two vec2's
@@ -303,7 +300,7 @@ declare module vec2 {
 	 * @param t interpolation amount between the two inputs
 	 * @returns out
 	 */
-	export function lerp(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, t: number): GLM.IArray;
+	lerp(out: IArray, a: IArray, b: IArray, t: number): IArray;
 
 	/**
 	 * Generates a random unit vector
@@ -311,7 +308,7 @@ declare module vec2 {
 	 * @param out the receiving vector
 	 * @returns out
 	 */
-	export function random(out: GLM.IArray): GLM.IArray;
+	random(out: IArray): IArray;
 
 	/**
 	 * Generates a random vector with the given scale
@@ -320,7 +317,7 @@ declare module vec2 {
 	 * @param scale Length of the resulting vector. If ommitted, a unit vector will be returned
 	 * @returns out
 	 */
-	export function random(out: GLM.IArray, scale: number): GLM.IArray;
+	random(out: IArray, scale: number): IArray;
 
 	/**
 	 * Transforms the vec2 with a mat2
@@ -330,7 +327,7 @@ declare module vec2 {
 	 * @param m matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat2(out: GLM.IArray, a: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	transformMat2(out: IArray, a: IArray, m: IArray): IArray;
 
 	/**
 	 * Transforms the vec2 with a mat2d
@@ -340,7 +337,7 @@ declare module vec2 {
 	 * @param m matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat2d(out: GLM.IArray, a: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	transformMat2d(out: IArray, a: IArray, m: IArray): IArray;
 
 	/**
 	 * Transforms the vec2 with a mat3
@@ -351,7 +348,7 @@ declare module vec2 {
 	 * @param m matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat3(out: GLM.IArray, a: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	transformMat3(out: IArray, a: IArray, m: IArray): IArray;
 
 	/**
 	 * Transforms the vec2 with a mat4
@@ -363,7 +360,7 @@ declare module vec2 {
 	 * @param m matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat4(out: GLM.IArray, a: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	transformMat4(out: IArray, a: IArray, m: IArray): IArray;
 
 	/**
 	 * Perform some operation over an array of vec2s.
@@ -376,8 +373,8 @@ declare module vec2 {
 	 * @param arg additional argument to pass to fn
 	 * @returns a
 	 */
-	export function forEach(a: GLM.IArray, stride: number, offset: number, count: number,
-	                        fn: (a: GLM.IArray, b: GLM.IArray, arg: any) => void, arg: any): GLM.IArray;
+	forEach(a: IArray, stride: number, offset: number, count: number,
+	                        fn: (a: IArray, b: IArray, arg: any) => void, arg: any): IArray;
 
 	/**
 	 * Perform some operation over an array of vec2s.
@@ -389,8 +386,8 @@ declare module vec2 {
 	 * @param fn Function to call for each vector in the array
 	 * @returns a
 	 */
-	export function forEach(a: GLM.IArray, stride: number, offset: number, count: number,
-	                        fn: (a: GLM.IArray, b: GLM.IArray) => void): GLM.IArray;
+	forEach(a: IArray, stride: number, offset: number, count: number,
+	                        fn: (a: IArray, b: IArray) => void): IArray;
 
 	/**
 	 * Returns a string representation of a vector
@@ -398,18 +395,18 @@ declare module vec2 {
 	 * @param vec vector to represent as a string
 	 * @returns string representation of the vector
 	 */
-	export function str(a: GLM.IArray): string;
+	str(a: IArray): string;
 }
 
 // vec3
-export declare module vec3 {
+export interface vec3 {
 
 	/**
 	 * Creates a new, empty vec3
 	 *
 	 * @returns a new 3D vector
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new vec3 initialized with values from an existing vector
@@ -417,7 +414,7 @@ export declare module vec3 {
 	 * @param a vector to clone
 	 * @returns a new 3D vector
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Creates a new vec3 initialized with the given values
@@ -427,7 +424,7 @@ export declare module vec3 {
 	 * @param z Z component
 	 * @returns a new 3D vector
 	 */
-	export function fromValues(x: number, y: number, z: number): GLM.IArray;
+	fromValues(x: number, y: number, z: number): IArray;
 
 	/**
 	 * Copy the values from one vec3 to another
@@ -436,7 +433,7 @@ export declare module vec3 {
 	 * @param a the source vector
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set the components of a vec3 to the given values
@@ -447,7 +444,7 @@ export declare module vec3 {
 	 * @param z Z component
 	 * @returns out
 	 */
-	export function set(out: GLM.IArray, x: number, y: number, z: number): GLM.IArray;
+	set(out: IArray, x: number, y: number, z: number): IArray;
 
 	/**
 	 * Adds two vec3's
@@ -457,7 +454,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function add(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	add(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Subtracts vector b from vector a
@@ -467,7 +464,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function subtract(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	subtract(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Subtracts vector b from vector a
@@ -477,7 +474,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function sub(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray
+	sub(out: IArray, a: IArray, b: IArray): IArray
 
 	/**
 	 * Multiplies two vec3's
@@ -487,7 +484,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two vec3's
@@ -497,7 +494,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Divides two vec3's
@@ -507,7 +504,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function divide(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	divide(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Divides two vec3's
@@ -517,7 +514,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function div(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	div(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns the minimum of two vec3's
@@ -527,7 +524,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function min(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	min(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns the maximum of two vec3's
@@ -537,7 +534,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function max(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	max(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Scales a vec3 by a scalar number
@@ -547,7 +544,7 @@ export declare module vec3 {
 	 * @param b amount to scale the vector by
 	 * @returns out
 	 */
-	export function scale(out: GLM.IArray, a: GLM.IArray, b: number): GLM.IArray;
+	scale(out: IArray, a: IArray, b: number): IArray;
 
 	/**
 	 * Adds two vec3's after scaling the second operand by a scalar value
@@ -558,7 +555,7 @@ export declare module vec3 {
 	 * @param scale the amount to scale b by before adding
 	 * @returns out
 	 */
-	export function scaleAndAdd(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, scale: number): GLM.IArray;
+	scaleAndAdd(out: IArray, a: IArray, b: IArray, scale: number): IArray;
 
 	/**
 	 * Calculates the euclidian distance between two vec3's
@@ -567,7 +564,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns distance between a and b
 	 */
-	export function distance(a: GLM.IArray, b: GLM.IArray): number;
+	distance(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the euclidian distance between two vec3's
@@ -576,7 +573,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns distance between a and b
 	 */
-	export function dist(a: GLM.IArray, b: GLM.IArray): number;
+	dist(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the squared euclidian distance between two vec3's
@@ -585,7 +582,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns squared distance between a and b
 	 */
-	export function squaredDistance(a: GLM.IArray, b: GLM.IArray): number;
+	squaredDistance(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the squared euclidian distance between two vec3's
@@ -594,7 +591,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns squared distance between a and b
 	 */
-	export function sqrDist(a: GLM.IArray, b: GLM.IArray): number;
+	sqrDist(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the length of a vec3
@@ -602,7 +599,7 @@ export declare module vec3 {
 	 * @param a vector to calculate length of
 	 * @returns length of a
 	 */
-	export function length(a: GLM.IArray): number;
+	length(a: IArray): number;
 
 	/**
 	 * Calculates the length of a vec3
@@ -610,7 +607,7 @@ export declare module vec3 {
 	 * @param a vector to calculate length of
 	 * @returns length of a
 	 */
-	export function len(a: GLM.IArray): number;
+	len(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a vec3
@@ -618,7 +615,7 @@ export declare module vec3 {
 	 * @param a vector to calculate squared length of
 	 * @returns squared length of a
 	 */
-	export function squaredLength(a: GLM.IArray): number;
+	squaredLength(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a vec3
@@ -626,7 +623,7 @@ export declare module vec3 {
 	 * @param a vector to calculate squared length of
 	 * @returns squared length of a
 	 */
-	export function sqrLen(a: GLM.IArray): number;
+	sqrLen(a: IArray): number;
 
 	/**
 	 * Negates the components of a vec3
@@ -635,7 +632,7 @@ export declare module vec3 {
 	 * @param a vector to negate
 	 * @returns out
 	 */
-	export function negate(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	negate(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Returns the inverse of the components of a vec3
@@ -644,7 +641,7 @@ export declare module vec3 {
 	 * @param a vector to invert
 	 * @returns out
 	 */
-	export function inverse(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	inverse(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Normalize a vec3
@@ -653,7 +650,7 @@ export declare module vec3 {
 	 * @param a vector to normalize
 	 * @returns out
 	 */
-	export function normalize(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	normalize(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the dot product of two vec3's
@@ -662,7 +659,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns dot product of a and b
 	 */
-	export function dot(a: GLM.IArray, b: GLM.IArray): number;
+	dot(a: IArray, b: IArray): number;
 
 	/**
 	 * Computes the cross product of two vec3's
@@ -672,7 +669,7 @@ export declare module vec3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function cross(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	cross(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Performs a linear interpolation between two vec3's
@@ -683,7 +680,7 @@ export declare module vec3 {
 	 * @param t interpolation amount between the two inputs
 	 * @returns out
 	 */
-	export function lerp(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, t: number): GLM.IArray;
+	lerp(out: IArray, a: IArray, b: IArray, t: number): IArray;
 
 	/**
 	 * Generates a random unit vector
@@ -691,7 +688,7 @@ export declare module vec3 {
 	 * @param out the receiving vector
 	 * @returns out
 	 */
-	export function random(out: GLM.IArray): GLM.IArray;
+	random(out: IArray): IArray;
 
 	/**
 	 * Generates a random vector with the given scale
@@ -700,7 +697,7 @@ export declare module vec3 {
 	 * @param [scale] Length of the resulting vector. If ommitted, a unit vector will be returned
 	 * @returns out
 	 */
-	export function random(out: GLM.IArray, scale: number): GLM.IArray;
+	random(out: IArray, scale: number): IArray;
 
 	/**
 	 * Rotate a 3D vector around the x-axis
@@ -710,7 +707,7 @@ export declare module vec3 {
 	 * @param c The angle of rotation
 	 * @returns out
 	 */
-	export function rotateX(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, c: number): GLM.IArray;
+	rotateX(out: IArray, a: IArray, b: IArray, c: number): IArray;
 
 	/**
 	 * Rotate a 3D vector around the y-axis
@@ -720,7 +717,7 @@ export declare module vec3 {
 	 * @param c The angle of rotation
 	 * @returns out
 	 */
-	export function rotateY(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, c: number): GLM.IArray;
+	rotateY(out: IArray, a: IArray, b: IArray, c: number): IArray;
 
 	/**
 	 * Rotate a 3D vector around the z-axis
@@ -730,7 +727,7 @@ export declare module vec3 {
 	 * @param c The angle of rotation
 	 * @returns out
 	 */
-	export function rotateZ(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, c: number): GLM.IArray;
+	rotateZ(out: IArray, a: IArray, b: IArray, c: number): IArray;
 
 	/**
 	 * Transforms the vec3 with a mat3.
@@ -740,7 +737,7 @@ export declare module vec3 {
 	 * @param m the 3x3 matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat3(out: GLM.IArray, a: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	transformMat3(out: IArray, a: IArray, m: IArray): IArray;
 
 	/**
 	 * Transforms the vec3 with a mat4.
@@ -751,7 +748,7 @@ export declare module vec3 {
 	 * @param m matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat4(out: GLM.IArray, a: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	transformMat4(out: IArray, a: IArray, m: IArray): IArray;
 
 	/**
 	 * Transforms the vec3 with a quat
@@ -761,7 +758,7 @@ export declare module vec3 {
 	 * @param q quaternion to transform with
 	 * @returns out
 	 */
-	export function transformQuat(out: GLM.IArray, a: GLM.IArray, q: GLM.IArray): GLM.IArray;
+	transformQuat(out: IArray, a: IArray, q: IArray): IArray;
 
 
 	/**
@@ -776,8 +773,8 @@ export declare module vec3 {
 	 * @returns a
 	 * @function
 	 */
-	export function forEach(out: GLM.IArray, string: number, offset: number, count: number,
-	                        fn: (a: GLM.IArray, b: GLM.IArray, arg: any) => void, arg: any): GLM.IArray;
+	forEach(out: IArray, string: number, offset: number, count: number,
+	                        fn: (a: IArray, b: IArray, arg: any) => void, arg: any): IArray;
 
 	/**
 	 * Perform some operation over an array of vec3s.
@@ -790,8 +787,8 @@ export declare module vec3 {
 	 * @returns a
 	 * @function
 	 */
-	export function forEach(out: GLM.IArray, string: number, offset: number, count: number,
-	                        fn: (a: GLM.IArray, b: GLM.IArray) => void): GLM.IArray;
+	forEach(out: IArray, string: number, offset: number, count: number,
+	                        fn: (a: IArray, b: IArray) => void): IArray;
 
 	/**
 	 * Get the angle between two 3D vectors
@@ -799,7 +796,7 @@ export declare module vec3 {
 	 * @param b The second operand
 	 * @returns The angle in radians
 	 */
-	export function angle(a: GLM.IArray, b: GLM.IArray): number;
+	angle(a: IArray, b: IArray): number;
 
 	/**
 	 * Returns a string representation of a vector
@@ -807,18 +804,18 @@ export declare module vec3 {
 	 * @param vec vector to represent as a string
 	 * @returns string representation of the vector
 	 */
-	export function str(a: GLM.IArray): string;
+	str(a: IArray): string;
 }
 
 // vec4
-export declare module vec4 {
+export interface vec4 {
 
 	/**
 	 * Creates a new, empty vec4
 	 *
 	 * @returns a new 4D vector
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new vec4 initialized with values from an existing vector
@@ -826,7 +823,7 @@ export declare module vec4 {
 	 * @param a vector to clone
 	 * @returns a new 4D vector
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Creates a new vec4 initialized with the given values
@@ -837,7 +834,7 @@ export declare module vec4 {
 	 * @param w W component
 	 * @returns a new 4D vector
 	 */
-	export function fromValues(x: number, y: number, z: number, w: number): GLM.IArray;
+	fromValues(x: number, y: number, z: number, w: number): IArray;
 
 	/**
 	 * Copy the values from one vec4 to another
@@ -846,7 +843,7 @@ export declare module vec4 {
 	 * @param a the source vector
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set the components of a vec4 to the given values
@@ -858,7 +855,7 @@ export declare module vec4 {
 	 * @param w W component
 	 * @returns out
 	 */
-	export function set(out: GLM.IArray, x: number, y: number, z: number, w: number): GLM.IArray;
+	set(out: IArray, x: number, y: number, z: number, w: number): IArray;
 
 	/**
 	 * Adds two vec4's
@@ -868,7 +865,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function add(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	add(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Subtracts vector b from vector a
@@ -878,7 +875,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function subtract(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	subtract(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Subtracts vector b from vector a
@@ -888,7 +885,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function sub(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	sub(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two vec4's
@@ -898,7 +895,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two vec4's
@@ -908,7 +905,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Divides two vec4's
@@ -918,7 +915,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function divide(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	divide(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Divides two vec4's
@@ -928,7 +925,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function div(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	div(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns the minimum of two vec4's
@@ -938,7 +935,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function min(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	min(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns the maximum of two vec4's
@@ -948,7 +945,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function max(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	max(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Scales a vec4 by a scalar number
@@ -958,7 +955,7 @@ export declare module vec4 {
 	 * @param b amount to scale the vector by
 	 * @returns out
 	 */
-	export function scale(out: GLM.IArray, a: GLM.IArray, b: number): GLM.IArray;
+	scale(out: IArray, a: IArray, b: number): IArray;
 
 	/**
 	 * Adds two vec4's after scaling the second operand by a scalar value
@@ -969,7 +966,7 @@ export declare module vec4 {
 	 * @param scale the amount to scale b by before adding
 	 * @returns out
 	 */
-	export function scaleAndAdd(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, scale: number): GLM.IArray;
+	scaleAndAdd(out: IArray, a: IArray, b: IArray, scale: number): IArray;
 
 	/**
 	 * Calculates the euclidian distance between two vec4's
@@ -978,7 +975,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns distance between a and b
 	 */
-	export function distance(a: GLM.IArray, b: GLM.IArray): number;
+	distance(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the euclidian distance between two vec4's
@@ -987,7 +984,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns distance between a and b
 	 */
-	export function dist(a: GLM.IArray, b: GLM.IArray): number;
+	dist(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the squared euclidian distance between two vec4's
@@ -996,7 +993,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns squared distance between a and b
 	 */
-	export function squaredDistance(a: GLM.IArray, b: GLM.IArray): number;
+	squaredDistance(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the squared euclidian distance between two vec4's
@@ -1005,7 +1002,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns squared distance between a and b
 	 */
-	export function sqrDist(a: GLM.IArray, b: GLM.IArray): number;
+	sqrDist(a: IArray, b: IArray): number;
 
 	/**
 	 * Calculates the length of a vec4
@@ -1013,7 +1010,7 @@ export declare module vec4 {
 	 * @param a vector to calculate length of
 	 * @returns length of a
 	 */
-	export function length(a: GLM.IArray): number;
+	length(a: IArray): number;
 
 	/**
 	 * Calculates the length of a vec4
@@ -1021,7 +1018,7 @@ export declare module vec4 {
 	 * @param a vector to calculate length of
 	 * @returns length of a
 	 */
-	export function len(a: GLM.IArray): number;
+	len(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a vec4
@@ -1029,7 +1026,7 @@ export declare module vec4 {
 	 * @param a vector to calculate squared length of
 	 * @returns squared length of a
 	 */
-	export function squaredLength(a: GLM.IArray): number;
+	squaredLength(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a vec4
@@ -1037,7 +1034,7 @@ export declare module vec4 {
 	 * @param a vector to calculate squared length of
 	 * @returns squared length of a
 	 */
-	export function sqrLen(a: GLM.IArray): number;
+	sqrLen(a: IArray): number;
 
 	/**
 	 * Negates the components of a vec4
@@ -1046,7 +1043,7 @@ export declare module vec4 {
 	 * @param a vector to negate
 	 * @returns out
 	 */
-	export function negate(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	negate(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Returns the inverse of the components of a vec4
@@ -1055,7 +1052,7 @@ export declare module vec4 {
 	 * @param a vector to invert
 	 * @returns out
 	 */
-	export function inverse(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	inverse(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Normalize a vec4
@@ -1064,7 +1061,7 @@ export declare module vec4 {
 	 * @param a vector to normalize
 	 * @returns out
 	 */
-	export function normalize(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	normalize(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the dot product of two vec4's
@@ -1073,7 +1070,7 @@ export declare module vec4 {
 	 * @param b the second operand
 	 * @returns dot product of a and b
 	 */
-	export function dot(a: GLM.IArray, b: GLM.IArray): number;
+	dot(a: IArray, b: IArray): number;
 
 	/**
 	 * Performs a linear interpolation between two vec4's
@@ -1084,7 +1081,7 @@ export declare module vec4 {
 	 * @param t interpolation amount between the two inputs
 	 * @returns out
 	 */
-	export function lerp(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, t: number): GLM.IArray;
+	lerp(out: IArray, a: IArray, b: IArray, t: number): IArray;
 
 	/**
 	 * Generates a random unit vector
@@ -1092,7 +1089,7 @@ export declare module vec4 {
 	 * @param out the receiving vector
 	 * @returns out
 	 */
-	export function random(out: GLM.IArray): GLM.IArray;
+	random(out: IArray): IArray;
 
 	/**
 	 * Generates a random vector with the given scale
@@ -1101,7 +1098,7 @@ export declare module vec4 {
 	 * @param Length of the resulting vector. If ommitted, a unit vector will be returned
 	 * @returns out
 	 */
-	export function random(out: GLM.IArray, scale: number): GLM.IArray;
+	random(out: IArray, scale: number): IArray;
 
 	/**
 	 * Transforms the vec4 with a mat4.
@@ -1111,7 +1108,7 @@ export declare module vec4 {
 	 * @param m matrix to transform with
 	 * @returns out
 	 */
-	export function transformMat4(out: GLM.IArray, a: GLM.IArray, mat: GLM.IArray): GLM.IArray;
+	transformMat4(out: IArray, a: IArray, mat: IArray): IArray;
 
 	/**
 	 * Transforms the vec4 with a quat
@@ -1121,7 +1118,7 @@ export declare module vec4 {
 	 * @param q quaternion to transform with
 	 * @returns out
 	 */
-	export function transformQuat(out: GLM.IArray, a: GLM.IArray, quat: GLM.IArray): GLM.IArray;
+	transformQuat(out: IArray, a: IArray, quat: IArray): IArray;
 
 	/**
 	 * Perform some operation over an array of vec4s.
@@ -1135,8 +1132,8 @@ export declare module vec4 {
 	 * @returns a
 	 * @function
 	 */
-	export function forEach(out: GLM.IArray, string: number, offset: number, count: number,
-	                        callback: (a: GLM.IArray, b: GLM.IArray, arg: any) => void, arg: any): GLM.IArray;
+	forEach(out: IArray, string: number, offset: number, count: number,
+	                        callback: (a: IArray, b: IArray, arg: any) => void, arg: any): IArray;
 
 	/**
 	 * Perform some operation over an array of vec4s.
@@ -1149,8 +1146,8 @@ export declare module vec4 {
 	 * @returns a
 	 * @function
 	 */
-	export function forEach(out: GLM.IArray, string: number, offset: number, count: number,
-	                        callback: (a: GLM.IArray, b: GLM.IArray) => void): GLM.IArray;
+	forEach(out: IArray, string: number, offset: number, count: number,
+	                        callback: (a: IArray, b: IArray) => void): IArray;
 
 	/**
 	 * Returns a string representation of a vector
@@ -1158,18 +1155,18 @@ export declare module vec4 {
 	 * @param vec vector to represent as a string
 	 * @returns string representation of the vector
 	 */
-	export function str(a: GLM.IArray): string;
+	str(a: IArray): string;
 }
 
 // mat2
-declare module mat2 {
+export interface mat2 {
 
 	/**
 	 * Creates a new identity mat2
 	 *
 	 * @returns a new 2x2 matrix
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new mat2 initialized with values from an existing matrix
@@ -1177,7 +1174,7 @@ declare module mat2 {
 	 * @param a matrix to clone
 	 * @returns a new 2x2 matrix
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Copy the values from one mat2 to another
@@ -1186,7 +1183,7 @@ declare module mat2 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set a mat2 to the identity matrix
@@ -1194,7 +1191,7 @@ declare module mat2 {
 	 * @param out the receiving matrix
 	 * @returns out
 	 */
-	export function identity(out: GLM.IArray): GLM.IArray;
+	identity(out: IArray): IArray;
 
 	/**
 	 * Transpose the values of a mat2
@@ -1203,7 +1200,7 @@ declare module mat2 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function transpose(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	transpose(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Inverts a mat2
@@ -1212,7 +1209,7 @@ declare module mat2 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function invert(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	invert(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the adjugate of a mat2
@@ -1221,7 +1218,7 @@ declare module mat2 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function adjoint(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	adjoint(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the determinant of a mat2
@@ -1229,7 +1226,7 @@ declare module mat2 {
 	 * @param a the source matrix
 	 * @returns determinant of a
 	 */
-	export function determinant(a: GLM.IArray): number;
+	determinant(a: IArray): number;
 
 	/**
 	 * Multiplies two mat2's
@@ -1239,7 +1236,7 @@ declare module mat2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two mat2's
@@ -1249,7 +1246,7 @@ declare module mat2 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Rotates a mat2 by the given angle
@@ -1259,7 +1256,7 @@ declare module mat2 {
 	 * @param rad the angle to rotate the matrix by
 	 * @returns out
 	 */
-	export function rotate(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotate(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Scales the mat2 by the dimensions in the given vec2
@@ -1269,7 +1266,7 @@ declare module mat2 {
 	 * @param v the vec2 to scale the matrix by
 	 * @returns out
 	 **/
-	export function scale(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	scale(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Returns a string representation of a mat2
@@ -1277,7 +1274,7 @@ declare module mat2 {
 	 * @param a matrix to represent as a string
 	 * @returns string representation of the matrix
 	 */
-	export function str(a: GLM.IArray): string;
+	str(a: IArray): string;
 
 	/**
 	 * Returns Frobenius norm of a mat2
@@ -1285,7 +1282,7 @@ declare module mat2 {
 	 * @param a the matrix to calculate Frobenius norm of
 	 * @returns Frobenius norm
 	 */
-	export function frob(a: GLM.IArray): number;
+	frob(a: IArray): number;
 
 	/**
 	 * Returns L, D and U matrices (Lower triangular, Diagonal and Upper triangular) by factorizing the input matrix
@@ -1294,18 +1291,18 @@ declare module mat2 {
 	 * @param U the upper triangular matrix
 	 * @param a the input matrix to factorize
 	 */
-	export function LDU(L: GLM.IArray, D: GLM.IArray, U: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	LDU(L: IArray, D: IArray, U: IArray, a: IArray): IArray;
 }
 
 // mat2d
-declare module mat2d {
+export interface mat2d {
 
 	/**
 	 * Creates a new identity mat2d
 	 *
 	 * @returns a new 2x3 matrix
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new mat2d initialized with values from an existing matrix
@@ -1313,7 +1310,7 @@ declare module mat2d {
 	 * @param a matrix to clone
 	 * @returns a new 2x3 matrix
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Copy the values from one mat2d to another
@@ -1322,7 +1319,7 @@ declare module mat2d {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set a mat2d to the identity matrix
@@ -1330,7 +1327,7 @@ declare module mat2d {
 	 * @param out the receiving matrix
 	 * @returns out
 	 */
-	export function identity(out: GLM.IArray): GLM.IArray;
+	identity(out: IArray): IArray;
 
 	/**
 	 * Inverts a mat2d
@@ -1339,7 +1336,7 @@ declare module mat2d {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function invert(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	invert(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the determinant of a mat2d
@@ -1347,7 +1344,7 @@ declare module mat2d {
 	 * @param a the source matrix
 	 * @returns determinant of a
 	 */
-	export function determinant(a: GLM.IArray): number;
+	determinant(a: IArray): number;
 
 	/**
 	 * Multiplies two mat2d's
@@ -1357,7 +1354,7 @@ declare module mat2d {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two mat2d's
@@ -1367,7 +1364,7 @@ declare module mat2d {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Rotates a mat2d by the given angle
@@ -1377,7 +1374,7 @@ declare module mat2d {
 	 * @param rad the angle to rotate the matrix by
 	 * @returns out
 	 */
-	export function rotate(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotate(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Scales the mat2d by the dimensions in the given vec2
@@ -1387,7 +1384,7 @@ declare module mat2d {
 	 * @param v the vec2 to scale the matrix by
 	 * @returns out
 	 **/
-	export function scale(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	scale(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Translates the mat2d by the dimensions in the given vec2
@@ -1397,7 +1394,7 @@ declare module mat2d {
 	 * @param v the vec2 to translate the matrix by
 	 * @returns out
 	 **/
-	export function translate(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	translate(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Returns a string representation of a mat2d
@@ -1405,7 +1402,7 @@ declare module mat2d {
 	 * @param a matrix to represent as a string
 	 * @returns string representation of the matrix
 	 */
-	export function str(a: GLM.IArray): string;
+	str(a: IArray): string;
 
 	/**
 	 * Returns Frobenius norm of a mat2d
@@ -1413,18 +1410,18 @@ declare module mat2d {
 	 * @param a the matrix to calculate Frobenius norm of
 	 * @returns Frobenius norm
 	 */
-	export function frob(a: GLM.IArray): number;
+	frob(a: IArray): number;
 }
 
 // mat3
-declare module mat3 {
+export interface mat3 {
 
 	/**
 	 * Creates a new identity mat3
 	 *
 	 * @returns a new 3x3 matrix
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new mat3 initialized with values from an existing matrix
@@ -1432,7 +1429,7 @@ declare module mat3 {
 	 * @param a matrix to clone
 	 * @returns a new 3x3 matrix
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Copy the values from one mat3 to another
@@ -1441,7 +1438,7 @@ declare module mat3 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set a mat3 to the identity matrix
@@ -1449,7 +1446,7 @@ declare module mat3 {
 	 * @param out the receiving matrix
 	 * @returns out
 	 */
-	export function identity(out: GLM.IArray): GLM.IArray;
+	identity(out: IArray): IArray;
 
 	/**
 	 * Transpose the values of a mat3
@@ -1458,7 +1455,7 @@ declare module mat3 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function transpose(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	transpose(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Inverts a mat3
@@ -1467,7 +1464,7 @@ declare module mat3 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function invert(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	invert(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the adjugate of a mat3
@@ -1476,7 +1473,7 @@ declare module mat3 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function adjoint(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	adjoint(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the determinant of a mat3
@@ -1484,7 +1481,7 @@ declare module mat3 {
 	 * @param a the source matrix
 	 * @returns determinant of a
 	 */
-	export function determinant(a: GLM.IArray): number;
+	determinant(a: IArray): number;
 
 	/**
 	 * Multiplies two mat3's
@@ -1494,7 +1491,7 @@ declare module mat3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two mat3's
@@ -1504,7 +1501,7 @@ declare module mat3 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Returns a string representation of a mat3
@@ -1512,7 +1509,7 @@ declare module mat3 {
 	 * @param mat matrix to represent as a string
 	 * @returns string representation of the matrix
 	 */
-	export function str(mat: GLM.IArray): string;
+	str(mat: IArray): string;
 
 	/**
 	 * Returns Frobenius norm of a mat3
@@ -1520,7 +1517,7 @@ declare module mat3 {
 	 * @param a the matrix to calculate Frobenius norm of
 	 * @returns Frobenius norm
 	 */
-	export function frob(a: GLM.IArray): number;
+	frob(a: IArray): number;
 
 	/**
 	 * Calculates a 3x3 normal matrix (transpose inverse) from the 4x4 matrix
@@ -1530,7 +1527,7 @@ declare module mat3 {
 	 *
 	 * @returns out
 	 */
-	export function normalFromMat4(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	normalFromMat4(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates a 3x3 matrix from the given quaternion
@@ -1540,7 +1537,7 @@ declare module mat3 {
 	 *
 	 * @returns out
 	 */
-	export function fromQuat(out: GLM.IArray, q: GLM.IArray): GLM.IArray;
+	fromQuat(out: IArray, q: IArray): IArray;
 
 	/**
 	 * Copies the upper-left 3x3 values into the given mat3.
@@ -1549,7 +1546,7 @@ declare module mat3 {
 	 * @param a   the source 4x4 matrix
 	 * @returns out
 	 */
-	export function fromMat4(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	fromMat4(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Scales the mat3 by the dimensions in the given vec2
@@ -1559,7 +1556,7 @@ declare module mat3 {
 	 * @param v the vec2 to scale the matrix by
 	 * @returns out
 	 **/
-	export function scale(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	scale(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Copies the values from a mat2d into a mat3
@@ -1568,7 +1565,7 @@ declare module mat3 {
 	 * @param {mat2d} a the matrix to copy
 	 * @returns out
 	 **/
-	export function fromMat2d(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	fromMat2d(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Translate a mat3 by the given vector
@@ -1578,7 +1575,7 @@ declare module mat3 {
 	 * @param v vector to translate by
 	 * @returns out
 	 */
-	export function translate(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	translate(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Rotates a mat3 by the given angle
@@ -1588,18 +1585,18 @@ declare module mat3 {
 	 * @param rad the angle to rotate the matrix by
 	 * @returns out
 	 */
-	export function rotate(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotate(out: IArray, a: IArray, rad: number): IArray;
 }
 
 // mat4
-export declare module mat4 {
+export interface mat4 {
 
 	/**
 	 * Creates a new identity mat4
 	 *
 	 * @returns a new 4x4 matrix
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new mat4 initialized with values from an existing matrix
@@ -1607,7 +1604,7 @@ export declare module mat4 {
 	 * @param a matrix to clone
 	 * @returns a new 4x4 matrix
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Copy the values from one mat4 to another
@@ -1616,7 +1613,7 @@ export declare module mat4 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set a mat4 to the identity matrix
@@ -1624,7 +1621,7 @@ export declare module mat4 {
 	 * @param out the receiving matrix
 	 * @returns out
 	 */
-	export function identity(a: GLM.IArray): GLM.IArray;
+	identity(a: IArray): IArray;
 
 	/**
 	 * Transpose the values of a mat4
@@ -1633,7 +1630,7 @@ export declare module mat4 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function transpose(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	transpose(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Inverts a mat4
@@ -1642,7 +1639,7 @@ export declare module mat4 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function invert(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	invert(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the adjugate of a mat4
@@ -1651,7 +1648,7 @@ export declare module mat4 {
 	 * @param a the source matrix
 	 * @returns out
 	 */
-	export function adjoint(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	adjoint(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the determinant of a mat4
@@ -1659,7 +1656,7 @@ export declare module mat4 {
 	 * @param a the source matrix
 	 * @returns determinant of a
 	 */
-	export function determinant(a: GLM.IArray): number;
+	determinant(a: IArray): number;
 
 	/**
 	 * Multiplies two mat4's
@@ -1669,7 +1666,7 @@ export declare module mat4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two mat4's
@@ -1679,7 +1676,7 @@ export declare module mat4 {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Translate a mat4 by the given vector
@@ -1689,7 +1686,7 @@ export declare module mat4 {
 	 * @param v vector to translate by
 	 * @returns out
 	 */
-	export function translate(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	translate(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Scales the mat4 by the dimensions in the given vec3
@@ -1699,7 +1696,7 @@ export declare module mat4 {
 	 * @param v the vec3 to scale the matrix by
 	 * @returns out
 	 **/
-	export function scale(out: GLM.IArray, a: GLM.IArray, v: GLM.IArray): GLM.IArray;
+	scale(out: IArray, a: IArray, v: IArray): IArray;
 
 	/**
 	 * Rotates a mat4 by the given angle
@@ -1710,7 +1707,7 @@ export declare module mat4 {
 	 * @param axis the axis to rotate around
 	 * @returns out
 	 */
-	export function rotate(out: GLM.IArray, a: GLM.IArray, rad: number, axis: GLM.IArray): GLM.IArray;
+	rotate(out: IArray, a: IArray, rad: number, axis: IArray): IArray;
 
 	/**
 	 * Rotates a matrix by the given angle around the X axis
@@ -1720,7 +1717,7 @@ export declare module mat4 {
 	 * @param rad the angle to rotate the matrix by
 	 * @returns out
 	 */
-	export function rotateX(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotateX(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Rotates a matrix by the given angle around the Y axis
@@ -1730,7 +1727,7 @@ export declare module mat4 {
 	 * @param rad the angle to rotate the matrix by
 	 * @returns out
 	 */
-	export function rotateY(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotateY(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Rotates a matrix by the given angle around the Z axis
@@ -1740,7 +1737,7 @@ export declare module mat4 {
 	 * @param rad the angle to rotate the matrix by
 	 * @returns out
 	 */
-	export function rotateZ(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotateZ(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Generates a frustum matrix with the given bounds
@@ -1754,8 +1751,8 @@ export declare module mat4 {
 	 * @param far Far bound of the frustum
 	 * @returns out
 	 */
-	export function frustum(out: GLM.IArray, left: number, right: number,
-	                        bottom: number, top: number, near: number, far: number): GLM.IArray;
+	frustum(out: IArray, left: number, right: number,
+	                        bottom: number, top: number, near: number, far: number): IArray;
 
 	/**
 	 * Generates a perspective projection matrix with the given bounds
@@ -1767,8 +1764,8 @@ export declare module mat4 {
 	 * @param far Far bound of the frustum
 	 * @returns out
 	 */
-	export function perspective(out: GLM.IArray, fovy: number, aspect: number,
-	                            near: number, far: number): GLM.IArray;
+	perspective(out: IArray, fovy: number, aspect: number,
+	                            near: number, far: number): IArray;
 
 	/**
 	 * Generates a orthogonal projection matrix with the given bounds
@@ -1782,8 +1779,8 @@ export declare module mat4 {
 	 * @param far Far bound of the frustum
 	 * @returns out
 	 */
-	export function ortho(out: GLM.IArray, left: number, right: number,
-	                      bottom: number, top: number, near: number, far: number): GLM.IArray;
+	ortho(out: IArray, left: number, right: number,
+	                      bottom: number, top: number, near: number, far: number): IArray;
 
 	/**
 	 * Generates a look-at matrix with the given eye position, focal point, and up axis
@@ -1794,8 +1791,8 @@ export declare module mat4 {
 	 * @param up vec3 pointing up
 	 * @returns out
 	 */
-	export function lookAt(out: GLM.IArray, eye: GLM.IArray,
-	                       center: GLM.IArray, up: GLM.IArray): GLM.IArray;
+	lookAt(out: IArray, eye: IArray,
+	                       center: IArray, up: IArray): IArray;
 
 	/**
 	 * Returns a string representation of a mat4
@@ -1803,7 +1800,7 @@ export declare module mat4 {
 	 * @param mat matrix to represent as a string
 	 * @returns string representation of the matrix
 	 */
-	export function str(mat: GLM.IArray): string;
+	str(mat: IArray): string;
 
 	/**
 	 * Returns Frobenius norm of a mat4
@@ -1811,7 +1808,7 @@ export declare module mat4 {
 	 * @param a the matrix to calculate Frobenius norm of
 	 * @returns Frobenius norm
 	 */
-	export function frob(a: GLM.IArray): number;
+	frob(a: IArray): number;
 
 	/**
 	 * Creates a matrix from a quaternion rotation and vector translation
@@ -1828,8 +1825,8 @@ export declare module mat4 {
 	 * @param v Translation vector
 	 * @returns out
 	 */
-	export function fromRotationTranslation(out: GLM.IArray, q: GLM.IArray,
-	                                        v: GLM.IArray): GLM.IArray;
+	fromRotationTranslation(out: IArray, q: IArray,
+	                                        v: IArray): IArray;
 
 	/**
 	 * Creates a matrix from a quaternion
@@ -1838,18 +1835,18 @@ export declare module mat4 {
 	 * @param q Rotation quaternion
 	 * @returns out
 	 */
-	export function fromQuat(out: GLM.IArray, q: GLM.IArray): GLM.IArray;
+	fromQuat(out: IArray, q: IArray): IArray;
 }
 
 // quat
-declare module quat {
+export interface quat {
 
 	/**
 	 * Creates a new identity quat
 	 *
 	 * @returns a new quaternion
 	 */
-	export function create(): GLM.IArray;
+	create(): IArray;
 
 	/**
 	 * Creates a new quat initialized with values from an existing quaternion
@@ -1858,7 +1855,7 @@ declare module quat {
 	 * @returns a new quaternion
 	 * @function
 	 */
-	export function clone(a: GLM.IArray): GLM.IArray;
+	clone(a: IArray): IArray;
 
 	/**
 	 * Creates a new quat initialized with the given values
@@ -1870,7 +1867,7 @@ declare module quat {
 	 * @returns a new quaternion
 	 * @function
 	 */
-	export function fromValues(x: number, y: number, z: number, w: number): GLM.IArray;
+	fromValues(x: number, y: number, z: number, w: number): IArray;
 
 	/**
 	 * Copy the values from one quat to another
@@ -1880,7 +1877,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function copy(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	copy(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Set the components of a quat to the given values
@@ -1893,7 +1890,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function set(out: GLM.IArray, x: number, y: number, z: number, w: number): GLM.IArray;
+	set(out: IArray, x: number, y: number, z: number, w: number): IArray;
 
 	/**
 	 * Set a quat to the identity quaternion
@@ -1901,7 +1898,7 @@ declare module quat {
 	 * @param out the receiving quaternion
 	 * @returns out
 	 */
-	export function identity(out: GLM.IArray): GLM.IArray;
+	identity(out: IArray): IArray;
 
 	/**
 	 * Sets a quat from the given angle and rotation axis,
@@ -1912,7 +1909,7 @@ declare module quat {
 	 * @param rad the angle in radians
 	 * @returns out
 	 **/
-	export function setAxisAngle(out: GLM.IArray, axis: GLM.IArray, rad: number): GLM.IArray;
+	setAxisAngle(out: IArray, axis: IArray, rad: number): IArray;
 
 	/**
 	 * Adds two quat's
@@ -1923,7 +1920,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function add(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	add(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two quat's
@@ -1933,7 +1930,7 @@ declare module quat {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function multiply(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	multiply(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Multiplies two quat's
@@ -1943,7 +1940,7 @@ declare module quat {
 	 * @param b the second operand
 	 * @returns out
 	 */
-	export function mul(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	mul(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Scales a quat by a scalar number
@@ -1954,7 +1951,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function scale(out: GLM.IArray, a: GLM.IArray, b: number): GLM.IArray;
+	scale(out: IArray, a: IArray, b: number): IArray;
 
 	/**
 	 * Calculates the length of a quat
@@ -1963,7 +1960,7 @@ declare module quat {
 	 * @returns length of a
 	 * @function
 	 */
-	export function length(a: GLM.IArray): number;
+	length(a: IArray): number;
 
 	/**
 	 * Calculates the length of a quat
@@ -1972,7 +1969,7 @@ declare module quat {
 	 * @returns length of a
 	 * @function
 	 */
-	export function len(a: GLM.IArray): number;
+	len(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a quat
@@ -1981,7 +1978,7 @@ declare module quat {
 	 * @returns squared length of a
 	 * @function
 	 */
-	export function squaredLength(a: GLM.IArray): number;
+	squaredLength(a: IArray): number;
 
 	/**
 	 * Calculates the squared length of a quat
@@ -1990,7 +1987,7 @@ declare module quat {
 	 * @returns squared length of a
 	 * @function
 	 */
-	export function sqrLen(a: GLM.IArray): number;
+	sqrLen(a: IArray): number;
 
 	/**
 	 * Normalize a quat
@@ -2000,7 +1997,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function normalize(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	normalize(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the dot product of two quat's
@@ -2010,7 +2007,7 @@ declare module quat {
 	 * @returns dot product of a and b
 	 * @function
 	 */
-	export function dot(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): number;
+	dot(out: IArray, a: IArray, b: IArray): number;
 
 	/**
 	 * Performs a linear interpolation between two quat's
@@ -2022,7 +2019,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function lerp(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, t: number): GLM.IArray;
+	lerp(out: IArray, a: IArray, b: IArray, t: number): IArray;
 
 	/**
 	 * Performs a spherical linear interpolation between two quat
@@ -2033,7 +2030,7 @@ declare module quat {
 	 * @param t interpolation amount between the two inputs
 	 * @returns out
 	 */
-	export function slerp(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray, t: number): GLM.IArray;
+	slerp(out: IArray, a: IArray, b: IArray, t: number): IArray;
 
 	/**
 	 * Calculates the inverse of a quat
@@ -2042,7 +2039,7 @@ declare module quat {
 	 * @param a quat to calculate inverse of
 	 * @returns out
 	 */
-	export function invert(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	invert(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Calculates the conjugate of a quat
@@ -2052,7 +2049,7 @@ declare module quat {
 	 * @param a quat to calculate conjugate of
 	 * @returns out
 	 */
-	export function conjugate(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	conjugate(out: IArray, a: IArray): IArray;
 
 	/**
 	 * Returns a string representation of a quatenion
@@ -2060,7 +2057,7 @@ declare module quat {
 	 * @param vec vector to represent as a string
 	 * @returns string representation of the vector
 	 */
-	export function str(a: GLM.IArray): string;
+	str(a: IArray): string;
 
 	/**
 	 * Rotates a quaternion by the given angle about the X axis
@@ -2070,7 +2067,7 @@ declare module quat {
 	 * @param rad angle (in radians) to rotate
 	 * @returns out
 	 */
-	export function rotateX(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotateX(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Rotates a quaternion by the given angle about the Y axis
@@ -2080,7 +2077,7 @@ declare module quat {
 	 * @param rad angle (in radians) to rotate
 	 * @returns out
 	 */
-	export function rotateY(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotateY(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Rotates a quaternion by the given angle about the Z axis
@@ -2090,7 +2087,7 @@ declare module quat {
 	 * @param rad angle (in radians) to rotate
 	 * @returns out
 	 */
-	export function rotateZ(out: GLM.IArray, a: GLM.IArray, rad: number): GLM.IArray;
+	rotateZ(out: IArray, a: IArray, rad: number): IArray;
 
 	/**
 	 * Creates a quaternion from the given 3x3 rotation matrix.
@@ -2103,7 +2100,7 @@ declare module quat {
 	 * @returns out
 	 * @function
 	 */
-	export function fromMat3(out: GLM.IArray, m: GLM.IArray): GLM.IArray;
+	fromMat3(out: IArray, m: IArray): IArray;
 
 	/**
 	 * Sets the specified quaternion with values corresponding to the given
@@ -2115,8 +2112,8 @@ declare module quat {
 	 * @param up    the vector representing the local "up" direction
 	 * @returns out
 	 */
-	export function setAxes(out: GLM.IArray, view: GLM.IArray, right: GLM.IArray,
-	                        up: GLM.IArray): GLM.IArray;
+	setAxes(out: IArray, view: IArray, right: IArray,
+	                        up: IArray): IArray;
 
 	/**
 	 * Sets a quaternion to represent the shortest rotation from one
@@ -2129,7 +2126,7 @@ declare module quat {
 	 * @param b the destination vector
 	 * @returns out
 	 */
-	export function rotationTo(out: GLM.IArray, a: GLM.IArray, b: GLM.IArray): GLM.IArray;
+	rotationTo(out: IArray, a: IArray, b: IArray): IArray;
 
 	/**
 	 * Calculates the W component of a quat from the X, Y, and Z components.
@@ -2140,5 +2137,5 @@ declare module quat {
 	 * @param a quat to calculate W component of
 	 * @returns out
 	 */
-	export function calculateW(out: GLM.IArray, a: GLM.IArray): GLM.IArray;
+	calculateW(out: IArray, a: IArray): IArray;
 }

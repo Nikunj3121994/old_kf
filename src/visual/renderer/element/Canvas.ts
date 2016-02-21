@@ -1,3 +1,5 @@
+import {Signal} from "../../../core/event/Signal";
+import Signal2 from "../../../core/event/Signal2";
 /**
  * Creates a Canvas element of the given size.
  *
@@ -16,6 +18,8 @@ export class Canvas
 
 	protected _width:number;
 	protected _height:number;
+
+	public onResize:Signal2<number, number> = new Signal2<number, number>();
 
 	constructor(domElement?:HTMLCanvasElement, width?:number, height?:number)
 	{
@@ -73,18 +77,31 @@ export class Canvas
 	 */
 	public setSize(width:number, height:number):void
 	{
-		this.setWidth(width);
-		this.setHeight(height);
+		this.domElement.width = this._width = width;
+		this.domElement.height = this._height = height;
+		this.onResize.emit(width, height);
 	}
 
 	public setHeight(value:number):void
 	{
 		this.domElement.height = this._height = value;
+		this.onResize.emit(this._width, this._height);
 	}
 
 	public setWidth(value:number):void
 	{
 		this.domElement.width = this._width = value;
+		this.onResize.emit(this._width, this._height);
+	}
+
+	public getHeight():number
+	{
+		return this._height;
+	}
+
+	public getWidth():number
+	{
+		return this._width;
 	}
 
 	public destruct():void
