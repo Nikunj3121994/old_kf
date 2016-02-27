@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var Rectangle = (function () {
         function Rectangle(x, y, width, height) {
             this.x = 0;
@@ -25,6 +24,6 @@ define(["require", "exports"], function (require, exports) {
             return "[Rectangle (x=" + this.x + " y=" + this.y + " width=" + this.width + " height=" + this.height + ")]";
         };
         return Rectangle;
-    }());
+    })();
     exports.Rectangle = Rectangle;
 });

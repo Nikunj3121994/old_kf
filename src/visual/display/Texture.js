@@ -4,7 +4,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 define(["require", "exports", "./AbstractTexture", "../../core/event/Signal", "../../core/util/Promise"], function (require, exports, AbstractTexture_1, Signal_1, Promise_1) {
-    "use strict";
     var Texture = (function (_super) {
         __extends(Texture, _super);
         function Texture(source) {
@@ -104,6 +103,6 @@ define(["require", "exports", "./AbstractTexture", "../../core/event/Signal", ".
             return Texture.getFullUV();
         };
         return Texture;
-    }(AbstractTexture_1.AbstractTexture));
+    })(AbstractTexture_1.AbstractTexture);
     exports.Texture = Texture;
 });

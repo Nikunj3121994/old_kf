@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var Geometry = (function () {
         function Geometry(vertex, index) {
             this.vertex = new Float32Array(vertex);
@@ -18,6 +17,6 @@ define(["require", "exports"], function (require, exports) {
         };
         Geometry.QUAD = Geometry.createQuad();
         return Geometry;
-    }());
+    })();
     exports.Geometry = Geometry;
 });

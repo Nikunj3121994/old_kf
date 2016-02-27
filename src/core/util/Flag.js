@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var Flag = (function () {
         function Flag(value) {
             if (value === void 0) { value = 0; }
@@ -61,7 +60,7 @@ define(["require", "exports"], function (require, exports) {
             return this._value.toString(value);
         };
         return Flag;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Flag;
     var value = Flag.add(0, 1 << 0);

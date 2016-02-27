@@ -1,5 +1,4 @@
 define(["require", "exports", "../../../core/event/Signal2"], function (require, exports, Signal2_1) {
-    "use strict";
     var Canvas = (function () {
         function Canvas(domElement, width, height) {
             this.onResize = new Signal2_1.default();
@@ -68,6 +67,6 @@ define(["require", "exports", "../../../core/event/Signal2"], function (require,
             this._height = void 0;
         };
         return Canvas;
-    }());
+    })();
     exports.Canvas = Canvas;
 });

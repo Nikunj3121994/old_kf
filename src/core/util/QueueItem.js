@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var QueueItem = (function () {
         function QueueItem(label, from, to, times, delay) {
             if (times === void 0) { times = 1; }
@@ -30,7 +29,7 @@ define(["require", "exports"], function (require, exports) {
             this._complete = null;
         };
         return QueueItem;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = QueueItem;
 });

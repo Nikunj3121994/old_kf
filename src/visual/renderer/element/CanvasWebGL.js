@@ -4,7 +4,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 define(["require", "exports", "./Canvas"], function (require, exports, Canvas_1) {
-    "use strict";
     var CanvasWebGL = (function (_super) {
         __extends(CanvasWebGL, _super);
         function CanvasWebGL() {
@@ -62,6 +61,6 @@ define(["require", "exports", "./Canvas"], function (require, exports, Canvas_1)
             this.domElement = null;
         };
         return CanvasWebGL;
-    }(Canvas_1.Canvas));
+    })(Canvas_1.Canvas);
     exports.CanvasWebGL = CanvasWebGL;
 });

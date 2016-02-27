@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var AbstractTexture = (function () {
         function AbstractTexture(source) {
             this.id = AbstractTexture.getID();
@@ -36,6 +35,6 @@ define(["require", "exports"], function (require, exports) {
         };
         AbstractTexture._id = 0;
         return AbstractTexture;
-    }());
+    })();
     exports.AbstractTexture = AbstractTexture;
 });

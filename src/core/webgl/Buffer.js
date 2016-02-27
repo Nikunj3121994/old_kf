@@ -1,5 +1,4 @@
 define(["require", "exports", "./Geometry"], function (require, exports, Geometry_1) {
-    "use strict";
     var Buffer = (function () {
         function Buffer(gl, data, type, usage) {
             this._buffers = null;
@@ -72,6 +71,6 @@ define(["require", "exports", "./Geometry"], function (require, exports, Geometr
             return this;
         };
         return Buffer;
-    }());
+    })();
     exports.Buffer = Buffer;
 });

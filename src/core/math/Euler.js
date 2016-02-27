@@ -1,5 +1,4 @@
 define(["require", "exports", "./Quaternion", "./Matrix4", "./Vector3", "./MathUtil"], function (require, exports, Quaternion_1, Matrix4_1, Vector3_1, MathUtil_1) {
-    "use strict";
     var Euler = (function () {
         function Euler(x, y, z, order) {
             if (x === void 0) { x = 0; }
@@ -214,6 +213,6 @@ define(["require", "exports", "./Quaternion", "./Matrix4", "./Vector3", "./MathU
         Euler.RotationOrders = ['XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX'];
         Euler.DefaultOrder = 'XYZ';
         return Euler;
-    }());
+    })();
     exports.Euler = Euler;
 });

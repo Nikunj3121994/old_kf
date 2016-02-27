@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var BitmapType;
     (function (BitmapType) {
         BitmapType[BitmapType["UNKNOWN"] = 0] = "UNKNOWN";

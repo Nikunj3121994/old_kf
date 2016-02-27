@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var RenderType;
     (function (RenderType) {
         RenderType[RenderType["UNKNOWN"] = 0] = "UNKNOWN";

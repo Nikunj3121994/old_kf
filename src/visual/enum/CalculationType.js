@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var CalculationType;
     (function (CalculationType) {
         CalculationType[CalculationType["UNKOWN"] = 0] = "UNKOWN";

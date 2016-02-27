@@ -1,5 +1,4 @@
 define(["require", "exports", "Vector3"], function (require, exports, Vector3_1) {
-    "use strict";
     var Matrix3 = (function () {
         function Matrix3() {
             this.__v0 = null;
@@ -158,7 +157,7 @@ define(["require", "exports", "Vector3"], function (require, exports, Vector3_1)
             return new Matrix3().fromArray(this.elements);
         };
         return Matrix3;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Matrix3;
 });

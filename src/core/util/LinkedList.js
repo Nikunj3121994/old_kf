@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var LinkedList = (function () {
         function LinkedList() {
             this.firstNode = null;
@@ -213,7 +212,7 @@ define(["require", "exports"], function (require, exports) {
             };
         };
         return LinkedList;
-    }());
+    })();
     function defaultEquals(a, b) {
         return a === b;
     }

@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var ShaderType;
     (function (ShaderType) {
         ShaderType[ShaderType["FRAGMENT"] = 0] = "FRAGMENT";

@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var QualityType;
     (function (QualityType) {
         QualityType[QualityType["NORMAL"] = 0] = "NORMAL";

@@ -1,5 +1,4 @@
 define(["require", "exports", "./ShaderType", "../../core/net/HttpRequest", "../../core/util/Promise"], function (require, exports, ShaderType_1, HttpRequest_1, Promise_1) {
-    "use strict";
     var Shader = (function () {
         function Shader(type, data) {
             this._hasLoaded = false;
@@ -76,6 +75,6 @@ define(["require", "exports", "./ShaderType", "../../core/net/HttpRequest", "../
             this._request = void 0;
         };
         return Shader;
-    }());
+    })();
     exports.Shader = Shader;
 });

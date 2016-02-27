@@ -1,5 +1,4 @@
 define(["require", "exports", "./Euler", "./Vector3"], function (require, exports, Euler_1, Vector3_1) {
-    "use strict";
     var Quaternion = (function () {
         function Quaternion(x, y, z, w) {
             if (x === void 0) { x = 0; }
@@ -335,6 +334,6 @@ define(["require", "exports", "./Euler", "./Vector3"], function (require, export
         Quaternion.prototype.onChangeCallback = function () {
         };
         return Quaternion;
-    }());
+    })();
     exports.Quaternion = Quaternion;
 });

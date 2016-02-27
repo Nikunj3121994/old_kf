@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var Bounds = (function () {
         function Bounds() {
             this.x0 = 0;
@@ -10,7 +9,7 @@ define(["require", "exports"], function (require, exports) {
             this.height = 0;
         }
         return Bounds;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Bounds;
 });

@@ -1,5 +1,4 @@
 define(["require", "exports", "./Shader", "./AttributeLocation", "./UniformLocation", "../util/PromiseUtil", "./ShaderType", "../net/HttpRequest"], function (require, exports, Shader_1, AttributeLocation_1, UniformLocation_1, PromiseUtil_1, ShaderType_1, HttpRequest_1) {
-    "use strict";
     var ShaderProgram = (function () {
         function ShaderProgram(gl, vertex, fragment) {
             this._isLinked = false;
@@ -141,6 +140,6 @@ define(["require", "exports", "./Shader", "./AttributeLocation", "./UniformLocat
             this._gl = void 0;
         };
         return ShaderProgram;
-    }());
+    })();
     exports.ShaderProgram = ShaderProgram;
 });

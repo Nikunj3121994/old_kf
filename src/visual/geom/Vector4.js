@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var Vector4 = (function () {
         function Vector4(x, y, z, w) {
             if (x === void 0) { x = 0; }
@@ -396,7 +395,7 @@ define(["require", "exports"], function (require, exports) {
             return new Vector4(this.x, this.y, this.z, this.w);
         };
         return Vector4;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Vector4;
 });

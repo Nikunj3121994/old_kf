@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var DatGuiUniformAutoBind = (function () {
         function DatGuiUniformAutoBind(gui, program) {
             this.gui = gui;
@@ -10,6 +9,6 @@ define(["require", "exports"], function (require, exports) {
             });
         }
         return DatGuiUniformAutoBind;
-    }());
+    })();
     exports.DatGuiUniformAutoBind = DatGuiUniformAutoBind;
 });

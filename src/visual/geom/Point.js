@@ -1,5 +1,4 @@
 define(["require", "exports", "./../util/NumberUtil"], function (require, exports, NumberUtil_1) {
-    "use strict";
     var Point = (function () {
         function Point(x, y) {
             this.x = x;
@@ -28,7 +27,7 @@ define(["require", "exports", "./../util/NumberUtil"], function (require, export
             return "[Point (x=" + this.x + " y=" + this.y + ")]";
         };
         return Point;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Point;
 });

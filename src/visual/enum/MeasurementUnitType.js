@@ -1,5 +1,4 @@
 define(["require", "exports"], function (require, exports) {
-    "use strict";
     var MeasurementUnitType;
     (function (MeasurementUnitType) {
         MeasurementUnitType[MeasurementUnitType["PROCENT"] = 0] = "PROCENT";

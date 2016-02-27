@@ -1,5 +1,4 @@
 define(["require", "exports", "../../visual/display/AbstractTexture"], function (require, exports, AbstractTexture_1) {
-    "use strict";
     var UniformLocation = (function () {
         function UniformLocation(gl, name, location, type) {
             this._gl = null;
@@ -145,6 +144,6 @@ define(["require", "exports", "../../visual/display/AbstractTexture"], function 
             }
         };
         return UniformLocation;
-    }());
+    })();
     exports.UniformLocation = UniformLocation;
 });

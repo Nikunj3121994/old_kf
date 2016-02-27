@@ -1,5 +1,4 @@
 define(["require", "exports", "../../vendor/gl-matrix/gl-matrix"], function (require, exports, gl_matrix_1) {
-    "use strict";
     var Camera = (function () {
         function Camera(element) {
             var _this = this;
@@ -40,6 +39,6 @@ define(["require", "exports", "../../vendor/gl-matrix/gl-matrix"], function (req
             this._projectionMatrix = null;
         };
         return Camera;
-    }());
+    })();
     exports.Camera = Camera;
 });

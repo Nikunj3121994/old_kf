@@ -1,5 +1,4 @@
 define(["require", "exports", "./Promise"], function (require, exports, Promise_1) {
-    "use strict";
     var PromiseUtil = (function () {
         function PromiseUtil() {
         }
@@ -50,6 +49,6 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
             return Promise_1.Promise.all(promiseList);
         };
         return PromiseUtil;
-    }());
+    })();
     exports.PromiseUtil = PromiseUtil;
 });

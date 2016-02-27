@@ -1,5 +1,4 @@
 define(["require", "exports", "../Matrix4", "../Quaternion", "../Vector3"], function (require, exports, Matrix4_1, Quaternion_1, Vector3_1) {
-    "use strict";
     var Camera = (function () {
         function Camera() {
             this.getWorldDirection = (function () {
@@ -26,7 +25,7 @@ define(["require", "exports", "../Matrix4", "../Quaternion", "../Vector3"], func
             return this;
         };
         return Camera;
-    }());
+    })();
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Camera;
 });
