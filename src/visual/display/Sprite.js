@@ -1,4 +1,5 @@
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var Sprite = (function () {
         function Sprite(sheet, rectangle) {
             this.texture = sheet;
@@ -8,6 +9,6 @@ define(["require", "exports"], function (require, exports) {
             return null;
         };
         return Sprite;
-    })();
+    }());
     exports.Sprite = Sprite;
 });

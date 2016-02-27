@@ -1,4 +1,5 @@
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var Time = (function () {
         function Time() {
         }
@@ -41,7 +42,7 @@ define(["require", "exports"], function (require, exports) {
             };
         })();
         return Time;
-    })();
+    }());
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Time;
 });

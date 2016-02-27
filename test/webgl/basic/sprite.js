@@ -1,4 +1,5 @@
 define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/util/Interval", "../../../src/core/util/Time", "../../../src/core/webgl/Geometry", "../../../src/vendor/gl-matrix/gl-matrix", "../../../src/vendor/dat.gui/dat.gui", "../../../src/visual/display/Texture", "../../../src/core/webgl/Buffer"], function (require, exports, Shader_1, ShaderType_1, ShaderProgram_1, CanvasWebGL_1, Interval_1, Time_1, Geometry_1, gl_matrix_1, dat_gui_1, Texture_1, Buffer_1) {
+    "use strict";
     var canvas = new CanvasWebGL_1.CanvasWebGL(void 0, 1024, 1024);
     canvas.appendTo(document.body.querySelector('[container="main"]'));
     var gl = canvas.getContext();

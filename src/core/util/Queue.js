@@ -1,4 +1,5 @@
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var Queue = (function () {
         function Queue() {
             this._list = [];
@@ -40,7 +41,7 @@ define(["require", "exports"], function (require, exports) {
             return this;
         };
         return Queue;
-    })();
+    }());
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Queue;
 });

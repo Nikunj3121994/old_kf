@@ -1,4 +1,5 @@
 define(["require", "exports", "./Buffer"], function (require, exports, Buffer_1) {
+    "use strict";
     var Mesh = (function () {
         function Mesh(gl, vertex, index) {
             this._gl = gl;
@@ -39,6 +40,6 @@ define(["require", "exports", "./Buffer"], function (require, exports, Buffer_1)
             return this.indexBuffer;
         };
         return Mesh;
-    })();
+    }());
     exports.Mesh = Mesh;
 });

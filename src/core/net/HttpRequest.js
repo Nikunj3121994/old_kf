@@ -1,4 +1,5 @@
 define(["require", "exports", "../util/Promise"], function (require, exports, Promise_1) {
+    "use strict";
     var HttpRequest = (function () {
         function HttpRequest(path, query, type) {
             if (query === void 0) { query = {}; }
@@ -65,7 +66,7 @@ define(["require", "exports", "../util/Promise"], function (require, exports, Pr
             return this._promise;
         };
         return HttpRequest;
-    })();
+    }());
     exports.HttpRequest = HttpRequest;
     (function (Type) {
         Type[Type["JSON"] = 0] = "JSON";

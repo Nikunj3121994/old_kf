@@ -1,4 +1,5 @@
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var asap = (typeof setImmediate === 'function' && setImmediate) || function (fn) { setTimeout(fn, 1); };
     if (!Function.prototype.bind) {
         Function.prototype.bind = function (oThis) {
@@ -177,6 +178,6 @@ define(["require", "exports"], function (require, exports) {
             });
         };
         return Promise;
-    })();
+    }());
     exports.Promise = Promise;
 });
