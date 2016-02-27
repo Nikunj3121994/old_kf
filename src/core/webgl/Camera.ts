@@ -1,5 +1,5 @@
 import {Canvas} from "../../visual/renderer/element/Canvas";
-import {mat4, vec3} from "../../vendor/gl-matrix/gl-matrix";
+import {mat4, vec3, vec2} from "../../vendor/gl-matrix/gl-matrix";
 import {SignalConnection} from "../event/SignalConnection";
 
 export class Camera
@@ -22,6 +22,8 @@ export class Camera
 		this._projectionMatrix = mat4.create();
 		this._cameraMatrix = mat4.create();
 		this._viewMatrix = mat4.create();
+
+		vec2.create()
 
 		this._element.onResize.connect(this.handleResize);
 		this.handleResize(this._element.getWidth(), this._element.getHeight());

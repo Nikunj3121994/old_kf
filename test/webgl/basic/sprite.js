@@ -1,11 +1,10 @@
-define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/util/Interval", "../../../src/core/util/Time", "../../../src/core/webgl/Buffer", "../../../src/core/webgl/Geometry", "../../../src/vendor/gl-matrix/gl-matrix", "../../../src/visual/display/Texture"], function (require, exports, Shader_1, ShaderType_1, ShaderProgram_1, CanvasWebGL_1, Interval_1, Time_1, Buffer_1, Geometry_1, gl_matrix_1, Texture_1) {
-    var GUI = dat.GUI;
+define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/core/webgl/ShaderType", "../../../src/core/webgl/ShaderProgram", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/util/Interval", "../../../src/core/util/Time", "../../../src/core/webgl/Geometry", "../../../src/vendor/gl-matrix/gl-matrix", "../../../src/vendor/dat.gui/dat.gui", "../../../src/visual/display/Texture", "../../../src/core/webgl/Buffer"], function (require, exports, Shader_1, ShaderType_1, ShaderProgram_1, CanvasWebGL_1, Interval_1, Time_1, Geometry_1, gl_matrix_1, dat_gui_1, Texture_1, Buffer_1) {
     var canvas = new CanvasWebGL_1.CanvasWebGL(void 0, 1024, 1024);
     canvas.appendTo(document.body.querySelector('[container="main"]'));
     var gl = canvas.getContext();
     var quad = Geometry_1.Geometry.QUAD;
-    var vertex = new Shader_1.Shader(ShaderType_1.default.VERTEX, "\nattribute vec3 aVertexPosition;\nattribute vec2 aTexcoord;\n\nuniform mat4 uMVMatrix;\nuniform mat4 uPMatrix;\nuniform float uTime;\n\nvarying vec3 color;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\n color = vec3(sin(uTime) * .5 + .5, cos(uTime) * .5 + .5, sin(uTime*.5) * .5 + .5);\n gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);\n vTexcoord = aTexcoord;\n}\n");
-    var fragment = new Shader_1.Shader(ShaderType_1.default.FRAGMENT, "\nprecision lowp float;\nvarying vec3 color;\nuniform sampler2D uTexture;\nvarying vec2 vTexcoord;\n\nvoid main(void) {\n\tgl_FragColor = texture2D(uTexture, vTexcoord) * vec4(color, 1.0);\n\t//gl_FragColor = vec4(color, 1.0);\n}\n");
+    var vertex = new Shader_1.Shader(ShaderType_1.default.VERTEX, './sprite/shader.v.glsl');
+    var fragment = new Shader_1.Shader(ShaderType_1.default.FRAGMENT, './sprite/shader.v.glsl');
     var program = new ShaderProgram_1.ShaderProgram(gl, vertex, fragment).use();
     var texture = Texture_1.Texture.createFromUrl('../uv.jpg');
     var uvBuffer = new Buffer_1.Buffer(gl, new Float32Array(Texture_1.Texture.getFullUV()));
@@ -34,7 +33,7 @@ define(["require", "exports", "../../../src/core/webgl/Shader", "../../../src/co
     gl_matrix_1.mat4.perspective(pMatrix, 45, canvas.width / canvas.height, 0.1, 100.0);
     gl_matrix_1.mat4.translate(mvMatrix, mvMatrix, position);
     var pos = { x: 0, y: 0, z: -2 };
-    var gui = new GUI();
+    var gui = new dat_gui_1.GUI();
     gui.add(pos, 'x', -50, 50);
     gui.add(pos, 'y', -50, 50);
     gui.add(pos, 'z', -50, 50);
