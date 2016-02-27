@@ -12,8 +12,16 @@ import {HttpRequest} from "../net/HttpRequest";
 
 export class ShaderProgram implements ILoadable<ShaderProgram>
 {
+	public static createFromUrl(gl:WebGLRenderingContext, vertexUrl:string, fragmentUrl:string):ShaderProgram
+	{
+		return new ShaderProgram(
+			gl,
+			new Shader(ShaderType.VERTEX, new HttpRequest<string>(vertexUrl, null)),
+			new Shader(ShaderType.FRAGMENT, new HttpRequest<string>(fragmentUrl, null))
+		);
+	}
 
-	public gl:WebGLRenderingContext;
+	protected _gl:WebGLRenderingContext;
 	protected _program:WebGLProgram;
 	protected _vertex:Shader;
 	protected _fragment:Shader;
@@ -25,24 +33,13 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	private _uniforms:any = null;
 	private _attributes:IHashMap<AttributeLocation> = {};
 
-	constructor(gl:WebGLRenderingContext, vertex:string|Shader, fragment:string|Shader)
+	constructor(gl:WebGLRenderingContext, vertex:Shader, fragment:Shader)
 	{
-		this.gl = gl;
+		this._gl = gl;
 		this._program = gl.createProgram();
 
-		if(typeof vertex == 'string')
-		{
-			this._vertex = new Shader(ShaderType.VERTEX, new HttpRequest<string>( <string> vertex, null));
-		} else {
-			this._vertex = <Shader> vertex;
-		}
-
-		if(typeof fragment == 'string')
-		{
-			this._fragment = new Shader(ShaderType.VERTEX, new HttpRequest<string>( <string> fragment, null));
-		} else {
-			this._fragment = <Shader> fragment;
-		}
+		this._vertex = <Shader> vertex;
+		this._fragment = <Shader> fragment;
 
 		if(this._vertex.hasLoaded() && this._fragment.hasLoaded()){
 			this._hasLoaded = true;
@@ -58,7 +55,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	public load(onProgress?:(progress:number)=>any):Promise<ShaderProgram>
 	{
 		if(!this._promise){
-			this._program = PromiseUtil.allForLoadable<Shader>([this._vertex, this._fragment], onProgress).then<ShaderProgram>(() => {
+			this._program = PromiseUtil.loadLoadable<Shader>([this._vertex, this._fragment], onProgress).then<ShaderProgram>(() => {
 				this.link();
 				return this;
 			});
@@ -89,7 +86,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	{
 		if(!this._isLinked)
 		{
-			var gl = this.gl;
+			var gl = this._gl;
 			// Create the shader program
 			gl.attachShader(this._program, this._vertex.getShader(gl));
 			gl.attachShader(this._program, this._fragment.getShader(gl));
@@ -126,7 +123,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 			throw new Error('can not use program when shaders are not loaded yet')
 		}
 
-		this.gl.useProgram(this._program);
+		this._gl.useProgram(this._program);
 		return this;
 	}
 
@@ -145,17 +142,17 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	{
 		if(this._isLinked) this.link();
 
-		return this.gl.getProgramParameter( this._program, parameter );
+		return this._gl.getProgramParameter( this._program, parameter );
 	}
 
 	public getAttribLocation(value:string):number
 	{
 		if(this._isLinked) this.link();
 
-		return this.gl.getAttribLocation(this._program, value);
+		return this._gl.getAttribLocation(this._program, value);
 	}
 
-	public defineAttribute(name:string, size: number, type:number = this.gl.FLOAT, normalized: boolean = false, stride: number = 0, offset: number = 0):AttributeLocation
+	public defineAttribute(name:string, size: number, type:number = this._gl.FLOAT, normalized: boolean = false, stride: number = 0, offset: number = 0):AttributeLocation
 	{
 		if(this._isLinked) this.link();
 
@@ -165,7 +162,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 		}
 
 		var location = this.getAttribLocation(name)
-		this._attributes[name] = new AttributeLocation(this.gl, location, name, size, type, normalized, stride, offset);
+		this._attributes[name] = new AttributeLocation(this._gl, location, name, size, type, normalized, stride, offset);
 
 		return this._attributes[name];
 	}
@@ -179,7 +176,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	{
 		if(this._isLinked) this.link();
 
-		return this.gl.getUniformLocation(this._program, value);
+		return this._gl.getUniformLocation(this._program, value);
 	}
 
 	public getUniforms():IHashMap<UniformLocation>
@@ -203,7 +200,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	{
 		var uniforms:IHashMap<UniformLocation> = {};
 		var program = this._program;
-		var gl = this.gl;
+		var gl = this._gl;
 
 		var n = this.getParameter( gl.ACTIVE_UNIFORMS );
 
@@ -222,7 +219,7 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 			//	uniforms[ name.substr( 0, suffixPos ) ] = location;
 			//}
 
-			uniforms[ name ] = new UniformLocation(this.gl, name, location, type);
+			uniforms[ name ] = new UniformLocation(this._gl, name, location, type);
 		}
 
 		return uniforms;
@@ -253,10 +250,10 @@ export class ShaderProgram implements ILoadable<ShaderProgram>
 	public destruct():void
 	{
 		this._vertex = null;
-		this._fragment.deleteShader(this.gl);
+		this._fragment.deleteShader(this._gl);
 
-		this.gl.deleteProgram(this._program);
+		this._gl.deleteProgram(this._program);
 		this._program = void 0;
-		this.gl = void 0;
+		this._gl = void 0;
 	}
 }

@@ -9,6 +9,8 @@ import Interval from "../../../src/core/util/Interval";
 import Time from "../../../src/core/util/Time";
 import {mat4, vec3} from "../../../src/vendor/gl-matrix/gl-matrix";
 import {Camera} from "../../../src/core/webgl/Camera";
+import {Texture} from "../../../src/visual/display/Texture";
+import {PromiseUtil} from "../../../src/core/util/PromiseUtil";
 
 var canvas = new CanvasWebGL(void 0, 1024, 1024);
 canvas.appendTo(document.body.querySelector('[container="main"]'));
@@ -23,12 +25,16 @@ gui.add(pos, 'x', -50, 50);
 gui.add(pos, 'y', -50, 50);
 gui.add(pos, 'z', -50, 50);
 
-var program = new ShaderProgram(gl, "./quad/shader.v.glsl", "./quad/shader.f.glsl");
-program.load().then(() => {
+var texture = Texture.createFromUrl('../uv.jpg');
+var program = ShaderProgram.createFromUrl(gl, "./quad/shader.v.glsl", "./quad/shader.f.glsl");
+
+PromiseUtil.loadLoadable<any>([texture, program]).then(() => {
+
 	program.use();
 
 	var uMatrix = program.getUniform("uMatrix");
 	var aVertexPosition = program.defineAttribute("aVertexPosition", 3);
+
 	var quadBuffer = new Buffer(gl, quad).bind();
 	aVertexPosition.point().enable();
 

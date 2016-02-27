@@ -26,7 +26,7 @@ define(["require", "exports", "./Promise"], function (require, exports, Promise_
             }
             return Promise_1.Promise.all(promiseList);
         };
-        PromiseUtil.allForLoadable = function (list, onProgress) {
+        PromiseUtil.loadLoadable = function (list, onProgress) {
             if (onProgress === void 0) { onProgress = function (progress) { }; }
             var count = list.length;
             var progressList = [];

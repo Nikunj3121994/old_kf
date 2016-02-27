@@ -54,7 +54,7 @@ export class PromiseUtil
 	 * @param {(progress:number) => any} onProgress
 	 * @returns {Promise}
 	 */
-	public static allForLoadable<T>(list:Array<ILoadable<T>>, onProgress:(progress:number) => any = (progress:number) => {}):Promise<Array<T>>
+	public static loadLoadable<T>(list:Array<ILoadable<T>>, onProgress:(progress:number) => any = (progress:number) => {}):Promise<Array<T>>
 	{
 		var count = list.length;
 		var progressList = [];
@@ -67,6 +67,7 @@ export class PromiseUtil
 		var prvProgress = function(index:number, onProgress:Function, progress:number)
 		{
 			progressList[index] = progress;
+
 			var total = 0;
 			var length = progressList.length;
 
