@@ -1,11 +1,12 @@
 define(["require", "exports", "./SignalConnection"], function (require, exports, SignalConnection_1) {
+    "use strict";
     var Task = (function () {
         function Task(fn) {
             this.next = null;
             this.fn = fn;
         }
         return Task;
-    })();
+    }());
     exports.Task = Task;
     var SignalAbstract = (function () {
         function SignalAbstract(listener) {
@@ -113,6 +114,6 @@ define(["require", "exports", "./SignalConnection"], function (require, exports,
         };
         SignalAbstract.DISPATCHING_SENTINEL = new SignalConnection_1.SignalConnection(null, null);
         return SignalAbstract;
-    })();
+    }());
     exports.SignalAbstract = SignalAbstract;
 });

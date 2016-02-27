@@ -1,4 +1,5 @@
 define(["require", "exports"], function (require, exports) {
+    "use strict";
     var AttributeLocation = (function () {
         function AttributeLocation(gl, location, name, size, type, normalized, stride, offset) {
             if (type === void 0) { type = gl.FLOAT; }
@@ -30,6 +31,6 @@ define(["require", "exports"], function (require, exports) {
             this._gl.enableVertexAttribArray(this._location);
         };
         return AttributeLocation;
-    })();
+    }());
     exports.AttributeLocation = AttributeLocation;
 });

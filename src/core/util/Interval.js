@@ -1,4 +1,5 @@
 define(["require", "exports", "../event/Signal2"], function (require, exports, Signal2_1) {
+    "use strict";
     (function () {
         var lastTime = 0;
         var vendors = ['ms', 'moz', 'webkit', 'o'];
@@ -29,7 +30,7 @@ define(["require", "exports", "../event/Signal2"], function (require, exports, S
             this.mspf = 1000 / fps;
         }
         return FpsCollection;
-    })();
+    }());
     var rafInt = 0;
     var time = 0;
     var list = [];
@@ -102,7 +103,7 @@ define(["require", "exports", "../event/Signal2"], function (require, exports, S
         };
         Interval.isRunning = false;
         return Interval;
-    })();
+    }());
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = Interval;
 });

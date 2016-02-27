@@ -1,4 +1,5 @@
 define(["require", "exports", "./FluidMeasurementsUnit", "../enum/MeasurementUnitType"], function (require, exports, FluidMeasurementsUnit_1, MeasurementUnitType_1) {
+    "use strict";
     var FluidCalculation = (function () {
         function FluidCalculation() {
         }
@@ -100,7 +101,7 @@ define(["require", "exports", "./FluidMeasurementsUnit", "../enum/MeasurementUni
         FluidCalculation._valueUnitDisolvement = /([\+\-]?[0-9\.]+)(%|px|pt|in|cm|mm|vw|vh)?/;
         FluidCalculation._spaceSplit = /\s+/;
         return FluidCalculation;
-    })();
+    }());
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.default = FluidCalculation;
 });

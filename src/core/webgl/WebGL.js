@@ -1,4 +1,5 @@
 define(["require", "exports", "./ShaderProgram"], function (require, exports, ShaderProgram_1) {
+    "use strict";
     var WebGL = (function () {
         function WebGL(element) {
             this.el = element;
@@ -8,6 +9,6 @@ define(["require", "exports", "./ShaderProgram"], function (require, exports, Sh
             return new ShaderProgram_1.ShaderProgram(this.gl, vertex, fragment);
         };
         return WebGL;
-    })();
+    }());
     exports.WebGL = WebGL;
 });

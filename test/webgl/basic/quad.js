@@ -1,4 +1,5 @@
 define(["require", "exports", "../../../src/visual/renderer/element/CanvasWebGL", "../../../src/core/webgl/Geometry", "../../../src/core/webgl/ShaderProgram", "../../../src/core/webgl/Buffer", "../../../src/core/webgl/Camera", "../../../src/visual/display/Texture", "../../../src/core/util/PromiseUtil"], function (require, exports, CanvasWebGL_1, Geometry_1, ShaderProgram_1, Buffer_1, Camera_1, Texture_1, PromiseUtil_1) {
+    "use strict";
     var GUI = dat.GUI;
     var canvas = new CanvasWebGL_1.CanvasWebGL(void 0, 1024, 1024);
     canvas.appendTo(document.body.querySelector('[container="main"]'));
